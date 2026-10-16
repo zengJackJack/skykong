@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>YxCut 零件编辑器</title>
+<style>
+:root{--blue:#2563EB;--bg:#F3F5F8;--bd:#D8DDE5;--tx:#1F2937;--mu:#6B7280;--li:#E9EDF2}
+*{box-sizing:border-box}
+html,body{width:1400px;height:900px;margin:0;overflow:hidden;background:var(--bg);font-family:"Microsoft YaHei UI","Microsoft YaHei","Segoe UI",sans-serif;font-size:13px;color:var(--tx)}
+.title{height:32px;background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding-left:10px;font-size:12px;color:#374151}
+.title .logo{width:18px;height:18px;border-radius:4px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-right:8px}
+.title .t{flex:1}.wb{width:46px;height:32px;display:flex;align-items:center;justify-content:center}
+.tool{height:50px;display:flex;align-items:center;padding:0 8px;gap:4px;border-bottom:1px solid var(--bd)}
+.tb{height:38px;min-width:46px;padding:0 9px;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#374151;gap:1px}
+.tb svg{width:18px;height:18px}
+.tb.on{background:#E3EBFB;color:#1D4ED8;box-shadow:inset 0 0 0 1px #9DB8F2}
+.btn{height:34px;padding:0 12px;border:1px solid var(--bd);background:#fff;border-radius:5px;display:flex;align-items:center;gap:6px;font-size:13px}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.sep{width:1px;height:28px;background:var(--bd);margin:0 6px}
+.wrap{display:flex;height:794px}
+.left{width:250px;border-right:1px solid var(--bd);display:flex;flex-direction:column;background:#F7F8FA}
+.ph{height:36px;display:flex;align-items:center;padding:0 12px;font-weight:600;font-size:13px;border-bottom:1px solid var(--li)}
+.ph span{margin-left:auto;font-weight:400;color:var(--mu);font-size:11.5px}
+.tr{height:27px;display:flex;align-items:center;gap:6px;padding-right:10px;font-size:12.5px;white-space:nowrap}
+.tr .ar{width:12px;color:#6B7280;font-size:9px;text-align:center}
+.tr .ic{width:16px;height:16px;flex:none}
+.tr .c{margin-left:auto;color:var(--mu);font-size:11.5px}
+.tr.on{background:#5B9CF0;color:#fff}.tr.on .c{color:#E6EEFC}
+.tr .eye{color:#9CA3AF;font-size:11px;margin-left:6px}
+.center{flex:1;display:flex;flex-direction:column;background:#fff;min-width:0;border-right:1px solid var(--bd)}
+.tabs{height:36px;display:flex;align-items:flex-end;padding:0 10px;gap:2px;border-bottom:1px solid var(--bd);background:#F7F8FA}
+.tabs span{padding:7px 16px;font-size:12.5px;border:1px solid transparent;border-bottom:none;border-radius:5px 5px 0 0;color:#4B5563}
+.tabs span.on{background:#fff;border-color:var(--bd);color:var(--tx);font-weight:600;margin-bottom:-1px}
+.tabs .r{margin-left:auto;align-self:center;font-size:12px;color:var(--mu);display:flex;gap:12px;padding-bottom:0}
+.cv{flex:1;position:relative;background:#FBFCFD;background-image:linear-gradient(#EEF1F5 1px,transparent 1px),linear-gradient(90deg,#EEF1F5 1px,transparent 1px);background-size:20px 20px}
+.right{width:310px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.card{background:#fff;border:1px solid var(--bd);border-radius:6px}
+.card h4{margin:0;padding:8px 10px;font-size:13px;border-bottom:1px solid var(--li);display:flex;align-items:center}
+.card h4 span{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--mu)}
+.fr{display:flex;align-items:center;padding:3px 10px;font-size:12.5px;gap:8px}
+.fr .k{width:44px;color:var(--mu);flex:none}
+.in{flex:1;height:26px;border:1px solid #CBD2DC;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:12.5px;background:#fff}
+.in.fx{font-family:Consolas,"Microsoft YaHei UI",monospace;color:#1D4ED8;background:#F5F8FF;border-color:#B9CBF5}
+.in.fx:before{content:"fx";font-style:italic;font-size:10.5px;color:#fff;background:#6E8FD8;border-radius:3px;padding:0 3px;margin-right:6px;font-family:Georgia,serif}
+.in .v{margin-left:auto;color:#6B7280;font-family:"Microsoft YaHei UI";font-size:11.5px}
+.in.foc{box-shadow:0 0 0 2px #BFD3FB;border-color:var(--blue)}
+.dd:after{content:"";margin-left:auto;border:4px solid transparent;border-top-color:#555;margin-top:4px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th{background:#F7F8FA;font-weight:600;text-align:left;padding:4px 8px;border-bottom:1px solid #E7EAEF}
+td{padding:4px 8px;border-bottom:1px solid #EEF0F3}
+td.m{font-family:Consolas,monospace;color:#1D4ED8}
+.status{height:24px;background:#EEF1F5;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 10px;font-size:12px;color:#374151;gap:16px}
+.ok{width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block;margin-right:6px}
+</style></head><body>
+<div class="title">
+  <div class="logo"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 10 L6 2 L10 10 M3.6 7h4.8" stroke="#fff" stroke-width="1.6" fill="none"/></svg></div>
+  <div class="t">零件编辑器 — 左侧板 (参数化) · 720×560×18 · 柜体 C-03 主卧衣柜</div>
+  <div class="wb"><svg width="10" height="10"><path d="M0 5.5h10" stroke="#333"/></svg></div>
+  <div class="wb"><svg width="10" height="10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="#333"/></svg></div>
+  <div class="wb"><svg width="10" height="10"><path d="M0 0L10 10M10 0L0 10" stroke="#333"/></svg></div>
+</div>
+<div class="tool">
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg>保存</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>撤销</div>
+  <div class="tb" style="color:#9CA3AF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg>重做</div>
+  <div class="sep"></div>
+  <div class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3l14 8-6 2-3 6z"/></svg>选择</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="14" rx="3"/></svg>外形</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>垂直孔</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6v12M3 12h14"/><path d="M17 9v6"/></svg>侧孔</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="4"/></svg>槽</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="7" width="14" height="10" rx="2"/><path d="M8 10l3 4M11 10l3 4M14 10l3 4"/></svg>挖槽</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16c3-6 6-6 8-2s5 4 8-2"/></svg>铣型</div>
+  <div class="sep"></div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/></svg>阵列</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M9 7 4 12l5 5M15 7l5 5-5 5"/></svg>镜像</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8v8M21 8v8M3 12h18M7 9l-4 3 4 3M17 9l4 3-4 3"/></svg>标注</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg>三维</div>
+  <div class="sep"></div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h7"/><path d="m15 16 2 2 4-4"/></svg>校验</div>
+  <div style="margin-left:auto;display:flex;gap:6px"><div class="btn">另存为模板</div><div class="btn">取消</div><div class="btn pri">应用到零件</div></div>
+</div>
+<div class="wrap">
+  <div class="left">
+    <div class="ph">对象<span>25 项</span></div>
+    <div id="tree" style="padding:6px 0;flex:1"></div>
+    <div style="border-top:1px solid var(--li);padding:8px 12px;font-size:12px;color:var(--mu);line-height:1.8">
+      <div style="font-weight:600;color:var(--tx);font-size:12.5px">显示</div>
+      <div>☑ 正面特征 &nbsp; ☑ 反面特征 (虚线)</div>
+      <div>☑ 尺寸标注 &nbsp; ☑ 封边 &nbsp; ☐ 刀路</div>
+    </div>
+  </div>
+  <div class="center">
+    <div class="tabs"><span class="on">正面</span><span>反面</span><span>前侧</span><span>后侧</span><span>三维预览</span>
+      <div class="r"><span>捕捉: 端点 · 圆心 · 32 网格</span><span>正交 开</span></div></div>
+    <div class="cv" id="cv"></div>
+  </div>
+  <div class="right">
+    <div class="card"><h4>属性<span>H09 · 垂直孔</span></h4>
+      <div style="padding:6px 0">
+        <div class="fr"><span class="k">类型</span><div class="in dd">垂直孔 · 层板孔</div></div>
+        <div class="fr"><span class="k">加工面</span><div class="in dd">正面</div></div>
+        <div class="fr"><span class="k">X</span><div class="in fx foc">L-37<span class="v">683.0</span></div></div>
+        <div class="fr"><span class="k">Y</span><div class="in fx">32*n+37<span class="v">229.0</span></div></div>
+        <div class="fr"><span class="k">直径</span><div class="in">5.0<span class="v">mm</span></div></div>
+        <div class="fr"><span class="k">深度</span><div class="in fx">T-6<span class="v">12.0</span></div></div>
+        <div class="fr"><span class="k">刀具</span><div class="in dd">T05 · Ø5 钻头 (自动)</div></div>
+        <div class="fr"><span class="k">阵列</span><div class="in fx">n = 4 … 9<span class="v">×6</span></div></div>
+      </div>
+      <div style="display:flex;gap:6px;padding:4px 10px 10px"><div class="btn pri" style="flex:1;justify-content:center;height:30px"><i style="font-family:Georgia,serif;font-size:13px">fx</i>公式编辑器</div><div class="btn" style="height:30px">镜像到右侧</div></div>
+    </div>
+    <div class="card"><h4>变量<span>+ 新增</span></h4>
+      <table><tr><th>名称</th><th>值</th><th>说明</th></tr>
+        <tr><td class="m">L</td><td>720</td><td>长度</td></tr>
+        <tr><td class="m">W</td><td>560</td><td>宽度</td></tr>
+        <tr><td class="m">T</td><td>18</td><td>板厚</td></tr>
+        <tr><td class="m">E</td><td>37</td><td>系统孔边距</td></tr>
+        <tr><td class="m">P</td><td>32</td><td>系统孔间距</td></tr>
+        <tr><td class="m">HB</td><td>= W-100</td><td>铰链座位置</td></tr>
+        <tr><td class="m">R</td><td>60</td><td>圆角半径</td></tr>
+      </table>
+    </div>
+    <div class="card"><h4>校验<span style="color:#16A34A">● 通过</span></h4>
+      <div style="padding:7px 10px;font-size:12px;line-height:1.75;color:#374151">✓ 孔位无干涉 · 最小孔距 27.0 mm<br>✓ 距边 ≥ 8 mm · 深度 ≤ T-4<br>✓ 刀具可用 T05 / T08 / T35 / T12</div>
+    </div>
+  </div>
+</div>
+<div class="status"><span><span class="ok"></span>公式已求值 · 25 个对象 · 无错误</span><span style="color:#6B7280">已选择 1 个对象</span><span style="margin-left:auto;color:#6B7280">X 683.0 &nbsp;Y 229.0 mm</span><span style="color:#6B7280">缩放 92%</span></div>
+<script>
+// tree
+const ic={
+ shape:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="#3B6FD4" stroke-width="1.3"><path d="M2 3h8a4 4 0 0 1 4 4v6H2z"/></svg>',
+ inner:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="#7B5CC9" stroke-width="1.3"><rect x="2" y="2" width="12" height="12"/><rect x="5" y="6" width="6" height="4" rx="2"/></svg>',
+ hole:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="#C98A2E" stroke-width="1.3"><circle cx="8" cy="8" r="5"/><circle cx="8" cy="8" r="1.2" fill="#C98A2E"/></svg>',
+ side:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="#0E8F8F" stroke-width="1.3"><path d="M2 3v10M2 8h10M12 5.5v5"/></svg>',
+ groove:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="#3C9A5F" stroke-width="1.3"><rect x="1.5" y="6.5" width="13" height="3"/></svg>',
+ pocket:'<svg class="ic" viewBox="0 0 16 16" fill="none" stroke="#C9506B" stroke-width="1.3"><rect x="2.5" y="4.5" width="11" height="7" rx="1.5"/><path d="M5 6l3 4M8 6l3 4"/></svg>'};
+const T=[[0,'▾','shape','外形','R60 · 1 处'],[0,'▸','inner','内轮廓','×1'],[0,'▾','hole','孔','×14'],
+[1,'','hole','H01  Ø35 铰链座','T35'],[1,'','hole','H02  Ø35 铰链座','T35'],[1,'','hole','H03  Ø5  层板孔','n=4'],[1,'','hole','H04  Ø5  层板孔','n=5'],[1,'','hole','…  H05–H08','4 项'],
+[1,'','hole','H09  Ø5  层板孔','n=6',1],[1,'','hole','H10  Ø5  层板孔','n=7'],[1,'','hole','…  H11–H14','4 项'],
+[0,'▾','side','侧孔','×4'],[1,'','side','S01  Ø8 前侧','深 30'],[1,'','side','S02  Ø8 前侧','深 30'],[1,'','side','S03  Ø8 后侧','深 30'],[1,'','side','S04  Ø8 后侧','深 30'],
+[0,'▾','groove','槽','×2'],[1,'','groove','G01  背板槽 8×L','深 9'],[1,'','groove','G02  灯带槽 12×300','深 8'],
+[0,'▾','pocket','挖槽','×1'],[1,'','pocket','K01  隐形件座 64×24','深 10']];
+document.getElementById('tree').innerHTML=T.map(([lv,a,i,n,c,on])=>`<div class="tr ${on?'on':''}" style="padding-left:${10+lv*18}px"><span class="ar">${a}</span>${ic[i]}<span style="${lv?'':'font-weight:600'}">${n}</span><span class="c">${c}</span></div>`).join('');
+
+// canvas
+const L=720,W=560,R=60,s=0.95,ox=78,oy=78;
+const X=x=>ox+x*s, Y=y=>oy+(W-y)*s;  // origin bottom-left
+let v=`<svg width="840" height="758" style="position:absolute;left:0;top:0" font-family="Microsoft YaHei UI, Microsoft YaHei, sans-serif">`;
+v+=`<defs><pattern id="hp" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" stroke="#C9506B" stroke-width="1.4"/></pattern>
+<pattern id="gp" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V6" stroke="#3C9A5F" stroke-width="1.2"/></pattern>
+<filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity=".14"/></filter></defs>`;
+// panel outline: rounded top-right corner
+const p=`M${X(0)},${Y(0)}L${X(L)},${Y(0)}L${X(L)},${Y(W-R)}A${R*s},${R*s} 0 0 0 ${X(L-R)},${Y(W)}L${X(0)},${Y(W)}Z`;
+v+=`<path d="${p}" fill="#F4EFE6" stroke="#3B6FD4" stroke-width="1.6" filter="url(#sh)"/>`;
+// edge banding indicator
+v+=`<path d="M${X(0)+3},${Y(0)-3}L${X(L)-3},${Y(0)-3}" stroke="#E0A84A" stroke-width="3" opacity=".7"/><path d="M${X(L)-3},${Y(0)-3}L${X(L)-3},${Y(W-R)}A${R*s-3},${R*s-3} 0 0 0 ${X(L-R)},${Y(W)+3}" fill="none" stroke="#E0A84A" stroke-width="3" opacity=".7"/>`;
+// inner contour: cable cut-out
+v+=`<rect x="${X(300)}" y="${Y(120)}" width="${120*s}" height="${44*s}" rx="${22*s}" fill="#FBFCFD" stroke="#7B5CC9" stroke-width="1.4"/>`;
+// grooves
+v+=`<rect x="${X(0)}" y="${Y(W-18)}" width="${L*s-R*s}" height="${8*s}" fill="url(#gp)" stroke="#3C9A5F" stroke-width="1"/>`;
+v+=`<rect x="${X(210)}" y="${Y(60)}" width="${300*s}" height="${12*s}" fill="url(#gp)" stroke="#3C9A5F" stroke-width="1"/>`;
+// pocket
+v+=`<rect x="${X(150)}" y="${Y(500)}" width="${64*s}" height="${24*s}" rx="4" fill="url(#hp)" stroke="#C9506B" stroke-width="1.2"/>`;
+// hinge cups
+for(const hy of [100,460]){v+=`<circle cx="${X(L-22.5)}" cy="${Y(hy)}" r="${17.5*s}" fill="#fff" stroke="#C98A2E" stroke-width="1.4"/><circle cx="${X(L-22.5)}" cy="${Y(hy)}" r="2" fill="#C98A2E"/><path d="M${X(L-22.5)-20},${Y(hy)}h40M${X(L-22.5)},${Y(hy)-20}v40" stroke="#C98A2E" stroke-width=".6" stroke-dasharray="3 2"/>`;}
+// 32 rows
+for(const hx of [37,L-37]) for(let n=4;n<=9;n++){const yy=32*n+37;const sel=(hx!==37&&n===6);
+  v+=`<circle cx="${X(hx)}" cy="${Y(yy)}" r="${sel?5:4.2}" fill="${sel?'#DBE7FE':'#fff'}" stroke="${sel?'#2563EB':'#C98A2E'}" stroke-width="${sel?2:1.3}"/><circle cx="${X(hx)}" cy="${Y(yy)}" r="1.2" fill="${sel?'#2563EB':'#C98A2E'}"/>`;
+  if(sel){const cx=X(hx),cy=Y(yy);v+=`<rect x="${cx-11}" y="${cy-11}" width="22" height="22" fill="none" stroke="#2563EB" stroke-dasharray="3 2"/>`;for(const [a,b] of [[-11,-11],[11,-11],[-11,11],[11,11]])v+=`<rect x="${cx+a-3}" y="${cy+b-3}" width="6" height="6" fill="#fff" stroke="#2563EB"/>`;}}
+// back-face holes dashed
+for(const [hx,hy] of [[200,280],[520,280]])v+=`<circle cx="${X(hx)}" cy="${Y(hy)}" r="${4*s+1.5}" fill="none" stroke="#7B5CC9" stroke-width="1.2" stroke-dasharray="2.5 2"/>`;
+// side holes (front & back edges = bottom / top edges in view)
+for(const [hx,top] of [[37,0],[L-37-40-64,0],[37,1],[L-37-40-64,1]]){const x=X(hx);const y0=top?Y(W):Y(0),dir=top?1:-1;
+  v+=`<rect x="${x-4*s}" y="${top?y0:y0-30*s}" width="${8*s}" height="${30*s}" fill="#D2EEEE" stroke="#0E8F8F" stroke-width="1" stroke-dasharray="3 2"/><path d="M${x},${y0}v${-dir*-10}" stroke="#0E8F8F" stroke-width="1.4"/>`;}
+// dimension helpers
+const dimH=(x1,x2,y,t,c)=>`<path d="M${x1},${y}H${x2}" stroke="${c||'#6B7280'}" stroke-width=".9"/><path d="M${x1},${y}l7,-3v6zM${x2},${y}l-7,-3v6z" fill="${c||'#6B7280'}"/><text x="${(x1+x2)/2}" y="${y-4}" font-size="11.5" text-anchor="middle" fill="${c||'#374151'}">${t}</text>`;
+const dimV=(y1,y2,x,t,c)=>`<path d="M${x},${y1}V${y2}" stroke="${c||'#6B7280'}" stroke-width=".9"/><path d="M${x},${y1}l-3,7h6zM${x},${y2}l-3,-7h6z" fill="${c||'#6B7280'}"/><text x="${x-5}" y="${(y1+y2)/2}" font-size="11.5" text-anchor="middle" fill="${c||'#374151'}" transform="rotate(-90 ${x-5} ${(y1+y2)/2})">${t}</text>`;
+const ext=(x1,y1,x2,y2)=>`<path d="M${x1},${y1}L${x2},${y2}" stroke="#9CA3AF" stroke-width=".7"/>`;
+// overall
+v+=ext(X(0),Y(W)-4,X(0),Y(W)-46)+ext(X(L),Y(W-R)-4,X(L),Y(W)-46)+dimH(X(0),X(L),Y(W)-38,'720  (L)');
+v+=ext(X(L)+4,Y(0),X(L)+70,Y(0))+ext(X(L)+4,Y(W),X(L)+70,Y(W))+dimV(Y(W),Y(0),X(L)+62,'560  (W)');
+// left row chain
+v+=ext(X(0)-4,Y(0),X(0)-70,Y(0))+ext(X(37)-6,Y(165),X(0)-50,Y(165))+ext(X(37)-6,Y(325),X(0)-50,Y(325));
+v+=dimV(Y(165),Y(0),X(0)-44,'165')+dimV(Y(325),Y(165),X(0)-44,'5×32=160');
+v+=dimH(X(0),X(37),Y(0)+30,'37')+ext(X(37),Y(0)+4,X(37),Y(0)+38);
+// hinge dims
+v+=ext(X(L)+4,Y(100),X(L)+34,Y(100))+ext(X(L)+4,Y(460),X(L)+34,Y(460))+dimV(Y(100),Y(0),X(L)+28,'100')+dimV(Y(W),Y(460),X(L)+28,'100');
+// selected hole dims (blue)
+const sx=X(L-37),sy=Y(229);
+v+=ext(sx,sy+8,sx,Y(0)+60)+dimH(sx,X(L),Y(0)+54,'37','#2563EB')+ext(X(L),Y(0)+4,X(L),Y(0)+62);
+v+=`<path d="M${sx-34},${sy}H${sx-12}" stroke="#2563EB" stroke-width=".7" stroke-dasharray="4 3"/>`;
+v+=dimV(sy,Y(0),sx-26,'229 · 32n+37','#2563EB');
+// tooltip
+v+=`<g transform="translate(${sx-200} ${sy-118})"><rect width="160" height="48" rx="4" fill="#1F2937" fill-opacity=".92"/><text x="9" y="18" font-size="11.5" fill="#fff" font-weight="600">H09 层板孔 Ø5 深 12</text><text x="9" y="36" font-size="11" fill="#CBD5E1">X=L-37  Y=32*n+37 (n=6)</text></g>`;
+// labels
+v+=`<text x="${X(360)}" y="${Y(98)}" font-size="11" fill="#7B5CC9" text-anchor="middle">走线孔 120×44</text>`;
+v+=`<text x="${X(360)}" y="${Y(30)}" font-size="11" fill="#3C9A5F" text-anchor="middle">G02 灯带槽 12×300 深 8</text>`;
+v+=`<text x="${X(120)}" y="${Y(W-44)}" font-size="11" fill="#3C9A5F">G01 背板槽 8 深 9</text>`;
+v+=`<text x="${X(225)}" y="${Y(486)}" font-size="11" fill="#C9506B">K01 隐形件座</text>`;
+v+=`<text x="${sx-50}" y="${Y(460)+4}" font-size="11" fill="#C98A2E" text-anchor="end">H02 Ø35 深 13</text>`;
+v+=`<text x="${sx-50}" y="${Y(100)+4}" font-size="11" fill="#C98A2E" text-anchor="end">H01 Ø35 深 13</text>`;
+v+=`<text x="${X(L-R/2)+12}" y="${Y(W-R/2)-18}" font-size="11" fill="#3B6FD4">R60</text>`;
+// origin axis
+v+=`<g transform="translate(${X(0)} ${Y(0)})"><path d="M0 0H34M0 0V-34" stroke="#E5484D" stroke-width="1.6"/><path d="M34 0l-6-3v6z" fill="#E5484D"/><path d="M0 -34l-3 6h6z" fill="#E5484D"/><text x="38" y="4" font-size="10.5" fill="#E5484D">X</text><text x="-4" y="-38" font-size="10.5" fill="#E5484D">Y</text></g>`;
+// legend
+v+=`<g transform="translate(16 726)" font-size="11.5" fill="#4B5563"><circle cx="6" cy="-4" r="4.5" fill="#fff" stroke="#C98A2E" stroke-width="1.3"/><text x="16" y="0">正面孔</text><circle cx="72" cy="-4" r="4.5" fill="none" stroke="#7B5CC9" stroke-dasharray="2 1.5" stroke-width="1.3"/><text x="82" y="0">反面孔</text><rect x="134" y="-10" width="7" height="12" fill="#D2EEEE" stroke="#0E8F8F" stroke-dasharray="2 1.5"/><text x="146" y="0">侧孔</text><rect x="186" y="-8" width="18" height="7" fill="url(#gp)" stroke="#3C9A5F"/><text x="210" y="0">槽</text><rect x="234" y="-9" width="18" height="10" fill="url(#hp)" stroke="#C9506B"/><text x="258" y="0">挖槽</text><text x="320" y="0" fill="#9CA3AF">原点: 左下角 · 正面朝上 · 纹理沿 X</text></g>`;
+v+=`</svg>`;
+document.getElementById('cv').innerHTML=v;
+</script></body></html>

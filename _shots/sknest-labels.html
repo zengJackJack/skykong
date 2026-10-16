@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>SkNest</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:1000px;overflow:hidden;background:#F3F5F8}
+body{font-family:"Microsoft YaHei UI","Microsoft YaHei","Segoe UI",sans-serif;font-size:13px;color:#1F2937;-webkit-font-smoothing:antialiased}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.win{position:absolute;inset:0;border:1px solid #C9D0DA;display:flex;flex-direction:column;background:#F3F5F8}
+.title{height:32px;background:#FFFFFF;display:flex;align-items:center;border-bottom:1px solid #E3E7ED;flex:none}
+.title .logo{width:18px;height:18px;margin:0 9px 0 12px}
+.title .t{font-size:12px;color:#374151;flex:1}
+.title .wc{width:46px;height:32px;display:flex;align-items:center;justify-content:center;color:#374151}
+.title .wc svg{width:10px;height:10px;stroke:currentColor;stroke-width:1;fill:none}
+.tb{height:56px;background:#fff;border-bottom:1px solid #E3E7ED;display:flex;align-items:center;padding:0 8px;gap:8px;flex:none}
+.btn{height:38px;padding:0 14px;border:1px solid #D8DDE5;border-radius:6px;background:#fff;display:flex;align-items:center;gap:7px;font-size:13px;color:#1F2937;box-shadow:0 1px 1px rgba(16,24,40,.04)}
+.btn.pri{background:#2563EB;border-color:#2563EB;color:#fff;font-weight:600;padding:0 18px}
+.lvl{display:flex;align-items:center;gap:8px;margin-left:4px;font-size:13px}
+.dd{height:42px;width:208px;border:1px solid #D8DDE5;border-radius:6px;padding:4px 12px;display:flex;align-items:center;justify-content:space-between;background:#fff}
+.dd b{font-size:13px}.dd b span{color:#2563EB;font-weight:400;font-size:11px;margin-left:4px}.dd small{display:block;font-size:11px;color:#6B7280}
+.tb .sp{flex:1}
+.tb .proj{display:flex;align-items:center;gap:8px;color:#6B7280;font-size:12px;padding-right:6px}
+.tb .proj .dot{width:8px;height:8px;border-radius:50%;background:#16A34A}
+.main{flex:1;display:flex;min-height:0}
+.nav{width:176px;background:#fff;border-right:1px solid #E3E7ED;display:flex;flex-direction:column;padding:8px 8px;flex:none}
+.nav a{height:36px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:6px;color:#1F2937;font-size:13.5px;margin-bottom:3px;text-decoration:none}
+.nav a.on{background:#E3ECFD;color:#1D4ED8;font-weight:600;box-shadow:inset 3px 0 0 #2563EB}
+.nav .grp{font-size:11.5px;color:#6B7280;padding:10px 12px 6px;border-top:1px solid #E5E7EB;margin-top:6px}
+.nav .fill{flex:1}
+.nav .sep{border-top:1px solid #E5E7EB;margin:6px 0}
+.status{height:26px;background:#EEF1F5;border-top:1px solid #DDE2E9;display:flex;align-items:center;padding:0 12px;font-size:12px;color:#374151;gap:18px;flex:none}
+.status .ok{width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block;margin-right:6px}
+.status .r{margin-left:auto;color:#6B7280;display:flex;gap:18px}
+.content{flex:1;display:flex;flex-direction:column;min-width:0}
+.kpis{display:flex;gap:8px;padding:10px 12px;flex:none;border-bottom:1px solid #E3E7ED}
+.kpi{background:#fff;border:1px solid #D8DDE5;border-radius:8px;padding:8px 12px 7px;min-width:96px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.kpi .l{font-size:11.5px;color:#4B5563}
+.kpi .v{font-size:20px;font-weight:700;margin-top:2px;letter-spacing:-.2px}
+.kpi .v small{font-size:13px;font-weight:600;margin-left:1px}
+.kpi.g .v{color:#15803D}
+.work{flex:1;display:flex;min-height:0}
+.list{width:270px;border-right:1px solid #E3E7ED;display:flex;flex-direction:column;flex:none;background:#F3F5F8}
+.tabs{display:flex;align-items:center;padding:10px 10px 8px;gap:8px}
+.seg{display:flex;border:1px solid #D8DDE5;border-radius:7px;background:#fff;padding:2px}
+.seg span{padding:5px 13px;border-radius:5px;font-size:12.5px}
+.seg span.on{background:#2563EB;color:#fff;font-weight:600}
+.mini{height:24px;padding:0 8px;border:1px solid #D8DDE5;border-radius:5px;background:#fff;font-size:11.5px;display:flex;align-items:center;margin-left:auto}
+.scroll{flex:1;overflow:hidden;padding:0 10px;position:relative}
+.ghead{background:#E8ECF2;border-radius:6px;padding:7px 10px;margin:4px 0 6px}
+.ghead .a{display:flex;align-items:center;gap:6px;font-weight:700;font-size:12.5px}
+.ghead .a .tri{font-size:8px;color:#6B7280;width:8px}
+.ghead .a .sz{margin-left:auto;font-weight:400;color:#4B5563;font-size:11.5px}
+.ghead .b{font-size:11px;color:#6B7280;margin-top:2px;padding-left:14px}
+.pc{display:flex;gap:10px;background:#fff;border:1px solid #DDE3EA;border-radius:7px;padding:7px 8px;margin-bottom:6px;position:relative}
+.pc.on{background:#E8F0FE;border-color:#A9C3F5;box-shadow:inset 3px 0 0 #2563EB}
+.pc svg{flex:none;border-radius:2px}
+.pc .m{flex:1;min-width:0}
+.pc .m .h{display:flex;align-items:center;justify-content:space-between}
+.pc .m .h b{font-size:12.5px;color:#1D4ED8}
+.pill{background:#DCE7FD;color:#1D4ED8;border-radius:10px;padding:0 7px;font-size:11px;font-weight:600;line-height:18px}
+.pc .m .s{font-size:11px;color:#6B7280;line-height:16px}
+.pc .m .u{font-size:11px;color:#374151;line-height:16px}
+.pc .m .u b{color:#15803D;font-weight:600}
+.vbar{position:absolute;right:2px;top:4px;width:5px;height:180px;border-radius:3px;background:#C7CED8}
+.center{flex:1;display:flex;flex-direction:column;min-width:0;background:#F7F8FA}
+.phead{height:42px;display:flex;align-items:center;gap:14px;padding:0 14px;border-bottom:1px solid #E3E7ED;background:#fff;font-size:12.5px;color:#6B7280;white-space:nowrap}
+.phead b{color:#111827}
+.phead .ttl{font-size:14px;font-weight:700;color:#111827}
+.tog{height:40px;display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #E3E7ED;background:#fff;font-size:12.5px;white-space:nowrap}
+.sw{display:inline-flex;align-items:center;gap:7px}
+.sw i{width:34px;height:18px;border-radius:9px;background:#fff;border:1.5px solid #374151;position:relative;display:inline-block}
+.sw i:after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#111827;top:2.5px;left:3px}
+.sw.on i{background:#2563EB;border-color:#2563EB}
+.sw.on i:after{background:#fff;left:19px}
+.vs{width:1px;height:20px;background:#E3E7ED}
+.sbtn{height:26px;padding:0 10px;border:1px solid #D8DDE5;border-radius:5px;background:#fff;display:flex;align-items:center;gap:5px;font-size:12px}
+.canvas{flex:1;position:relative;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:11.5px;color:#4B5563;align-items:center}
+.legend i{display:inline-block;width:12px;height:10px;border:1px solid #8AA6C4;vertical-align:-1px;margin-right:4px}
+.ptable{position:absolute;left:14px;right:14px;background:#fff;border:1px solid #DDE3EA;border-radius:8px;overflow:hidden}
+.ptable .hd{display:flex;align-items:center;padding:7px 12px;border-bottom:1px solid #E5E9EF;font-weight:700;font-size:12.5px;gap:10px}
+.ptable .hd span{font-weight:400;color:#6B7280;font-size:11.5px}
+table{border-collapse:collapse;width:100%}
+th{font-weight:600;color:#4B5563;background:#F5F7FA;text-align:left;font-size:11.5px;padding:0 8px;height:24px;border-bottom:1px solid #E5E9EF;white-space:nowrap}
+td{font-size:12px;padding:0 8px;height:23px;border-bottom:1px solid #EEF1F5;white-space:nowrap;font-variant-numeric:tabular-nums}
+.drawer{width:322px;border-left:1px solid #E3E7ED;background:#fff;display:flex;flex-direction:column;flex:none}
+.drawer .dh{height:42px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid #E3E7ED;font-weight:700;font-size:13.5px}
+.drawer .dh .x{margin-left:auto;color:#6B7280}
+.sum{padding:10px 14px 6px;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;border-bottom:1px solid #E3E7ED}
+.sum div{font-size:11.5px;color:#6B7280}
+.sum div b{display:block;font-size:14px;color:#111827;font-weight:600;margin-top:1px}
+.bar{height:6px;border-radius:3px;background:#E5E9EF;grid-column:1/3;overflow:hidden;display:flex;margin-top:2px}
+.steps{flex:1;display:flex;flex-direction:column;min-height:0}
+.steps .sh{display:flex;align-items:center;gap:6px;padding:8px 14px;font-weight:700;font-size:12.5px}
+.steps .sh .sbtn{margin-left:auto}
+.steps .tw{flex:1;overflow:hidden;position:relative;border-top:1px solid #E5E9EF}
+.steps tr.cur td{background:#DBE8FD;color:#1E3A8A;font-weight:600}
+.steps td.dir{color:#374151}
+.sbar2{position:absolute;right:2px;top:28px;width:5px;height:120px;border-radius:3px;background:#C7CED8}
+html,body{width:1400px;height:900px}
+.ltb{display:flex;align-items:center;gap:6px;padding:9px 12px 7px;flex:none;white-space:nowrap}
+.btn{white-space:nowrap;flex:none}
+.btn.sm{height:30px;padding:0 10px;font-size:12.5px;gap:5px;border-radius:5px}
+.btn.sm svg.i{width:16px;height:16px}
+.btn.dis{color:#9CA3AF;background:#F3F4F6}
+.vs{width:1px;height:20px;background:#DDE2E9;margin:0 3px}
+.ck{white-space:nowrap;display:flex;align-items:center;gap:6px;font-size:12.5px;margin-right:4px}
+.cb{flex:none;display:inline-block;width:15px;height:15px;border:1.3px solid #6B7280;border-radius:3px;background:#fff;position:relative}
+.cb.on{background:#2563EB;border-color:#2563EB}
+.cb.on:after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.lwork{flex:1;display:flex;min-height:0;border-top:1px solid #E3E7ED}
+.lpal{width:232px;background:#fff;border-right:1px solid #E3E7ED;padding:10px 10px;flex:none;overflow:hidden}
+.sec{font-weight:700;font-size:12.5px;margin-bottom:7px}
+.pal{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.pal div{height:30px;border:1px solid #D8DDE5;border-radius:5px;display:flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;background:#fff}
+.pal div svg{width:15px;height:15px;color:#4B5563}
+.search{height:28px;border:1px solid #D8DDE5;border-radius:5px;background:#fff;display:flex;align-items:center;padding:0 9px;color:#9CA3AF;font-size:12px}
+.flist{border:1px solid #E5E9EF;border-radius:6px;overflow:hidden}
+.flist .g{background:#F3F5F8;font-size:11.5px;color:#4B5563;padding:4px 10px;font-weight:600}
+.flist .f{display:flex;justify-content:space-between;padding:0 10px;height:27px;align-items:center;font-size:12.5px;border-top:1px solid #F0F2F5}
+.flist .f span{color:#6B7280;font-size:11.5px;font-family:Segoe UI}
+.flist .f.on{background:#E3ECFD;color:#1D4ED8}
+.lcanvas{flex:1;position:relative;background:#E9ECF1;overflow:hidden}
+.lprop{width:262px;background:#fff;border-left:1px solid #E3E7ED;flex:none;padding:10px 12px;overflow:hidden;font-size:12.5px}
+.lprop .ph{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;margin-bottom:10px}
+.lprop .ph span{font-weight:400;font-size:11px;background:#E3ECFD;color:#1D4ED8;border-radius:4px;padding:0 6px;line-height:18px}
+.lprop .grp{font-size:11.5px;color:#6B7280;font-weight:600;margin:12px 0 6px;border-top:1px solid #EEF1F5;padding-top:10px}
+.pr{display:flex;align-items:center;margin-bottom:6px;gap:6px}
+.pr label{width:62px;color:#4B5563;font-size:12px;flex:none}
+.in{flex:1;height:26px;border:1px solid #D8DDE5;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:12px;background:#fff;justify-content:space-between;min-width:0}
+.in small{color:#9CA3AF;font-size:11px}
+.in.dd:after{content:"";width:6px;height:6px;border:solid #6B7280;border-width:0 1.5px 1.5px 0;transform:rotate(45deg);margin-top:-3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.two .pr{margin:0}.two .pr label{width:16px}
+.segx{display:flex;border:1px solid #D8DDE5;border-radius:4px;overflow:hidden;flex:1}
+.segx span{flex:1;text-align:center;height:24px;line-height:24px;font-size:11.5px;border-left:1px solid #E5E9EF}
+.segx span:first-child{border-left:0}
+.segx span.on{background:#E3ECFD;color:#1D4ED8;font-weight:600}
+</style></head>
+<body>
+<div class="win">
+  <div class="title">
+    <svg class="logo" viewBox="0 0 18 18"><rect x="1" y="1" width="16" height="16" rx="4" fill="#2563EB"/><rect x="4" y="4" width="6" height="10" fill="#fff" opacity=".95"/><rect x="11" y="4" width="3" height="4.5" fill="#fff" opacity=".7"/><rect x="11" y="9.5" width="3" height="4.5" fill="#fff" opacity=".85"/></svg>
+    <div class="t">SkNest 板材优化排样 — 订单 2026-10-16 衣柜批次.skt</div>
+    <div class="wc"><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></div>
+    <div class="wc"><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></div>
+    <div class="wc"><svg viewBox="0 0 10 10"><path d="M.5 .5l9 9M9.5 .5l-9 9"/></svg></div>
+  </div>
+  <div class="tb">
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/></svg>新建任务</div>
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H7.5a2 2 0 0 0-1.9 1.4L3 19z"/><path d="M3 19l2.6-7.6A2 2 0 0 1 7.5 10H22l-2.7 7.7a2 2 0 0 1-1.9 1.3z"/></svg>第三方格式</div>
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/><path d="M4 9V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M8 11h9M13 7l4 4-4 4"/></svg>导入任务</div>
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/><path d="M4 9V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M12 8v9M8 13l4 4 4-4"/></svg>导出任务</div>
+    <div class="btn pri"><svg class="i" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>优化</div>
+    <div class="lvl">级别:
+      <div class="dd"><div><b>常规<span>(推荐)</span></b><small>速度与省板平衡</small></div><svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="sp"></div>
+    <div class="proj"><span class="dot"></span>结果已保存 · 15:42</div>
+  </div>
+  <div class="main">
+    <div class="nav">
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M12 2.5l8.5 4.8v9.4L12 21.5l-8.5-4.8V7.3z"/><path d="M3.5 7.3L12 12l8.5-4.7M12 12v9.5"/></svg>零件</a>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5M3 16.5l9 5 9-5"/></svg>材料</a>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M8 16v-5M12 16V7M16 16v-8"/></svg>结果</a>
+      <a class="on"><svg class="i" viewBox="0 0 24 24"><path d="M3 12V4.5A1.5 1.5 0 0 1 4.5 3H12l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>标签</a>
+      <div class="fill"></div>
+      <div class="grp">输出</div>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>打印标签</a>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 17v-3M12 17v-6M16 17v-4"/></svg>导出报表</a>
+      <a><svg class="i" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/></svg>导出到机床</a>
+      <div class="sep"></div>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>授权</a>
+      <a><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>设置</a>
+      <a><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>关于软件</a>
+    </div>
+    <div class="content">
+      <div class="ltb">
+        <div class="btn sm">← 返回模板库</div><span class="vs"></span>
+        <div class="btn sm"><svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/></svg>新建</div>
+        <div class="btn sm"><svg class="i" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H7.5a2 2 0 0 0-1.9 1.4L3 19z"/><path d="M3 19l2.6-7.6A2 2 0 0 1 7.5 10H22l-2.7 7.7a2 2 0 0 1-1.9 1.3z"/></svg>打开</div>
+        <div class="btn sm"><svg class="i" viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v5h8V3M7 21v-7h10v7"/></svg>保存</div>
+        <div class="btn sm">另存为</div><span class="vs"></span>
+        <div class="btn sm"><svg class="i" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>撤销</div>
+        <div class="btn sm dis"><svg class="i" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>重做</div><span class="vs"></span>
+        <div class="btn sm"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>删除</div>
+        <div class="btn sm">置顶</div><div class="btn sm">置底</div><span class="vs"></span>
+        <label class="ck"><span class="cb"></span>预览</label>
+      </div>
+      <div class="ltb" style="padding-top:0">
+        <label class="ck"><span class="cb on"></span>网格</label><label class="ck"><span class="cb on"></span>吸附</label><span class="vs"></span>
+        <div class="btn sm">缩小</div><div class="btn sm">放大</div><div class="btn sm">适应窗口</div><span style="color:#6B7280;font-size:12px;margin:0 4px">300%</span><span class="vs"></span>
+        <div class="btn sm">存为模板</div><div class="btn sm">载入模板</div>
+        <div style="flex:1"></div>
+        <span style="font-size:12px;color:#6B7280">模板: <b style="color:#111827">衣柜零件标签 80×50</b> · 已修改</span>
+      </div>
+      <div class="lwork">
+        <div class="lpal">
+          <div class="sec">元素</div>
+          <div class="pal" id="pal"></div>
+          <div class="sec" style="margin-top:12px">字段</div>
+          <div class="search" style="width:auto;margin-bottom:8px">搜索字段...</div>
+          <div class="flist" id="flist"></div>
+        </div>
+        <div class="lcanvas" id="lc"></div>
+        <div class="lprop" id="lp"></div>
+      </div>
+    </div>
+  </div>
+  <div class="status"><span><span class="ok"></span>已打开标签 · 衣柜零件标签 80×50</span><span style="color:#6B7280">预览数据: 第 9 件 / 717 · 左侧板</span><span class="r"><span>X 23.0  Y 37.5 mm</span><span>打印机: 标签打印机 203dpi</span></span></div>
+</div>
+<script>
+var I = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+var PAL = [['文本', '<path d="M5 6V4h14v2M12 4v16M9 20h6"/>'], ['一维条码', '<path d="M4 5v14M7 5v14M10 5v14M14 5v14M16 5v14M20 5v14"/>'], ['二维码', '<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h1M18 14h2"/>'],
+  ['静态图片', '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-9 8"/>'], ['动态图片', '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 15l3-3 2 2 3-4 3 5"/><path d="M15 3l2 2-2 2"/>'], ['直线', '<path d="M4 20L20 4"/>'],
+  ['矩形', '<rect x="4" y="6" width="16" height="12" rx="1"/>'], ['尺寸图形', '<rect x="6" y="8" width="12" height="10"/><path d="M6 4h12M6 3v2M18 3v2"/>'], ['封边', '<rect x="5" y="6" width="14" height="12"/><path d="M5 6h14" stroke-width="3.5"/>']];
+document.getElementById('pal').innerHTML = PAL.map(function (p) { return '<div>' + I(p[1]) + p[0] + '</div>'; }).join('');
+var FL = [['尺寸'], ['长', 'Xsize'], ['宽', 'Ysize'], ['厚', 'Zsize'], ['成品长', 'PDXsize'], ['成品宽', 'PDYsize'], ['订单'], ['订单号', 'OrderNo'], ['客户', 'Customer'], ['柜体名', 'Cabinet'], ['零件名', 'PartName', 1], ['材质', 'Material'], ['封边', 'EdgeBand'], ['条码', 'Barcode'], ['纹理', 'Grain']];
+document.getElementById('flist').innerHTML = FL.map(function (f) { return f.length === 1 ? '<div class="g">' + f[0] + '</div>' : '<div class="f' + (f[2] ? ' on' : '') + '">' + f[0] + '<span>' + f[1] + '</span></div>'; }).join('');
+
+// CODE128-C
+var C128 = ["212222","222122","222221","121223","121322","131222","122213","122312","132212","221213","221312","231212","112232","122132","122231","113222","123122","123221","223211","221132","221231","213212","223112","312131","311222","321122","321221","312212","322112","322211","212123","212321","232121","111323","131123","131321","112313","132113","132311","211313","231113","231311","112133","112331","132131","113123","113321","133121","313121","211331","231131","213113","213311","213131","311123","311321","331121","312113","312311","332111","314111","221411","431111","111224","111422","121124","121421","141122","141221","112214","112412","122114","122411","142112","142211","241211","221114","413111","241112","134111","111242","121142","121241","114212","124112","124211","411212","421112","421211","212141","214121","412121","111143","111341","131141","114113","114311","411113","411311","113141","114131","311141","411131","211412","211214","211232"];
+function code128c(s) {
+  var v = [105]; for (var i = 0; i < s.length; i += 2) v.push(+s.substr(i, 2));
+  var sum = v[0]; for (i = 1; i < v.length; i++) sum += v[i] * i; v.push(sum % 103);
+  var pat = v.map(function (x) { return C128[x]; }).join('') + '2331112';
+  return pat;
+}
+function bars(s, x, y, w, h) {
+  var p = code128c(s), mods = 0; for (var i = 0; i < p.length; i++) mods += +p[i];
+  var m = w / mods, cx = x, out = '';
+  for (i = 0; i < p.length; i++) { var bw = +p[i] * m; if (i % 2 === 0) out += '<rect x="' + cx.toFixed(2) + '" y="' + y + '" width="' + bw.toFixed(2) + '" height="' + h + '" fill="#111"/>'; cx += bw; }
+  return out;
+}
+function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function qr(x, y, size) {
+  var N = 25, m = size / N, g = [], r = rng(260116), out = '';
+  for (var i = 0; i < N; i++) { g.push([]); for (var j = 0; j < N; j++) g[i].push(r() < 0.5 ? 1 : 0); }
+  function finder(r0, c0) { for (var a = -1; a <= 7; a++) for (var b = -1; b <= 7; b++) { var rr = r0 + a, cc = c0 + b; if (rr < 0 || cc < 0 || rr >= N || cc >= N) continue;
+    var on = (a >= 0 && a <= 6 && b >= 0 && b <= 6) && (a === 0 || a === 6 || b === 0 || b === 6 || (a >= 2 && a <= 4 && b >= 2 && b <= 4)); g[rr][cc] = on ? 1 : 0; } }
+  finder(0, 0); finder(0, N - 7); finder(N - 7, 0);
+  for (i = 8; i < N - 8; i++) { g[6][i] = i % 2 === 0 ? 1 : 0; g[i][6] = i % 2 === 0 ? 1 : 0; }
+  for (var a = -2; a <= 2; a++) for (var b = -2; b <= 2; b++) g[18 + a][18 + b] = (Math.max(Math.abs(a), Math.abs(b)) !== 1) ? 1 : 0;
+  g[N - 8][8] = 1;
+  for (i = 0; i < N; i++) for (j = 0; j < N; j++) if (g[i][j]) out += '<rect x="' + (x + j * m).toFixed(2) + '" y="' + (y + i * m).toFixed(2) + '" width="' + (m + .05).toFixed(2) + '" height="' + (m + .05).toFixed(2) + '" fill="#111"/>';
+  return out;
+}
+// canvas
+var lc = document.getElementById('lc'), CW = lc.clientWidth, CH = lc.clientHeight, S = 7.6, LW = 80 * S, LH = 50 * S, X0 = Math.round((CW - LW) / 2) + 8, Y0 = Math.round((CH - LH) / 2) - 10;
+function mm(v) { return v * S; }
+var s = '<svg width="' + CW + '" height="' + CH + '" style="position:absolute;left:0;top:0" font-family="Microsoft YaHei UI,Microsoft YaHei,Segoe UI">';
+s += '<defs><pattern id="grid" width="' + S + '" height="' + S + '" patternUnits="userSpaceOnUse" x="' + X0 + '" y="' + Y0 + '"><path d="M' + S + ' 0V' + S + 'H0" fill="none" stroke="#EEF1F5" stroke-width=".6"/></pattern>' +
+  '<filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity=".16"/></filter></defs>';
+// rulers
+s += '<rect x="0" y="0" width="' + CW + '" height="20" fill="#F7F8FA"/><rect x="0" y="0" width="20" height="' + CH + '" fill="#F7F8FA"/><path d="M0 20.5H' + CW + 'M20.5 0V' + CH + '" stroke="#D8DDE5"/>';
+for (var t = -20; t <= 110; t++) { var tx = X0 + t * S; if (tx < 20 || tx > CW) continue; var L = t % 10 === 0 ? 10 : t % 5 === 0 ? 6 : 3; s += '<line x1="' + tx + '" y1="' + (20 - L) + '" x2="' + tx + '" y2="20" stroke="#9CA3AF" stroke-width=".7"/>'; if (t % 10 === 0) s += '<text x="' + (tx + 2) + '" y="9" font-size="8.5" fill="#6B7280">' + t + '</text>'; }
+for (t = -20; t <= 90; t++) { var ty = Y0 + t * S; if (ty < 20 || ty > CH) continue; var L2 = t % 10 === 0 ? 10 : t % 5 === 0 ? 6 : 3; s += '<line x1="' + (20 - L2) + '" y1="' + ty + '" x2="20" y2="' + ty + '" stroke="#9CA3AF" stroke-width=".7"/>'; if (t % 10 === 0) s += '<text x="3" y="' + (ty + 9) + '" font-size="8.5" fill="#6B7280">' + t + '</text>'; }
+s += '<rect x="' + (X0 + 23 * S) + '" y="15" width="' + (44 * S) + '" height="5" fill="#BFD4FA"/><rect x="15" y="' + (Y0 + 33.5 * S) + '" width="5" height="' + (10 * S) + '" fill="#BFD4FA"/>';
+// label
+s += '<g transform="translate(' + X0 + ',' + Y0 + ')">';
+s += '<rect x="0" y="0" width="' + LW + '" height="' + LH + '" rx="' + mm(2) + '" fill="#fff" filter="url(#sh)"/><rect x="0" y="0" width="' + LW + '" height="' + LH + '" rx="' + mm(2) + '" fill="url(#grid)" stroke="#C3CAD4"/>';
+function box(x, y, w, h) { return '<rect x="' + mm(x) + '" y="' + mm(y) + '" width="' + mm(w) + '" height="' + mm(h) + '" fill="none" stroke="#9AA6B5" stroke-width=".7" stroke-dasharray="3 2"/>'; }
+function txt(x, y, str, size, weight, fill, anchor) { return '<text x="' + mm(x) + '" y="' + mm(y) + '" font-size="' + mm(size) + '" font-weight="' + (weight || 400) + '" fill="' + (fill || '#111') + '"' + (anchor ? ' text-anchor="' + anchor + '"' : '') + '>' + str + '</text>'; }
+// header band
+s += '<rect x="' + mm(2) + '" y="' + mm(2) + '" width="' + mm(76) + '" height="' + mm(7) + '" rx="' + mm(.8) + '" fill="#111"/>';
+s += txt(3.5, 7.0, '2610-16-0089', 3.6, 700, '#fff') + txt(76.5, 7.0, '华府雅苑 3-1201', 3.4, 700, '#fff', 'end');
+// part name + cabinet
+s += box(2, 10.2, 46, 8.2) + txt(3, 17, '左侧板', 6.2, 700) + txt(25.5, 16.6, 'C03 地柜 · 9/22', 3.0, 400, '#333');
+s += box(2, 19, 46, 7.4) + txt(3, 25, '720 × 560 × 18', 5.4, 700);
+s += box(2, 27, 46, 5.6) + txt(3, 31.3, '18mm 莫里胡桃 · 顺纹', 3.3, 400, '#222');
+s += '<line x1="' + mm(2) + '" y1="' + mm(33.4) + '" x2="' + mm(78) + '" y2="' + mm(33.4) + '" stroke="#111" stroke-width="1"/>';
+// barcode (selected)
+s += bars('2610160019', mm(23.4), mm(35.2), mm(43), mm(9.2)) + txt(44.9, 47.6, '2610160019', 2.9, 400, '#111', 'middle');
+// QR
+s += box(4.2, 35.2, 13.5, 13.5) + qr(mm(4.5), mm(35.5), mm(12.9));
+// part diagram with edge banding
+var dx = 50.5, dy = 11, dw = 26, dh = 20.2;
+s += box(49.6, 10.2, 28.2, 22.6);
+s += '<rect x="' + mm(dx + 2.6) + '" y="' + mm(dy + 3.6) + '" width="' + mm(dw - 5.2) + '" height="' + mm(dh - 7.2) + '" fill="#F3F4F6" stroke="#333" stroke-width=".8"/>';
+var ex0 = mm(dx + 2.6), ey0 = mm(dy + 3.6), ex1 = mm(dx + dw - 2.6), ey1 = mm(dy + dh - 3.6);
+s += '<path d="M' + ex0 + ' ' + ey0 + 'H' + ex1 + 'M' + ex1 + ' ' + ey0 + 'V' + ey1 + 'M' + ex0 + ' ' + ey1 + 'H' + ex1 + '" stroke="#111" stroke-width="3.2"/>';
+s += '<path d="M' + ex0 + ' ' + ey0 + 'V' + ey1 + '" stroke="#111" stroke-width="1" stroke-dasharray="2 2"/>';
+s += txt(dx + dw / 2, dy + 2.6, '720', 2.5, 600, '#111', 'middle') + '<text transform="translate(' + mm(dx + 1.6) + ',' + mm(dy + dh / 2) + ') rotate(-90)" font-size="' + mm(2.5) + '" font-weight="600" text-anchor="middle">560</text>';
+s += txt(dx + dw / 2, dy + dh / 2 + 1, '↔ 纹理', 2.2, 400, '#555', 'middle') + txt(dx + dw / 2, dy + dh - .9, '封边 1.0 ×3', 2.2, 400, '#333', 'middle');
+// right column under line
+s += box(69.4, 35.2, 8.6, 12.6) + '<rect x="' + mm(70) + '" y="' + mm(36) + '" width="' + mm(7.4) + '" height="' + mm(7.4) + '" rx="' + mm(1) + '" fill="#111"/>' + txt(73.7, 41.6, 'A', 5.4, 700, '#fff', 'middle') + txt(73.7, 47.2, '1/2', 2.6, 600, '#111', 'middle');
+// selection handles around barcode element
+var sx = mm(22.6), sy = mm(34.6), sw = mm(44.6), sh = mm(13.6);
+s += '<rect x="' + sx + '" y="' + sy + '" width="' + sw + '" height="' + sh + '" fill="rgba(37,99,235,.06)" stroke="#2563EB" stroke-width="1.2"/>';
+[[0, 0], [.5, 0], [1, 0], [0, .5], [1, .5], [0, 1], [.5, 1], [1, 1]].forEach(function (h) { s += '<rect x="' + (sx + sw * h[0] - 3.5) + '" y="' + (sy + sh * h[1] - 3.5) + '" width="7" height="7" fill="#fff" stroke="#2563EB" stroke-width="1.2"/>'; });
+s += '<rect x="' + (sx + sw - 92) + '" y="' + (sy - 20) + '" width="92" height="16" rx="3" fill="#2563EB"/><text x="' + (sx + sw - 46) + '" y="' + (sy - 8.5) + '" font-size="10" fill="#fff" text-anchor="middle">44.6 × 13.6 mm</text>';
+s += '</g>';
+s += '<text x="' + (X0 + LW / 2) + '" y="' + (Y0 + LH + 26) + '" font-size="11.5" fill="#6B7280" text-anchor="middle">80 × 50 mm · 预览数据: 第 9 件</text>';
+s += '</svg>';
+lc.innerHTML = s;
+// property panel
+document.getElementById('lp').innerHTML =
+  '<div class="sec" style="margin-bottom:8px">属性</div><div class="ph">' + I('<path d="M4 5v14M7 5v14M10 5v14M14 5v14M16 5v14M20 5v14"/>').replace('<svg', '<svg style="width:16px;height:16px"') + '一维条码<span>已选中 1 个元素</span></div>' +
+  '<div class="two"><div class="pr"><label>X</label><div class="in">22.6<small>mm</small></div></div><div class="pr"><label>Y</label><div class="in">34.6<small>mm</small></div></div>' +
+  '<div class="pr"><label>W</label><div class="in">44.6<small>mm</small></div></div><div class="pr"><label>H</label><div class="in">13.6<small>mm</small></div></div></div>' +
+  '<div class="pr"><label>旋转</label><div class="segx"><span class="on">0°</span><span>90°</span><span>180°</span><span>270°</span></div></div>' +
+  '<div class="grp">数据</div>' +
+  '<div class="pr"><label>绑定字段</label><div class="in dd">条码 Barcode</div></div>' +
+  '<div class="pr"><label>码制</label><div class="in dd">CODE128 (自动)</div></div>' +
+  '<div class="pr"><label>示例值</label><div class="in">2610160019</div></div>' +
+  '<div class="pr"><label>校验位</label><div class="segx"><span class="on">自动</span><span>不加</span></div></div>' +
+  '<div class="grp">外观</div>' +
+  '<div class="pr"><label>显示文字</label><div class="segx"><span>无</span><span>上方</span><span class="on">下方</span></div></div>' +
+  '<div class="pr"><label>字体</label><div class="in dd">微软雅黑 · 8pt</div></div>' +
+  '<div class="pr"><label>模块宽度</label><div class="in">0.33<small>mm</small></div></div>' +
+  '<div class="pr"><label>静区</label><div class="in">2.0<small>mm</small></div></div>' +
+  '<div class="pr"><label>对齐</label><div class="segx"><span>左</span><span class="on">居中</span><span>右</span></div></div>' +
+  '<div class="pr"><label>打印</label><label class="ck" style="font-size:12px"><span class="cb on"></span>打印该元素</label></div>';
+</script>
+</body></html>

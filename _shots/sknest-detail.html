@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>SkNest</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1600px;height:1000px;overflow:hidden;background:#F3F5F8}
+body{font-family:"Microsoft YaHei UI","Microsoft YaHei","Segoe UI",sans-serif;font-size:13px;color:#1F2937;-webkit-font-smoothing:antialiased}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.win{position:absolute;inset:0;border:1px solid #C9D0DA;display:flex;flex-direction:column;background:#F3F5F8}
+.title{height:32px;background:#FFFFFF;display:flex;align-items:center;border-bottom:1px solid #E3E7ED;flex:none}
+.title .logo{width:18px;height:18px;margin:0 9px 0 12px}
+.title .t{font-size:12px;color:#374151;flex:1}
+.title .wc{width:46px;height:32px;display:flex;align-items:center;justify-content:center;color:#374151}
+.title .wc svg{width:10px;height:10px;stroke:currentColor;stroke-width:1;fill:none}
+.tb{height:56px;background:#fff;border-bottom:1px solid #E3E7ED;display:flex;align-items:center;padding:0 8px;gap:8px;flex:none}
+.btn{height:38px;padding:0 14px;border:1px solid #D8DDE5;border-radius:6px;background:#fff;display:flex;align-items:center;gap:7px;font-size:13px;color:#1F2937;box-shadow:0 1px 1px rgba(16,24,40,.04)}
+.btn.pri{background:#2563EB;border-color:#2563EB;color:#fff;font-weight:600;padding:0 18px}
+.lvl{display:flex;align-items:center;gap:8px;margin-left:4px;font-size:13px}
+.dd{height:42px;width:208px;border:1px solid #D8DDE5;border-radius:6px;padding:4px 12px;display:flex;align-items:center;justify-content:space-between;background:#fff}
+.dd b{font-size:13px}.dd b span{color:#2563EB;font-weight:400;font-size:11px;margin-left:4px}.dd small{display:block;font-size:11px;color:#6B7280}
+.tb .sp{flex:1}
+.tb .proj{display:flex;align-items:center;gap:8px;color:#6B7280;font-size:12px;padding-right:6px}
+.tb .proj .dot{width:8px;height:8px;border-radius:50%;background:#16A34A}
+.main{flex:1;display:flex;min-height:0}
+.nav{width:176px;background:#fff;border-right:1px solid #E3E7ED;display:flex;flex-direction:column;padding:8px 8px;flex:none}
+.nav a{height:36px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:6px;color:#1F2937;font-size:13.5px;margin-bottom:3px;text-decoration:none}
+.nav a.on{background:#E3ECFD;color:#1D4ED8;font-weight:600;box-shadow:inset 3px 0 0 #2563EB}
+.nav .grp{font-size:11.5px;color:#6B7280;padding:10px 12px 6px;border-top:1px solid #E5E7EB;margin-top:6px}
+.nav .fill{flex:1}
+.nav .sep{border-top:1px solid #E5E7EB;margin:6px 0}
+.status{height:26px;background:#EEF1F5;border-top:1px solid #DDE2E9;display:flex;align-items:center;padding:0 12px;font-size:12px;color:#374151;gap:18px;flex:none}
+.status .ok{width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block;margin-right:6px}
+.status .r{margin-left:auto;color:#6B7280;display:flex;gap:18px}
+.content{flex:1;display:flex;flex-direction:column;min-width:0}
+.kpis{display:flex;gap:8px;padding:10px 12px;flex:none;border-bottom:1px solid #E3E7ED}
+.kpi{background:#fff;border:1px solid #D8DDE5;border-radius:8px;padding:8px 12px 7px;min-width:96px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.kpi .l{font-size:11.5px;color:#4B5563}
+.kpi .v{font-size:20px;font-weight:700;margin-top:2px;letter-spacing:-.2px}
+.kpi .v small{font-size:13px;font-weight:600;margin-left:1px}
+.kpi.g .v{color:#15803D}
+.work{flex:1;display:flex;min-height:0}
+.list{width:270px;border-right:1px solid #E3E7ED;display:flex;flex-direction:column;flex:none;background:#F3F5F8}
+.tabs{display:flex;align-items:center;padding:10px 10px 8px;gap:8px}
+.seg{display:flex;border:1px solid #D8DDE5;border-radius:7px;background:#fff;padding:2px}
+.seg span{padding:5px 13px;border-radius:5px;font-size:12.5px}
+.seg span.on{background:#2563EB;color:#fff;font-weight:600}
+.mini{height:24px;padding:0 8px;border:1px solid #D8DDE5;border-radius:5px;background:#fff;font-size:11.5px;display:flex;align-items:center;margin-left:auto}
+.scroll{flex:1;overflow:hidden;padding:0 10px;position:relative}
+.ghead{background:#E8ECF2;border-radius:6px;padding:7px 10px;margin:4px 0 6px}
+.ghead .a{display:flex;align-items:center;gap:6px;font-weight:700;font-size:12.5px}
+.ghead .a .tri{font-size:8px;color:#6B7280;width:8px}
+.ghead .a .sz{margin-left:auto;font-weight:400;color:#4B5563;font-size:11.5px}
+.ghead .b{font-size:11px;color:#6B7280;margin-top:2px;padding-left:14px}
+.pc{display:flex;gap:10px;background:#fff;border:1px solid #DDE3EA;border-radius:7px;padding:7px 8px;margin-bottom:6px;position:relative}
+.pc.on{background:#E8F0FE;border-color:#A9C3F5;box-shadow:inset 3px 0 0 #2563EB}
+.pc svg{flex:none;border-radius:2px}
+.pc .m{flex:1;min-width:0}
+.pc .m .h{display:flex;align-items:center;justify-content:space-between}
+.pc .m .h b{font-size:12.5px;color:#1D4ED8}
+.pill{background:#DCE7FD;color:#1D4ED8;border-radius:10px;padding:0 7px;font-size:11px;font-weight:600;line-height:18px}
+.pc .m .s{font-size:11px;color:#6B7280;line-height:16px}
+.pc .m .u{font-size:11px;color:#374151;line-height:16px}
+.pc .m .u b{color:#15803D;font-weight:600}
+.vbar{position:absolute;right:2px;top:4px;width:5px;height:180px;border-radius:3px;background:#C7CED8}
+.center{flex:1;display:flex;flex-direction:column;min-width:0;background:#F7F8FA}
+.phead{height:42px;display:flex;align-items:center;gap:14px;padding:0 14px;border-bottom:1px solid #E3E7ED;background:#fff;font-size:12.5px;color:#6B7280;white-space:nowrap}
+.phead b{color:#111827}
+.phead .ttl{font-size:14px;font-weight:700;color:#111827}
+.tog{height:40px;display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid #E3E7ED;background:#fff;font-size:12.5px;white-space:nowrap}
+.sw{display:inline-flex;align-items:center;gap:7px}
+.sw i{width:34px;height:18px;border-radius:9px;background:#fff;border:1.5px solid #374151;position:relative;display:inline-block}
+.sw i:after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#111827;top:2.5px;left:3px}
+.sw.on i{background:#2563EB;border-color:#2563EB}
+.sw.on i:after{background:#fff;left:19px}
+.vs{width:1px;height:20px;background:#E3E7ED}
+.sbtn{height:26px;padding:0 10px;border:1px solid #D8DDE5;border-radius:5px;background:#fff;display:flex;align-items:center;gap:5px;font-size:12px}
+.canvas{flex:1;position:relative;overflow:hidden}
+.legend{display:flex;gap:14px;font-size:11.5px;color:#4B5563;align-items:center}
+.legend i{display:inline-block;width:12px;height:10px;border:1px solid #8AA6C4;vertical-align:-1px;margin-right:4px}
+.ptable{position:absolute;left:14px;right:14px;background:#fff;border:1px solid #DDE3EA;border-radius:8px;overflow:hidden}
+.ptable .hd{display:flex;align-items:center;padding:7px 12px;border-bottom:1px solid #E5E9EF;font-weight:700;font-size:12.5px;gap:10px}
+.ptable .hd span{font-weight:400;color:#6B7280;font-size:11.5px}
+table{border-collapse:collapse;width:100%}
+th{font-weight:600;color:#4B5563;background:#F5F7FA;text-align:left;font-size:11.5px;padding:0 8px;height:24px;border-bottom:1px solid #E5E9EF;white-space:nowrap}
+td{font-size:12px;padding:0 8px;height:23px;border-bottom:1px solid #EEF1F5;white-space:nowrap;font-variant-numeric:tabular-nums}
+.drawer{width:322px;border-left:1px solid #E3E7ED;background:#fff;display:flex;flex-direction:column;flex:none}
+.drawer .dh{height:42px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid #E3E7ED;font-weight:700;font-size:13.5px}
+.drawer .dh .x{margin-left:auto;color:#6B7280}
+.sum{padding:10px 14px 6px;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;border-bottom:1px solid #E3E7ED}
+.sum div{font-size:11.5px;color:#6B7280}
+.sum div b{display:block;font-size:14px;color:#111827;font-weight:600;margin-top:1px}
+.bar{height:6px;border-radius:3px;background:#E5E9EF;grid-column:1/3;overflow:hidden;display:flex;margin-top:2px}
+.steps{flex:1;display:flex;flex-direction:column;min-height:0}
+.steps .sh{display:flex;align-items:center;gap:6px;padding:8px 14px;font-weight:700;font-size:12.5px}
+.steps .sh .sbtn{margin-left:auto}
+.steps .tw{flex:1;overflow:hidden;position:relative;border-top:1px solid #E5E9EF}
+.steps tr.cur td{background:#DBE8FD;color:#1E3A8A;font-weight:600}
+.steps td.dir{color:#374151}
+.sbar2{position:absolute;right:2px;top:28px;width:5px;height:120px;border-radius:3px;background:#C7CED8}
+</style></head>
+<body>
+<div class="win">
+  <div class="title">
+    <svg class="logo" viewBox="0 0 18 18"><rect x="1" y="1" width="16" height="16" rx="4" fill="#2563EB"/><rect x="4" y="4" width="6" height="10" fill="#fff" opacity=".95"/><rect x="11" y="4" width="3" height="4.5" fill="#fff" opacity=".7"/><rect x="11" y="9.5" width="3" height="4.5" fill="#fff" opacity=".85"/></svg>
+    <div class="t">SkNest 板材优化排样 — 订单 2026-10-16 衣柜批次.skt</div>
+    <div class="wc"><svg viewBox="0 0 10 10"><path d="M0 5.5h10"/></svg></div>
+    <div class="wc"><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></div>
+    <div class="wc"><svg viewBox="0 0 10 10"><path d="M.5 .5l9 9M9.5 .5l-9 9"/></svg></div>
+  </div>
+  <div class="tb">
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/></svg>新建任务</div>
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H7.5a2 2 0 0 0-1.9 1.4L3 19z"/><path d="M3 19l2.6-7.6A2 2 0 0 1 7.5 10H22l-2.7 7.7a2 2 0 0 1-1.9 1.3z"/></svg>第三方格式</div>
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/><path d="M4 9V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M8 11h9M13 7l4 4-4 4"/></svg>导入任务</div>
+    <div class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/><path d="M4 9V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M12 8v9M8 13l4 4 4-4"/></svg>导出任务</div>
+    <div class="btn pri"><svg class="i" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>优化</div>
+    <div class="lvl">级别:
+      <div class="dd"><div><b>常规<span>(推荐)</span></b><small>速度与省板平衡</small></div><svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M6 9l6 6 6-6"/></svg></div>
+    </div>
+    <div class="sp"></div>
+    <div class="proj"><span class="dot"></span>结果已保存 · 15:42</div>
+  </div>
+  <div class="main">
+    <div class="nav">
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M12 2.5l8.5 4.8v9.4L12 21.5l-8.5-4.8V7.3z"/><path d="M3.5 7.3L12 12l8.5-4.7M12 12v9.5"/></svg>零件</a>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5M3 16.5l9 5 9-5"/></svg>材料</a>
+      <a class="on"><svg class="i" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path d="M8 16v-5M12 16V7M16 16v-8"/></svg>结果</a>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M3 12V4.5A1.5 1.5 0 0 1 4.5 3H12l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>标签</a>
+      <div class="fill"></div>
+      <div class="grp">输出</div>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>打印标签</a>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 17v-3M12 17v-6M16 17v-4"/></svg>导出报表</a>
+      <a><svg class="i" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/></svg>导出到机床</a>
+      <div class="sep"></div>
+      <a><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>授权</a>
+      <a><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>设置</a>
+      <a><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>关于软件</a>
+    </div>
+    <div class="content">
+      <div class="kpis" id="kpis"></div>
+      <div class="work">
+        <div class="list">
+          <div class="tabs"><div class="seg"><span>全局总览</span><span class="on">样式详情</span></div><div class="mini">全部收起</div></div>
+          <div class="scroll" id="plist"><div class="vbar"></div></div>
+        </div>
+        <div class="center">
+          <div class="phead" id="phead"></div>
+          <div class="tog">
+            <div class="sbtn"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>编辑该样式</div>
+            <div class="sbtn"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>适配</div>
+            <div class="vs"></div>
+            <span class="sw on">详细信息<i></i></span><div class="vs"></div>
+            <span class="sw on">刀路<i></i></span><div class="vs"></div>
+            <span class="sw">本图零件<i></i></span>
+            <div style="flex:1"></div>
+            <div class="legend"><span><i style="background:#DCEAF7"></i>零件</span><span><i style="background:#F7EBD2;border-color:#D9A85B"></i>余料</span><span><i style="background:#E7EBF0;border-color:#C3CBD5"></i>废料</span><span><i style="border:0;border-top:2px solid #E0442E;height:0;width:14px;vertical-align:3px"></i>刀路</span></div>
+          </div>
+          <div class="canvas" id="canvas"></div>
+        </div>
+        <div class="drawer">
+          <div class="dh">详细信息<span class="x"><svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+          <div class="sum" id="sum"></div>
+          <div class="steps">
+            <div class="sh">切割步<span style="font-weight:400;color:#6B7280;font-size:11.5px" id="stepcnt"></span><div class="sbtn" style="color:#9CA3AF">上一步</div><div class="sbtn" style="margin-left:0">下一步</div></div>
+            <div class="tw"><table id="steps"></table></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="status"><span><span class="ok"></span>优化完成 · 已载入 717 件 / 6 种母板 · 用时 00:24</span><span class="r"><span>样式# 3 / 19</span><span>缩放 32%</span><span>单位 mm</span></span></div>
+</div>
+<script>
+// ---------- guillotine packer ----------
+function pack(list, o) {
+  o = Object.assign({ W: 2440, H: 1220, trim: 10, k: 4.4 }, o || {});
+  var W = o.W - 2 * o.trim, H = o.H - 2 * o.trim, k = o.k;
+  var items = [];
+  list.forEach(function (p) { for (var i = 0; i < (p.q || 1); i++) items.push({ n: p.n, w: p.w, h: p.h, rot: !!p.rot, c: p.c }); });
+  items.forEach(function (it, i) { it.id = i; });
+  function orients(it) { var r = [{ w: it.w, h: it.h, r: 0 }]; if (it.rot && it.w !== it.h) r.push({ w: it.h, h: it.w, r: 1 }); return r; }
+  function pick(pool, used, fn) {
+    var best = null;
+    pool.forEach(function (it) { if (used[it.id]) return; orients(it).forEach(function (d) { var s = fn(d); if (s != null && (!best || s > best.s)) best = { it: it, d: d, s: s }; }); });
+    return best;
+  }
+  function fillColumn(pool, cw, maxH) {
+    var used = {}, rows = [], y = 0, area = 0;
+    while (true) {
+      var best = pick(pool, used, function (d) { return (d.w <= cw + 1e-6 && d.h <= maxH - y + 1e-6) ? d.w * d.h + d.h * 0.01 : null; });
+      if (!best) break;
+      var rh = best.d.h, row = { y: y, h: rh, cells: [] }, x = 0, first = best;
+      while (true) {
+        var b = first || pick(pool, used, function (d) { return (d.h <= rh + 1e-6 && d.w <= cw - x + 1e-6) ? d.h * 10000 + d.w : null; });
+        first = null;
+        if (!b) break;
+        used[b.it.id] = 1; area += b.d.w * b.d.h;
+        var cell = { x: x, w: b.d.w, stack: [{ it: b.it, d: b.d, y: 0 }] }, sy = b.d.h + k;
+        while (true) {
+          var s = pick(pool, used, function (d) { return (d.w <= cell.w + 1e-6 && d.w >= cell.w * 0.8 && d.h <= rh - sy + 1e-6) ? d.w * d.h : null; });
+          if (!s) break;
+          used[s.it.id] = 1; area += s.d.w * s.d.h; cell.stack.push({ it: s.it, d: s.d, y: sy }); sy += s.d.h + k;
+        }
+        row.cells.push(cell); x += cell.w + k;
+      }
+      rows.push(row); y += rh + k;
+    }
+    return { rows: rows, used: used, area: area };
+  }
+  var R = null, calls = 0, lim = o.lim || 6000;
+  function dfs(pool, x, cols, a) {
+    if (!R || a > R.a + 1 || (Math.abs(a - R.a) <= 1 && x < R.x)) R = { cols: cols.slice(), pool: pool, x: x, a: a };
+    if (!pool.length || calls > lim) return;
+    var cands = {}; pool.forEach(function (it) { orients(it).forEach(function (d) { if (d.w <= W - x + 1e-6) cands[d.w] = 1; }); });
+    var opts = Object.keys(cands).map(Number).map(function (cw) { calls++; var f = fillColumn(pool, cw, H); return { cw: cw, f: f, r: f.area / (cw * H) }; })
+      .filter(function (z) { return z.f.area > 0; }).sort(function (p, q) { return q.r - p.r || q.cw - p.cw; }).slice(0, o.beam || 4);
+    opts.forEach(function (z) {
+      var colW = 0; z.f.rows.forEach(function (r) { var e = r.cells[r.cells.length - 1]; colW = Math.max(colW, e.x + e.w); });
+      cols.push({ x: x, w: colW, rows: z.f.rows });
+      dfs(pool.filter(function (it) { return !z.f.used[it.id]; }), x + colW + k, cols, a + z.f.area);
+      cols.pop();
+    });
+  }
+  dfs(items.slice(), 0, [], 0);
+  var cols = R.cols, x = R.x, parts = [], area = 0, ox = o.trim, oy = o.trim, voids = [];
+  cols.forEach(function (c) {
+    var yEnd = 0;
+    c.rows.forEach(function (r) {
+      var xEnd = 0;
+      r.cells.forEach(function (ce) {
+        var sEnd = 0;
+        ce.stack.forEach(function (s) {
+          parts.push({ x: ox + c.x + ce.x, y: oy + r.y + s.y, w: s.d.w, h: s.d.h, n: s.it.n, r: s.d.r, c: s.it.c });
+          area += s.d.w * s.d.h; sEnd = s.y + s.d.h + k;
+          if (s.d.w + k < ce.w) voids.push({ x: ox + c.x + ce.x + s.d.w + k, y: oy + r.y + s.y, w: ce.w - s.d.w - k, h: s.d.h });
+        });
+        if (sEnd < r.h) voids.push({ x: ox + c.x + ce.x, y: oy + r.y + sEnd, w: ce.w, h: r.h - sEnd });
+        xEnd = ce.x + ce.w + k;
+      });
+      if (c.w - xEnd > 0) voids.push({ x: ox + c.x + xEnd, y: oy + r.y, w: c.w - xEnd, h: r.h });
+      yEnd = r.y + r.h + k;
+    });
+    if (H - yEnd > 0) voids.push({ x: ox + c.x, y: oy + yEnd, w: c.w, h: H - yEnd });
+  });
+  if (W - x > 0) voids.push({ x: ox + x, y: oy, w: W - x, h: H });
+  voids = voids.filter(function (v) { return v.w > 0.5 && v.h > 0.5; });
+  voids.forEach(function (v) { v.rem = v.w >= 200 && v.h >= 150; });
+  return { cols: cols, parts: parts, voids: voids, util: area / (o.W * o.H), n: parts.length, o: o };
+}
+// ---------- seeded rng + part catalogs ----------
+function rng(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+var CAT = {
+  carcass: [['衣柜侧板', 2350, 580], ['衣柜侧板', 2350, 560], ['侧板', 720, 560], ['层板', 764, 540], ['顶底板', 764, 560], ['中立板', 2318, 560], ['活动层板', 882, 540], ['拉条', 764, 100], ['踢脚板', 882, 80], ['抽侧板', 450, 150], ['抽尾板', 382, 120], ['挂衣杆座板', 882, 120], ['裤架隔板', 450, 540], ['地柜底板', 764, 560], ['吊柜侧板', 700, 330], ['吊柜层板', 764, 310]],
+  door: [['平开门板', 2346, 446], ['平开门板', 2346, 396], ['门板', 716, 396], ['抽面', 796, 178], ['抽面', 396, 178], ['吊柜门', 696, 346], ['见光板', 2350, 600], ['收口条', 2350, 80]],
+  back: [['背板', 2346, 780], ['背板', 2346, 880], ['背板', 1180, 780], ['地柜背板', 760, 720], ['吊柜背板', 760, 690], ['抽底板', 440, 360], ['背板', 1580, 760], ['背板', 860, 760], ['地柜背板', 560, 700], ['抽底板', 540, 420], ['书柜背板', 1180, 580]]
+};
+function pool(kind, seed, n) {
+  var r = rng(seed), c = CAT[kind], out = [];
+  for (var i = 0; i < n; i++) { var p = c[Math.floor(r() * c.length)]; out.push({ n: p[0], w: p[1], h: p[2], q: 1 + Math.floor(r() * 3), rot: kind === 'back' }); }
+  return out;
+}
+// ---------- drawing ----------
+function thumb(res, w, h) {
+  var s = w / res.o.W, out = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><rect x=".5" y=".5" width="' + (w - 1) + '" height="' + (h - 1) + '" fill="#E7EBF0" stroke="#9AA6B5"/>';
+  res.voids.forEach(function (v) { if (v.rem) out += '<rect x="' + (v.x * s) + '" y="' + (v.y * s) + '" width="' + (v.w * s) + '" height="' + (v.h * s) + '" fill="#F7EBD2"/>'; });
+  res.parts.forEach(function (p) { out += '<rect x="' + (p.x * s + .25) + '" y="' + (p.y * s + .25) + '" width="' + Math.max(.5, p.w * s - .5) + '" height="' + Math.max(.5, p.h * s - .5) + '" fill="#CFE1F3" stroke="#6E8FB3" stroke-width=".5"/>'; });
+  return out + '</svg>';
+}
+var KPI = [['平均利用率', '92.4', '%', 'g'], ['出材率', '91.1', '%'], ['板数', '46'], ['样式', '19'], ['上机遍数', '28'], ['每遍掉头', '3.1'], ['掉头', '87'], ['刀数', '1,326'], ['预计加工用时', '6.8', '小时']];
+document.getElementById('kpis').innerHTML = KPI.map(function (k) { return '<div class="kpi ' + (k[3] || '') + '"><div class="l">' + k[0] + '</div><div class="v">' + k[1] + (k[2] ? '<small>' + k[2] + '</small>' : '') + '</div></div>'; }).join('');
+
+// main pattern
+var MAIN = [
+  { n: '左侧板', w: 720, h: 560, c: 'C03 地柜' }, { n: '右侧板', w: 720, h: 560, c: 'C03 地柜' }, { n: '前拉条', w: 356, h: 70, q: 2, c: 'C04 抽屉柜' },
+  { n: '活动层板', w: 378, h: 540, q: 2, c: 'C03 地柜' }, { n: '抽面', w: 378, h: 178, q: 6, c: 'C04 抽屉柜' }, { n: '顶板', w: 764, h: 100, c: 'C03 地柜' },
+  { n: '中立板', w: 300, h: 595, q: 2, c: 'C05 书柜' }, { n: '抽尾板', w: 300, h: 330, c: 'C04 抽屉柜' }, { n: '背拉条', w: 300, h: 100, c: 'C05 书柜' },
+  { n: '抽底板', w: 300, h: 271, q: 2, c: 'C04 抽屉柜' }, { n: '竖档', w: 310, h: 560, q: 2, c: 'C05 书柜' }, { n: '收口条', w: 310, h: 70, c: 'C05 书柜' }
+];
+var M = pack(MAIN, { lim: 9000 });
+
+// pattern list
+var groups = [
+  { m: '18mm 莫里胡桃', sz: '2440×1220', kind: 'carcass', b: '11 板 · 4 样式 · 利用率 93.1%', open: true, ps: [[1, 4, 22], [2, 3, 98], [3, 3, 0], [4, 1, 78]] },
+  { m: '18mm 珍珠白', sz: '2440×1220', kind: 'door', b: '9 板 · 4 样式 · 利用率 91.6%', open: true, ps: [[5, 4, 154], [6, 3, 49]] },
+  { m: '9mm 背板 温馨灰', sz: '2440×1220', kind: 'back', b: '8 板 · 3 样式 · 利用率 90.2%', open: false },
+  { m: '18mm 暖白', sz: '2440×1220', kind: 'carcass', b: '6 板 · 2 样式 · 利用率 89.4%', open: false },
+  { m: '25mm 莫里胡桃', sz: '2440×1220', kind: 'carcass', b: '3 板 · 1 样式 · 利用率 86.7%', open: false },
+  { m: '5mm 抽底 白', sz: '2440×1220', kind: 'back', b: '2 板 · 1 样式 · 利用率 88.0%', open: false }
+];
+var html = '<div class="vbar"></div>';
+groups.forEach(function (g) {
+  html += '<div class="ghead"><div class="a"><span class="tri">' + (g.open ? '▼' : '▶') + '</span>' + g.m + '<span class="sz">' + g.sz + '</span></div><div class="b">' + g.b + '</div></div>';
+  if (!g.open) return;
+  g.ps.forEach(function (p) {
+    var res = p[2] === 0 ? M : pack(pool(g.kind, p[2], 14), { lim: 1500, beam: 3 });
+    html += '<div class="pc' + (p[2] === 0 ? ' on' : '') + '">' + thumb(res, 96, 48) + '<div class="m"><div class="h"><b>样式# ' + p[0] + '</b><span class="pill">×' + p[1] + ' 张</span></div><div class="s">' + g.sz + ' · 刀数 ' + (res.n * 2 + 6) + '</div><div class="u">利用率 <b>' + (res.util * 100).toFixed(1) + '%</b> · 件数 ' + res.n + '</div></div></div>';
+  });
+});
+document.getElementById('plist').innerHTML = html;
+
+var util = (M.util * 100).toFixed(1);
+document.getElementById('phead').innerHTML = '<span class="ttl">样式# 3</span><span class="pill">×3 张</span><span>材质 <b>18mm 莫里胡桃</b></span><span>尺寸 <b>2440×1220</b></span><span>件/板 <b>' + M.n + '</b></span><span>共 <b>' + M.n * 3 + '</b></span><span>利用率 <b style="color:#15803D">' + util + '%</b></span><span>修边 <b>10</b></span><span>锯缝 <b>4.4</b></span>';
+
+// ---------- cut steps ----------
+var o = M.o, k = o.k, T = o.trim, IW = o.W - 2 * T, IH = o.H - 2 * T, steps = [], lines = [];
+function f1(v) { return (Math.round(v * 10) / 10).toFixed(1); }
+function addStep(dir, segs, size, len) { steps.push({ dir: dir, n: segs.length, size: size, len: len }); segs.forEach(function (s, i) { lines.push({ s: s, no: steps.length, first: i === 0 }); }); }
+// step 1: trim + column cuts
+var s1 = [[T - k / 2, 0, T - k / 2, o.H], [o.W - T + k / 2, 0, o.W - T + k / 2, o.H]];
+M.cols.forEach(function (c, i) { var xx = T + c.x + c.w + k / 2; if (xx < o.W - T - 1) s1.push([xx, T, xx, o.H - T]); });
+addStep('纵切', s1, o.W + '×' + o.H, o.H);
+addStep('横切', [[0, T - k / 2, o.W, T - k / 2], [0, o.H - T + k / 2, o.W, o.H - T + k / 2]], o.W + '×' + o.H, o.W);
+M.cols.forEach(function (c) {
+  var cx = T + c.x, segs = [];
+  c.rows.forEach(function (r) { var yy = T + r.y + r.h + k / 2; if (yy < o.H - T - 1) segs.push([cx, yy, cx + c.w, yy]); });
+  if (segs.length) addStep('横切', segs, f1(c.w).replace('.0', '') + '×' + IH, c.w);
+  c.rows.forEach(function (r) {
+    var sg = []; r.cells.forEach(function (ce) { var xx = cx + ce.x + ce.w + k / 2; if (xx < cx + c.w - 1) sg.push([xx, T + r.y, xx, T + r.y + r.h]); });
+    if (sg.length) addStep('纵切', sg, c.w + '×' + r.h, r.h);
+    r.cells.forEach(function (ce) {
+      var hs = []; ce.stack.forEach(function (st) { var yy = T + r.y + st.y + st.d.h + k / 2; if (yy < T + r.y + r.h - 1) hs.push([cx + ce.x, yy, cx + ce.x + ce.w, yy]); });
+      if (hs.length) addStep('横切', hs, ce.w + '×' + r.h, ce.w);
+    });
+  });
+});
+var cuts = steps.reduce(function (a, s) { return a + s.n; }, 0);
+var CUR = 4;
+document.getElementById('stepcnt').textContent = '共 ' + steps.length + ' 步 · ' + cuts + ' 刀';
+document.getElementById('steps').innerHTML = '<tr><th style="width:40px">步号</th><th>方向</th><th>刀数</th><th>尺寸</th><th style="text-align:right">长度</th></tr>' +
+  steps.map(function (s, i) { return '<tr' + (i + 1 === CUR ? ' class="cur"' : '') + '><td>' + (i + 1) + '</td><td class="dir">' + s.dir + '</td><td>' + s.n + '</td><td>' + s.size + '</td><td style="text-align:right">' + f1(s.len) + '</td></tr>'; }).join('');
+
+// summary
+var rem = M.voids.filter(function (v) { return v.rem; }).sort(function (a, b) { return b.w * b.h - a.w * a.h; });
+var partA = M.parts.reduce(function (a, p) { return a + p.w * p.h; }, 0) / 1e6, remA = rem.reduce(function (a, v) { return a + v.w * v.h; }, 0) / 1e6, boardA = o.W * o.H / 1e6;
+var cutLen = steps.reduce(function (a, s) { return a + s.n * s.len; }, 0) / 1000;
+document.getElementById('sum').innerHTML =
+  '<div>零件面积<b>' + partA.toFixed(2) + ' ㎡</b></div><div>母板面积<b>' + boardA.toFixed(2) + ' ㎡</b></div>' +
+  '<div>可用余料<b>' + remA.toFixed(2) + ' ㎡ · ' + rem.length + ' 块</b></div><div>废料<b>' + (boardA - partA - remA).toFixed(2) + ' ㎡</b></div>' +
+  '<div>刀数 / 切割长度<b>' + cuts + ' 刀 · ' + cutLen.toFixed(1) + ' m</b></div><div>掉头 / 预计用时<b>3 次 · 8 分 40 秒</b></div>' +
+  '<div class="bar"><span style="width:' + util + '%;background:#3B82F6"></span><span style="width:' + (remA / boardA * 100) + '%;background:#E5B868"></span></div>' +
+  '<div style="grid-column:1/3;font-size:11px;margin-bottom:2px"><span style="color:#2563EB">■</span> 零件 ' + util + '%　<span style="color:#D9A85B">■</span> 余料 ' + (remA / boardA * 100).toFixed(1) + '%　<span style="color:#B7C0CC">■</span> 废料 ' + (100 - util - remA / boardA * 100).toFixed(1) + '%</div>';
+
+// ---------- main canvas ----------
+var cv = document.getElementById('canvas'), CW = cv.clientWidth, sc = (CW - 70) / o.W, BW = o.W * sc, BH = o.H * sc, X0 = 44, Y0 = 34;
+var svg = '<svg width="' + CW + '" height="' + (BH + 60) + '" style="position:absolute;left:0;top:0;font-family:Microsoft YaHei UI,Segoe UI">' +
+  '<defs><pattern id="hat" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#E7EBF0"/><path d="M0 0v6" stroke="#CDD4DD" stroke-width="1.2"/></pattern>' +
+  '<filter id="sh" x="-5%" y="-5%" width="110%" height="115%"><feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-opacity=".14"/></filter></defs>';
+// rulers
+svg += '<g font-size="11" fill="#6B7280"><line x1="' + X0 + '" y1="' + (Y0 - 14) + '" x2="' + (X0 + BW) + '" y2="' + (Y0 - 14) + '" stroke="#9CA3AF"/>';
+for (var t = 0; t <= 2440; t += 200) { var tx = X0 + t * sc; svg += '<line x1="' + tx + '" y1="' + (Y0 - 18) + '" x2="' + tx + '" y2="' + (Y0 - 10) + '" stroke="#9CA3AF"/>'; }
+svg += '<rect x="' + (X0 + BW / 2 - 22) + '" y="' + (Y0 - 24) + '" width="44" height="16" fill="#F7F8FA"/><text x="' + (X0 + BW / 2) + '" y="' + (Y0 - 12) + '" text-anchor="middle" font-weight="600" fill="#374151">2440</text>';
+svg += '<line x1="' + (X0 - 14) + '" y1="' + Y0 + '" x2="' + (X0 - 14) + '" y2="' + (Y0 + BH) + '" stroke="#9CA3AF"/>';
+for (t = 0; t <= 1220; t += 200) { var ty = Y0 + t * sc; svg += '<line x1="' + (X0 - 18) + '" y1="' + ty + '" x2="' + (X0 - 10) + '" y2="' + ty + '" stroke="#9CA3AF"/>'; }
+svg += '<rect x="' + (X0 - 22) + '" y="' + (Y0 + BH / 2 - 20) + '" width="16" height="40" fill="#F7F8FA"/><text transform="translate(' + (X0 - 10) + ',' + (Y0 + BH / 2) + ') rotate(-90)" text-anchor="middle" font-weight="600" fill="#374151">1220</text></g>';
+svg += '<g transform="translate(' + X0 + ',' + Y0 + ')">';
+svg += '<rect x="0" y="0" width="' + BW + '" height="' + BH + '" fill="url(#hat)" stroke="#7B8794" stroke-width="1" filter="url(#sh)"/>';
+svg += '<rect x="' + T * sc + '" y="' + T * sc + '" width="' + IW * sc + '" height="' + IH * sc + '" fill="none" stroke="#B8C1CC" stroke-dasharray="3 2"/>';
+M.voids.forEach(function (v) {
+  if (!v.rem) return;
+  svg += '<rect x="' + v.x * sc + '" y="' + v.y * sc + '" width="' + v.w * sc + '" height="' + v.h * sc + '" fill="#F7EBD2" stroke="#D9A85B" stroke-dasharray="4 2"/>';
+  svg += '<text x="' + (v.x + v.w / 2) * sc + '" y="' + ((v.y + v.h / 2) * sc + 4) + '" text-anchor="middle" font-size="12" fill="#9A6A1F" font-weight="600">余料 ' + Math.round(v.w) + '×' + Math.round(v.h) + '</text>';
+});
+var SEL = 0;
+M.parts.forEach(function (p, i) {
+  var x = p.x * sc, y = p.y * sc, w = p.w * sc, h = p.h * sc, sel = p.n === '右侧板';
+  if (sel) SEL = p;
+  svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + (sel ? '#BCD5F2' : '#DCEAF7') + '" stroke="' + (sel ? '#2563EB' : '#5B7898') + '" stroke-width="' + (sel ? 2 : 0.8) + '"/>';
+  var cx = x + w / 2, cy = y + h / 2, fs = Math.max(9.5, Math.min(14, Math.min(w / 6.5, h / 2.6)));
+  if (h >= 34) {
+    svg += '<text x="' + cx + '" y="' + (cy - 2) + '" text-anchor="middle" font-size="' + fs + '" fill="#1F3A5F" font-weight="600">' + p.w + '×' + p.h + '</text>';
+    svg += '<text x="' + cx + '" y="' + (cy + fs) + '" text-anchor="middle" font-size="' + Math.max(9, fs - 2.5) + '" fill="#4B6584">' + p.n + '</text>';
+  } else {
+    svg += '<text x="' + cx + '" y="' + (cy + 3.5) + '" text-anchor="middle" font-size="9.5" fill="#1F3A5F">' + p.w + '×' + p.h + ' ' + p.n + '</text>';
+  }
+});
+// cut lines
+lines.forEach(function (L) {
+  var s = L.s, cur = L.no === CUR;
+  svg += '<line x1="' + s[0] * sc + '" y1="' + s[1] * sc + '" x2="' + s[2] * sc + '" y2="' + s[3] * sc + '" stroke="' + (cur ? '#DC2626' : '#E0442E') + '" stroke-width="' + (cur ? 2.2 : 1) + '" opacity="' + (cur ? 1 : .85) + '"/>';
+});
+lines.forEach(function (L) {
+  if (!L.first || L.no <= 2) return;
+  var s = L.s, vert = s[0] === s[2], bx = vert ? s[0] * sc : s[0] * sc + 9, by = vert ? s[1] * sc + 9 : s[1] * sc, cur = L.no === CUR;
+  var tw = L.no >= 10 ? 15 : 11;
+  svg += '<rect x="' + (bx - tw / 2) + '" y="' + (by - 6) + '" width="' + tw + '" height="12" rx="2" fill="' + (cur ? '#DC2626' : '#fff') + '" stroke="#E0442E" stroke-width=".8"/><text x="' + bx + '" y="' + (by + 3.5) + '" text-anchor="middle" font-size="9" font-weight="700" fill="' + (cur ? '#fff' : '#C2410C') + '">' + L.no + '</text>';
+});
+svg += '<rect x="2" y="2" width="16" height="13" rx="2" fill="#374151"/><text x="10" y="12" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">#1</text>';
+svg += '</g></svg>';
+// tooltip for selected part
+var tip = '';
+if (SEL) {
+  var tx2 = X0 + SEL.x * sc + 8, ty2 = Y0 + (SEL.y + SEL.h) * sc - 30;
+  tip = '<div style="position:absolute;left:' + tx2 + 'px;top:' + ty2 + 'px;background:#1F2937;color:#F9FAFB;border-radius:5px;box-shadow:0 4px 12px rgba(15,23,42,.25);padding:4px 9px;font-size:11px;line-height:16px;white-space:nowrap;z-index:3"><b>右侧板</b> · 720×560×18 · <span style="color:#FBBF24">封边 ■■■□</span></div>';
+}// parts table under the board
+var agg = {}; M.parts.forEach(function (p) { var key = p.n + '|' + p.w + '|' + p.h; agg[key] = agg[key] || { p: p, q: 0 }; agg[key].q++; });
+var rows = Object.keys(agg).map(function (k2) { return agg[k2]; });
+var half = Math.ceil(rows.length / 2);
+function rt(a) { return '<table><tr><th>零件名</th><th>尺寸</th><th>件/板</th><th>柜体</th><th>封边</th></tr>' + a.map(function (r) { return '<tr><td>' + r.p.n + '</td><td>' + r.p.w + '×' + r.p.h + '</td><td>' + r.q + '</td><td>' + (r.p.c || '') + '</td><td style="color:#B45309">' + (r.p.h < 200 ? '1.0 单长' : '1.0 四边') + '</td></tr>'; }).join('') + '</table>'; }
+var tableTop = Y0 + BH + 30;
+var pt = '<div class="ptable" style="top:' + tableTop + 'px"><div class="hd">本图零件<span>' + rows.length + ' 种 · ' + M.n + ' 件/板 · 3 张</span></div><div style="display:flex"><div style="flex:1;border-right:1px solid #E5E9EF">' + rt(rows.slice(0, half)) + '</div><div style="flex:1">' + rt(rows.slice(half)) + '</div></div></div>';
+cv.innerHTML = svg + tip + pt;
+</script>
+</body></html>

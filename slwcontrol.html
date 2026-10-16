@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SlwControl 电子开料锯控制系统 | 星控科技</title>
+<meta name="title-en" content="SlwControl Beam Saw Control System | Singkong">
+<meta name="description" content="SlwControl 电子开料锯控制系统：运行于开料锯工控机的上位机软件，导入方案、加工仿真、驱动锯切、标签打印与自动贴标、生产统计与 MES 回报，支持多种机型与 10 种界面语言。">
+<meta name="theme-color" content="#0A1420">
+<meta property="og:title" content="SlwControl 电子开料锯控制系统 | 星控科技">
+<meta property="og:description" content="SlwControl 电子开料锯控制系统：运行于开料锯工控机的上位机软件，导入方案、加工仿真、驱动锯切、标签打印与自动贴标、生产统计与 MES 回报，支持多种机型与 10 种界面语言。">
+<meta property="og:image" content="assets/img/slw-production.webp">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css?v=202610160915">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></symbol>
+    <symbol id="i-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></symbol>
+    <symbol id="i-nest" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M11 4v16M3 12h8M11 9h10M16 9v11"/></symbol>
+    <symbol id="i-saw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></symbol>
+    <symbol id="i-shape" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V9a6 6 0 0 1 6-6h0a6 6 0 0 1 6 6v3h6v8z"/><circle cx="9" cy="11" r="2"/></symbol>
+    <symbol id="i-drill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5z"/><path d="M3 9v6l9 5 9-5V9M12 14v6"/><circle cx="8" cy="9" r=".9" fill="currentColor"/><circle cx="12" cy="7" r=".9" fill="currentColor"/><circle cx="16" cy="9" r=".9" fill="currentColor"/><circle cx="12" cy="11" r=".9" fill="currentColor"/></symbol>
+    <symbol id="i-order" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 21h18M6 17V10M11 17V5M16 17v-6M21 17V8"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/><path d="M7 19h8a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h8" stroke-dasharray="2.5 2.5"/></symbol>
+    <symbol id="i-import" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 17v3h16v-3"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></symbol>
+    <symbol id="i-recycle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 14h11V3" /><path d="M14 14l7 7" stroke-dasharray="2 2"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M7 9V3h10v6M7 17H4v-7a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v7h-3"/><rect x="7" y="14" width="10" height="7"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7V4h3M18 4h3v3M21 17v3h-3M6 20H3v-3M7 8v8M10 8v8M13 8v8M15.5 8v8M17.5 8v8"/></symbol>
+    <symbol id="i-sim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><path d="M8 21h8M12 17v4M10 8.5v5l4.5-2.5z"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+    <symbol id="i-fx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4h-1.5A2.5 2.5 0 0 0 9 6.5V20M6 10h6M15 11l5 6M20 11l-5 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/></symbol>
+    <symbol id="i-io" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="7" r="2"/><circle cx="6" cy="17" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 7h4v10H8M12 12h4"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4L12 5.6M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 0 5 5l-9 9a2.1 2.1 0 0 1-3-3z"/><path d="M14.5 6.5a4 4 0 0 1 5-3l-2.5 2.5.5 2 2 .5L22 6a4 4 0 0 1-2.5 5.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-linecap="round" stroke-width="2.6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5M3 16.5l9 5 9-5"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 17a9 9 0 1 1 17 0"/><path d="M12 13l4-5"/><circle cx="12" cy="13.5" r="1.3"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l4 4 10-10M14 3h5v5"/><rect x="3" y="11" width="10" height="10" rx="1"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></symbol>
+  </defs>
+</svg>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="tb-left" data-en="Software for intelligent panel furniture manufacturing">板式家具智能制造软件提供商</div>
+    <div class="tb-right">
+      <a href="tel:15989273313" class="num">☎ 159 8927 3313</a>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button data-lang="zh" class="on">中</button><button data-lang="en">EN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo" aria-label="星控科技">
+      <svg class="logo-mark" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="3" fill="#0A1420"/>
+        <path d="M6 6h22v22H6z" fill="none" stroke="#fff" stroke-width="1.6"/>
+        <path d="M15 6v22M6 18h9M15 13h13M22 13v15" stroke="#fff" stroke-width="1.6"/>
+        <rect x="15.8" y="13.8" width="5.4" height="13.4" fill="#1F5FD6"/>
+        <rect x="6.8" y="6.8" width="7.4" height="10.4" fill="#EE8A12"/>
+      </svg>
+      <span class="logo-text"><b>星控科技</b><small>Singkong</small></span>
+    </a>
+    <ul class="nav">
+      <li>
+        <button aria-haspopup="true"><span data-en="Products">产品中心</span><svg class="caret"><use href="#i-caret"/></svg></button>
+        <div class="mega">
+          <a href="sknest.html" class="c-sknest"><span class="pi"><svg width="20" height="20"><use href="#i-nest"/></svg></span><span><b>SkNest</b><span data-en="Panel nesting optimization — saves board, guarantees the cut">板材优化排样 · 省料又好切</span></span></a>
+          <a href="slwcontrol.html" class="c-slw"><span class="pi"><svg width="20" height="20"><use href="#i-saw"/></svg></span><span><b>SlwControl</b><span data-en="Beam saw control system for the machine-side PC">电子开料锯控制系统 · 机台端</span></span></a>
+          <a href="yxcut.html" class="c-yx"><span class="pi"><svg width="20" height="20"><use href="#i-shape"/></svg></span><span><b>YxCut<i class="tag-new" data-en="NEW">新品</i></b><span data-en="Free-form nesting &amp; CNC router CAM">异形优化排版 · 开料机 CAM</span></span></a>
+          <a href="drill6.html" class="c-drill"><span class="pi"><svg width="20" height="20"><use href="#i-drill"/></svg></span><span><b>Drill6<i class="tag-new" data-en="NEW">新品</i></b><span data-en="Six-sided CNC drilling CAM &amp; HMI">六面钻 CAM 与机台软件</span></span></a>
+        </div>
+      </li>
+      <li><a href="index.html#solution" data-en="Solution">整体方案</a></li>
+      <li><a href="index.html#partners" data-en="Partners">合作模式</a></li>
+      <li><a href="index.html#services" data-en="Services">服务支持</a></li>
+      <li><a href="index.html#contact" data-en="Contact">联系我们</a></li>
+    </ul>
+    <div class="header-cta">
+      <a href="index.html#contact" class="btn btn-primary btn-sm" data-en="Book a Demo">预约演示</a>
+    </div>
+    <button class="menu-btn" aria-label="菜单" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<section class="p-hero dark blueprint c-slw">
+  <div class="wrap">
+    <nav class="crumbs rv"><a href="index.html" data-en="Home">首页</a><span>/</span><a href="index.html#products" data-en="Products">产品中心</a><span>/</span><span>SlwControl</span></nav>
+    <div class="top">
+      <div class="rv">
+        <div class="pname"><span class="pi"><svg><use href="#i-saw"/></svg></span><div><b>SlwControl</b><span data-en="Beam saw control system">电子开料锯控制系统</span></div></div>
+        <h1 data-en="The whole saw on one screen — plan, cut, label, report">一屏掌控开料锯<br>方案、锯切、贴标、回报</h1>
+      </div>
+      <div class="rv d1">
+        <p class="lead" data-en="SlwControl runs on the industrial PC beside the saw. Operators load the cutting plan, preview it, start the machine and print labels as parts come off — while managers see live output from the office.">SlwControl 运行在开料锯旁的工控机上。操作员导入方案、预览确认、启动锯切，零件下线即打印标签；管理者在办公室也能实时看到产量与进度。</p>
+        <div class="actions">
+          <a href="#contact" class="btn btn-primary"><span data-en="OEM &amp; factory enquiries">设备厂商 / 工厂咨询</span><svg><use href="#i-arrow"/></svg></a>
+          <a href="#features" class="btn btn-ghost-d" data-en="Features">功能详情</a>
+        </div>
+      </div>
+    </div>
+    <div class="stage rv">
+      <div class="win"><img src="assets/img/slw-production.webp" width="3200" height="2000" alt="SlwControl 生产界面" data-en-alt="SlwControl production screen"></div>
+    </div>
+  </div>
+</section>
+
+<section class="c-slw">
+  <div class="wrap">
+    <div class="kpis">
+      <div class="rv"><div class="v">-14<small>%</small></div><div class="l" data-en="Fewer cutting steps">切割步数减少</div><div class="d" data-en="Re-sequenced on 424 real jobs, none worse">424 个真实作业重排刀序，无一变差</div></div>
+      <div class="rv d1"><div class="v">27<small>+</small></div><div class="l" data-en="Machine configurations">套机型配置</div><div class="d" data-en="Single/dual pusher, angular lines, grooving">单推手、双推手、纵横锯、开槽</div></div>
+      <div class="rv d2"><div class="v">10</div><div class="l" data-en="Interface languages">种界面语言</div><div class="d" data-en="New languages added by text file">文本文件即可扩展新语言</div></div>
+      <div class="rv d3"><div class="v">24<small>/7</small></div><div class="l" data-en="Built for continuous shifts">连续生产设计</div><div class="d" data-en="Online and offline modes">联机与脱机双模式</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section c-slw" id="features">
+  <div class="wrap">
+    <div class="feature">
+      <div class="txt rv">
+        <span class="k">01 · PRODUCTION</span>
+        <h3 data-en="Everything the operator needs, nothing they don't">操作员需要的都在，不需要的都不在</h3>
+        <p data-en="The production screen shows the current board, the job queue, live axis positions and the cut in progress. Large touch targets and a clear hierarchy keep operators fast and confident, even with gloves on.">生产页集中呈现当前大板排版、作业队列、各轴实时位置与正在执行的这一刀。大尺寸触控按钮与清晰的信息层级，让操作员戴着手套也能快速、准确地操作。</p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><span data-en="Job queue: set current, move to top, mark done, resume later">作业队列：设为当前、置顶、标记完成、断点续切</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-en="Cut sequence regenerated on the machine for fewer steps">在机台端重新生成更优刀序，减少切割步数</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-en="Stack cutting, trimming and remnant handling built in">内置叠切、修边、余料处理逻辑</span></li>
+        </ul>
+      </div>
+      <div class="crop rv d1" style="--ar:16/10;--z:2.4;--x:42;--y:38"><img src="assets/img/slw-production.webp" alt="" loading="lazy"><span class="lbl" data-en="LAYOUT · QUEUE">排版与作业队列</span></div>
+    </div>
+
+    <div class="feature rev">
+      <div class="txt rv">
+        <span class="k">02 · SIMULATION</span>
+        <h3 data-en="Simulate the run before the blade moves">刀片未动，过程先演一遍</h3>
+        <p data-en="A machine-level simulation shows pusher, pressure beam, saw carriage and parts moving through every step — for training new operators and for checking unusual plans before production.">机台级加工仿真动态演示推手、压梁、锯车与零件的每一步动作，既可用于新员工培训，也能在加工特殊方案前先行确认。</p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><span data-en="Current cut length, stack count and progress on screen">本刀长度、叠切层数与完成进度实时显示</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-en="Clearly marked demo mode, never confused with real machining">演示模式醒目标识，绝不与真实加工混淆</span></li>
+        </ul>
+      </div>
+      <div class="crop rv d1" style="--ar:16/10;--z:1.9;--x:72;--y:32"><img src="assets/img/slw-production.webp" alt="" loading="lazy"><span class="lbl" data-en="SIMULATION">加工仿真</span></div>
+    </div>
+
+    <div class="feature">
+      <div class="txt rv">
+        <span class="k">03 · LABELS</span>
+        <h3 data-en="Every part labelled as it leaves the saw">零件下线即贴标，一件一码可追溯</h3>
+        <p data-en="Labels print in cutting order, or are applied automatically by a labelling station synchronized with the saw cycle. Tap any part on the layout to see its details and reprint its label.">标签按切割顺序打印，或由与锯切节拍同步的自动贴标工位完成。点击排版图中任意零件，即可查看详情并补打标签。</p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><span data-en="Barcode and QR code label designer">条码、二维码标签设计器</span></li>
+          <li><svg><use href="#i-check"/></svg><span data-en="Automatic labelling station supported">支持龙门自动贴标工位</span></li>
+        </ul>
+      </div>
+      <div class="win rv d1"><img src="assets/img/slw-labels.webp" alt="SlwControl 标签补打" data-en-alt="SlwControl label reprint" loading="lazy"></div>
+    </div>
+
+    <div class="feature rev">
+      <div class="txt rv">
+        <span class="k">04 · STATISTICS</span>
+        <h3 data-en="Output numbers you can take to the morning meeting">早会上用得上的产量数据</h3>
+        <p data-en="Daily boards and parts, run time and job history are recorded automatically and export to Excel. Completed parts can be reported to your shop-floor MES as they are cut.">每日开料张数、零件数、运行时长与作业历史自动记录，可导出 Excel；完成的零件可实时回报至车间 MES 系统。</p>
+      </div>
+      <div class="win rv d1"><img src="assets/img/slw-stats.webp" alt="SlwControl 生产统计" data-en-alt="SlwControl production statistics" loading="lazy"></div>
+    </div>
+
+    <div class="feature">
+      <div class="txt rv">
+        <span class="k">05 · SERVICE</span>
+        <h3 data-en="Alarms that tell you how to fix them">报警不只告诉你出了什么问题，还告诉你怎么解决</h3>
+        <p data-en="Current and historical alarms come with plain-language causes and remedies. Manual jog, IO monitoring and tiered, password-protected parameters make commissioning and maintenance straightforward.">当前报警与历史报警均附带原因与处理方法。手动点动、IO 监控、分级加密的参数管理，让调试与维护更省心。</p>
+      </div>
+      <div class="win rv d1"><img src="assets/img/slw-alarm.webp" alt="SlwControl 报警页面" data-en-alt="SlwControl alarm page" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt c-slw">
+  <div class="wrap">
+    <div class="section-head rv">
+      <span class="eyebrow" data-en="Capabilities">功能一览</span>
+      <h2 data-en="A complete machine-side package">完整的机台端软件包</h2>
+    </div>
+    <div class="caps rv">
+      <div><div class="ico"><svg><use href="#i-import"/></svg></div><h5 data-en="Plan import">方案导入</h5><p data-en="Mainstream nesting and design formats, plus SkNest results.">主流优化与拆单格式，以及 SkNest 方案。</p></div>
+      <div><div class="ico"><svg><use href="#i-sim"/></svg></div><h5 data-en="Process simulation">加工仿真</h5><p data-en="Pusher, beam, carriage and parts animated.">推手、压梁、锯车、零件全过程动画。</p></div>
+      <div><div class="ico"><svg><use href="#i-print"/></svg></div><h5 data-en="Labels &amp; auto labelling">标签与自动贴标</h5><p data-en="Print in cut order, reprint any part.">按切割顺序打印，任意零件补打。</p></div>
+      <div><div class="ico"><svg><use href="#i-edit"/></svg></div><h5 data-en="New board &amp; strips">新建大板与分条</h5><p data-en="Manual sheets, strip cutting, cross grooving.">手工建板、分段切条、横向开槽。</p></div>
+      <div><div class="ico"><svg><use href="#i-hand"/></svg></div><h5 data-en="Manual &amp; jog">手动调试</h5><p data-en="Big-icon manual page for set-up and tests.">大图标手动页，调机测试更直观。</p></div>
+      <div><div class="ico"><svg><use href="#i-io"/></svg></div><h5 data-en="IO monitoring">IO 监控</h5><p data-en="Live inputs and outputs for fast diagnosis.">输入输出实时状态，快速定位故障。</p></div>
+      <div><div class="ico"><svg><use href="#i-alert"/></svg></div><h5 data-en="Alarms with remedies">报警与处理方法</h5><p data-en="Current and history, with the fix for each.">当前与历史报警，逐条附处理方法。</p></div>
+      <div><div class="ico"><svg><use href="#i-chart"/></svg></div><h5 data-en="Statistics &amp; MES">统计与 MES 回报</h5><p data-en="Daily output, job ledger, live reporting.">每日产量、任务台账、实时回报。</p></div>
+      <div><div class="ico"><svg><use href="#i-globe"/></svg></div><h5 data-en="10 languages · OEM">10 种语言 · OEM</h5><p data-en="Your brand, your colours, your machine models.">品牌、配色与机型均可定制。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section c-slw">
+  <div class="wrap">
+    <div class="section-head rv">
+      <span class="eyebrow" data-en="Specifications">规格参数</span>
+      <h2 data-en="Technical specifications">技术规格</h2>
+    </div>
+    <table class="spec rv">
+      <tr><th data-en="Machine types">适用机型</th><td data-en="Single-pusher and dual-pusher beam saws, angular saw lines, grooving models, robotic loading cells">单推手 / 双推手电子开料锯、纵横锯流水线、带开槽机型、机械臂上下料单元</td></tr>
+      <tr><th data-en="Controllers">控制系统</th><td data-en="Works with several mainstream industrial controller brands; adapted per machine model">兼容多个主流品牌工业控制器，按机型适配</td></tr>
+      <tr><th data-en="Operating system">运行环境</th><td data-en="Windows 10 / 11 industrial PC, touchscreen recommended">Windows 10 / 11 工控机，推荐触摸屏</td></tr>
+      <tr><th data-en="Input">数据输入</th><td data-en="Mainstream nesting and design software formats; SkNest results">主流优化与拆单软件格式；SkNest 方案</td></tr>
+      <tr><th data-en="Output">数据输出</th><td data-en="Part labels, production statistics (Excel), MES progress reporting">零件标签、生产统计（Excel）、MES 进度回报</td></tr>
+      <tr><th data-en="Languages">界面语言</th><td data-en="Chinese, English, Spanish, Russian, Vietnamese, French, Turkish, Greek, Polish, Korean">中文、English、Español、Русский、Tiếng Việt、Français、Türkçe、Ελληνικά、Polski、한국어</td></tr>
+      <tr><th data-en="OEM">OEM 定制</th><td data-en="Brand, colours, machine configuration and licensing tailored to the machine builder">品牌标识、界面配色、机型配置与授权方式按设备厂商定制</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="wrap">
+    <div class="section-head rv"><span class="eyebrow" data-en="Works with">搭配使用</span><h2 data-en="Better together">组合使用，效果更好</h2></div>
+    <div class="related rv">
+      <a href="sknest.html" class="c-sknest"><span class="cat" data-en="Nesting optimization">优化排样</span><b>SkNest</b><p data-en="Plan in the office, open it on the saw — cut counts match exactly.">办公室优化、机台打开即切，计划刀数与实际一致。</p></a>
+      <a href="yxcut.html" class="c-yx"><span class="cat" data-en="Free-form nesting">异形优化</span><b>YxCut <i class="tag-new" data-en="NEW">新品</i></b><p data-en="Shaped parts on the CNC router, rectangles on the saw.">异形件走开料机，矩形件走开料锯。</p></a>
+      <a href="drill6.html" class="c-drill"><span class="cat" data-en="Six-sided drilling">六面钻</span><b>Drill6 <i class="tag-new" data-en="NEW">新品</i></b><p data-en="The label printed at the saw drives the drill.">开料时打印的标签，直接驱动六面钻加工。</p></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="cta-band dark blueprint" id="contact">
+  <div class="wrap">
+    <div class="rv">
+      <span class="eyebrow" data-en="Contact">联系我们</span>
+      <h2 data-en="See it running on your own orders">用您自己的订单，<br>看一次真实的优化与加工效果</h2>
+      <p data-en="Send us a real production order. Our engineers will run it through the software and walk you through yield, cutting time and the machine-side workflow — online or on site.">把一份真实的生产订单交给我们，工程师会用软件现场跑出结果，逐项讲清利用率、加工时间和机台作业流程。支持线上演示与上门交流。</p>
+    </div>
+    <div class="contact-panel rv d1">
+      <div>
+        <div class="row"><svg><use href="#i-phone"/></svg><div><small data-en="Sales &amp; support hotline">销售与技术支持热线</small><b><a href="tel:15989273313">159 8927 3313</a></b></div></div>
+        <div class="row"><svg><use href="#i-chat"/></svg><div><small data-en="WeChat">微信咨询</small><b class="t" data-en="Scan the QR code to add us">扫码添加，发送订单文件即可评估</b></div></div>
+        <div class="row"><svg><use href="#i-pin"/></svg><div><small data-en="Headquarters">公司地址</small><b class="t" data-en="Guangzhou, Guangdong, China">中国 · 广东 · 广州</b></div></div>
+      </div>
+      <div class="qr"><img src="assets/img/wechat-qr.jpg" alt="微信二维码" data-en-alt="WeChat QR code" width="132" height="132" loading="lazy"><span data-en="WeChat">微信扫一扫</span></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo">
+          <svg class="logo-mark" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="3" fill="#fff" fill-opacity=".08"/><path d="M6 6h22v22H6z" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M15 6v22M6 18h9M15 13h13M22 13v15" stroke="#fff" stroke-width="1.6"/><rect x="15.8" y="13.8" width="5.4" height="13.4" fill="#1F5FD6"/><rect x="6.8" y="6.8" width="7.4" height="10.4" fill="#EE8A12"/></svg>
+          <span class="logo-text"><b>星控科技</b><small>Singkong</small></span>
+        </a>
+        <p class="about" data-en="Guangzhou Xingkong Technology builds production software for panel furniture manufacturing — from nesting optimization to saw control, CNC routing and six-sided drilling.">广州星控科技有限公司专注板式家具制造软件，覆盖优化排样、开料锯控制、开料机 CAM 与六面钻加工，为家具工厂与设备制造商提供一体化的生产软件。</p>
+      </div>
+      <div>
+        <h6 data-en="PRODUCTS">产品</h6>
+        <ul>
+          <li><a href="sknest.html">SkNest</a></li>
+          <li><a href="slwcontrol.html">SlwControl</a></li>
+          <li><a href="yxcut.html">YxCut</a></li>
+          <li><a href="drill6.html">Drill6</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6 data-en="COMPANY">公司</h6>
+        <ul>
+          <li><a href="index.html#solution" data-en="Solution">整体方案</a></li>
+          <li><a href="index.html#partners" data-en="Partners">合作模式</a></li>
+          <li><a href="index.html#services" data-en="Services">服务支持</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6 data-en="CONTACT">联系</h6>
+        <ul>
+          <li><a href="tel:15989273313" class="num">159 8927 3313</a></li>
+          <li data-en="Guangzhou, China">中国 · 广州</li>
+          <li><a href="index.html#contact" data-en="Book a demo →">预约演示 →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© <span id="year">2026</span> <span data-en="Guangzhou Xingkong Technology Co., Ltd. All rights reserved.">广州星控科技有限公司 版权所有</span></span>
+      <span data-en="Product images show representative interfaces; specifications may vary by version and machine configuration.">产品图片为界面示意，具体功能以实际版本及机型配置为准</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js?v=202610160915"></script>
+</body>
+</html>

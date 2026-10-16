@@ -1,0 +1,234 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>SlwControl - 补打标签</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1400px;height:900px;overflow:hidden}
+body{font-family:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC",sans-serif;background:#F5F6F8;color:#1F2329;font-size:14px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.tb{height:30px;background:#fff;border-bottom:1px solid #E1E3E6;display:flex;align-items:center;padding-left:9px;font-size:12px;color:#3A3F45;gap:8px}
+.tb .lg{width:16px;height:16px;border-radius:3px;background:#3CB050;display:flex;align-items:center;justify-content:center}
+.tb .ctl{margin-left:auto;display:flex;height:100%}
+.tb .ctl span{width:46px;height:100%;display:flex;align-items:center;justify-content:center;color:#444}
+.app{display:flex;height:calc(100% - 58px)}
+.nav{width:180px;flex:none;background:#fff;border-right:1px solid #E4E6E9;display:flex;flex-direction:column}
+.brand{height:62px;display:flex;align-items:stretch;border-bottom:1px solid #EEF0F2;margin-bottom:8px}
+.brand .t{flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:20px}
+.brand .t b{font-size:19px;letter-spacing:.2px;color:#1C2026}
+.brand .t small{font-size:11px;color:#8A9099;margin-top:2px;letter-spacing:1px}
+.brand .bt{width:52px;background:#3CB050;display:flex;align-items:center;justify-content:center}
+.nav a{display:flex;align-items:center;height:52px;padding-left:20px;font-size:16px;font-weight:600;color:#2B2F36;gap:14px;border-left:4px solid transparent;margin:0 0 2px;text-decoration:none}
+.nav a svg{color:#4A5059}
+.nav a.on{background:#E8F5EB;color:#2E9842;border-left-color:#3CB050}
+.nav a.on svg{color:#3CB050}
+.nav .sp{flex:1}
+.nav a .bdg{margin-left:auto;margin-right:16px;background:#E5484D;color:#fff;font-size:11px;min-width:20px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;padding:0 18px}
+.ph{height:58px;flex:none;display:flex;align-items:center;gap:22px}
+.ph h1{font-size:22px;font-weight:700;color:#1C2026}
+.ph .sub{font-size:14px;color:#6B7280}
+.card{background:#fff;border:1px solid #E4E6E9;border-radius:8px}
+.ch{height:46px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #EFF1F3;gap:12px}
+.ch h2{font-size:17px;font-weight:700}
+.ch .muted{font-size:13px;color:#7A818A}
+.sb{height:28px;background:#fff;border-top:1px solid #E1E3E6;display:flex;align-items:center;padding:0 14px;font-size:12px;color:#5A6068;gap:20px}
+.sb .ok{color:#2E9842;font-weight:600;display:flex;align-items:center;gap:6px}
+.sb .ok i{width:8px;height:8px;border-radius:50%;background:#3CB050;box-shadow:0 0 0 3px rgba(60,176,80,.18)}
+.sb .r{margin-left:auto;display:flex;gap:20px}
+.sb .sep{width:1px;height:12px;background:#DDE0E4}
+.btn{height:40px;padding:0 18px;border-radius:6px;border:1px solid #D5D9DE;background:#fff;font-size:14px;color:#2B2F36;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:500}
+.btn.pri{background:#3CB050;border-color:#3CB050;color:#fff}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:11px;font-size:12px;font-weight:600}
+.chip.g{background:#E5F5E8;color:#2E9842}
+.chip.y{background:#FFF3DC;color:#B7760B}
+.chip.r{background:#FDE8E8;color:#D93A3F}
+.chip.n{background:#EEF0F3;color:#69707A}
+.chip.b{background:#E6F0FD;color:#2F6FD6}
+
+.brand .t b{font-size:17px}.brand .t{padding-left:16px}
+.ph .crumb{font-size:14px;color:#6B7280;display:flex;gap:6px;align-items:center}
+.ph .crumb b{color:#2E9842;font-weight:600}
+.wrap{flex:1;display:flex;gap:12px;padding-bottom:12px;min-height:0}
+.lc{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+.lay{flex:none;display:flex;flex-direction:column}
+.tbar{height:42px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:13px;color:#5E656E}
+.tbar .sm{height:30px;padding:0 12px;font-size:13px}
+.tbar .r{margin-left:auto;display:flex;gap:8px;align-items:center}
+.lay .bd{padding:2px 12px 4px;position:relative}
+.lgd{height:30px;display:flex;align-items:center;gap:14px;padding:0 14px 4px;font-size:12px;color:#5E656E}
+.lgd i{display:inline-block;width:12px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.tip{position:absolute;background:#1F2329;color:#fff;font-size:12px;padding:5px 9px;border-radius:4px;white-space:nowrap}
+.tip::after{display:none;content:"";position:absolute;left:50%;top:-5px;margin-left:-5px;border:5px solid transparent;border-top:0;border-bottom-color:#1F2329}
+.plist{flex:1;display:flex;flex-direction:column;min-height:0}
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 8px;padding:10px 12px}
+.pi{height:27px;border:1px solid #E7E9EC;border-radius:4px;display:flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;color:#2B2F36;white-space:nowrap;overflow:hidden}
+.pi .no{color:#8A9099;width:22px}
+.pi .sz{color:#7A818A;margin-left:auto}
+.pi.d .ck{color:#3CB050}
+.pi.s{border-color:#1F6FEB;background:#EEF4FE}
+.det{width:486px;flex:none;display:flex;flex-direction:column}
+.det .x{margin-left:auto;color:#8A9099}
+.prev{margin:14px 16px 0;background:#EEF0F3;border-radius:6px;padding:16px 0;display:flex;flex-direction:column;align-items:center;gap:8px}
+.prev .cap{font-size:12px;color:#7A818A}
+.lbl{width:420px;height:252px;background:#fff;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.18),0 4px 14px rgba(0,0,0,.06);position:relative;padding:12px 14px;color:#111;font-family:"Microsoft YaHei UI","Microsoft YaHei",sans-serif}
+.lbl .p{font-size:18px;font-weight:700;letter-spacing:.3px}
+.lbl .c{font-size:13px;margin-top:2px}
+.lbl .dim{font-size:25px;font-weight:700;margin-top:6px;letter-spacing:.4px}
+.lbl .m{font-size:12px;margin-top:3px}
+.lbl .bc{position:absolute;left:14px;bottom:10px}
+.lbl .bc div{font-size:11px;letter-spacing:2.2px;text-align:center;margin-top:1px;font-family:Consolas,monospace}
+.lbl .qr{position:absolute;right:14px;top:12px}
+.lbl .eb{position:absolute;right:16px;bottom:12px;text-align:center;font-size:10px}
+.lbl .no{position:absolute;right:122px;top:12px;font-size:11px;border:1.5px solid #111;padding:1px 6px;font-weight:700}
+.fl{padding:14px 18px 6px;display:grid;grid-template-columns:84px 1fr;row-gap:8px;font-size:13px}
+.fl dt{color:#7A818A}
+.fl dd{color:#1F2329;font-weight:500}
+.fl dd .chip{height:20px;margin-right:6px}
+.pr{margin:4px 18px 0;padding-top:12px;border-top:1px solid #EFF1F3;display:flex;align-items:center;gap:10px;font-size:13px;color:#5E656E}
+.pr .dot{width:8px;height:8px;border-radius:50%;background:#3CB050}
+.stp{margin-left:auto;display:flex;align-items:center;border:1px solid #D5D9DE;border-radius:5px;height:30px}
+.stp span{width:30px;text-align:center;color:#4A5059}
+.stp b{width:34px;text-align:center;border-left:1px solid #E4E6E9;border-right:1px solid #E4E6E9;line-height:28px;font-weight:600;color:#1F2329}
+.acts{margin-top:auto;padding:14px 16px 16px;display:flex;gap:10px}
+.acts .btn{height:48px;font-size:15px;flex:1}
+.acts .btn.pri{flex:1.4}
+</style></head><body><div class="tb"><div class="lg"><svg width="11" height="11" viewBox="0 0 12 12"><path d="M1.5 9.5h9M3 6.5h6M4.5 3.5h3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>SlwControl 开料锯控制系统<div class="ctl"><span><svg width="10" height="10"><path d="M0 5.5h10" stroke="#333"/></svg></span><span><svg width="10" height="10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="#333"/></svg></span><span><svg width="10" height="10"><path d="M.5.5l9 9M9.5.5l-9 9" stroke="#333"/></svg></span></div></div><div class="app"><div class="nav"><div class="brand"><div class="t"><b>SlwControl</b><small>开料锯控制系统</small></div><div class="bt"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M11 3 5 8l6 5z" fill="#fff"/></svg></div></div><a class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><path d="M9 5v14M15 5v14"/></svg><span>生产</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>导入</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="3.5" width="13" height="17" rx="1.5"/><path d="M9 8.5h6M9 12h6M9 15.5h4"/></svg><span>任务台账</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11.5" rx="1.5"/><path d="M12 16v3.5M8.5 19.5h7"/></svg><span>新建大板</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.5"/></svg><span>手动</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="1.6" fill="currentColor"/><circle cx="15" cy="12" r="1.6" fill="currentColor"/><circle cx="8" cy="17" r="1.6" fill="currentColor"/></svg><span>参数</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M3 10h4M3 14h4M17 10h4M17 14h4M10 3v4M14 3v4M10 17v4M14 17v4"/></svg><span>IO 监控</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v5M12 17.3v.4"/></svg><span>报警</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M10 20V6M15 20v-9M20 20v-5M3 20.5h18"/></svg><span>统计</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M5.5 18.5l2.1-2.1M16.4 7.6l2.1-2.1"/></svg><span>设置</span></a><div class="sp"></div><a><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.4"/></svg><span>关于软件</span></a></div><div class="main">
+<div class="ph"><h1>补打标签</h1><span class="crumb">生产 › <b>1# 莫里胡桃 18mm</b> › 第 2 / 3 叠</span></div>
+<div class="wrap">
+ <div class="lc">
+  <div class="card lay"><div class="ch"><h2>排版</h2><span class="muted">点击零件查看详情，可补打标签</span></div>
+   <div class="tbar"><button class="btn sm">‹ 上一张</button><span>板 1 / 3</span><button class="btn sm">下一张 ›</button>
+    <div class="r"><span>2800 × 2070 × 18 · 共 <b id="cnt">17</b> 件 · 利用率 <b id="ut">--</b></span></div></div>
+   <div class="bd"><svg id="board" width="666" height="404" viewBox="0 0 666 404"></svg><div class="tip" id="tip">左侧板 720 × 560 · 已选中</div></div>
+   <div class="lgd"><span><i style="background:#E3E6EA;border:1px solid #B9BEC6"></i>已切割</span><span><i style="background:#DCE8FA;border:1px solid #88A9DD"></i>待切割</span><span><i style="background:#CFE3FF;border:2px solid #1F6FEB"></i>当前选中</span><span style="margin-left:auto">已打印 <b style="color:#1F2329">11</b> / 17 · 本板补打 1 次</span></div>
+  </div>
+  <div class="card plist"><div class="ch" style="height:40px"><h2 style="font-size:15px">本板零件</h2><span class="muted">按切割顺序</span></div><div class="pg" id="pg"></div></div>
+ </div>
+ <div class="card det"><div class="ch"><h2>零件详情</h2><span class="chip b">#<span id="pid">10</span></span><span class="chip g">已切割</span><span class="x"><svg width="14" height="14"><path d="M2 2l10 10M12 2 2 12" stroke="#8A9099" stroke-width="1.8"/></svg></span></div>
+  <div class="prev"><div class="lbl">
+    <div class="p">华府雅苑 3-1201</div>
+    <div class="c">主卧衣柜-柜1 · <b>左侧板</b></div>
+    <div class="dim">720 × 560 × 18</div>
+    <div class="m">莫里胡桃 双饰面 · 竖纹 ↕</div>
+    <div class="m">D261016-12 · 1#-2/3 · 分拣 B-07</div><div class="m">封边 前2.0 / 左右1.0 · 下工序：打孔</div>
+    <div class="no">10/17</div>
+    <svg class="qr" id="qr" width="96" height="96"></svg>
+    <div class="bc"><svg id="bc" width="236" height="44"></svg><div>SL2610160110</div></div>
+    <div class="eb"><svg width="92" height="72" viewBox="0 0 92 72">
+      <rect x="18" y="14" width="56" height="44" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="2 2"/>
+      <path d="M18 14h56" stroke="#111" stroke-width="4"/><path d="M18 14v44M74 14v44" stroke="#111" stroke-width="2.2"/>
+      <text x="46" y="9" text-anchor="middle" font-size="9" font-weight="700">2.0</text>
+      <text x="13" y="39" text-anchor="end" font-size="9">1.0</text><text x="79" y="39" font-size="9">1.0</text>
+      <text x="46" y="69" text-anchor="middle" font-size="9" fill="#777">—</text>
+      <text x="46" y="40" text-anchor="middle" font-size="9" fill="#555">封边</text></svg></div>
+  </div><div class="cap">标签预览 · 100 × 60 mm</div></div>
+  <dl class="fl">
+   <dt>零件名称</dt><dd>左侧板</dd>
+   <dt>成品尺寸</dt><dd>720 × 560 × 18 mm</dd>
+   <dt>材质</dt><dd>莫里胡桃 双饰面 18mm · 竖纹</dd>
+   <dt>客户项目</dt><dd>华府雅苑 3-1201 · 主卧衣柜-柜1</dd>
+   <dt>封边</dt><dd>前边 2.0 mm · 左右 1.0 mm · 后边不封</dd>
+   <dt>后续工序</dt><dd>封边 → 打孔 → 分拣 B-07</dd>
+   <dt>打印记录</dt><dd style="color:#5E656E;font-weight:400">14:21 自动贴标 · 张建国</dd><dt>状态</dt><dd><span class="chip g">已切割</span><span class="chip n">已打印 1 次 · 14:21</span></dd>
+  </dl>
+  <div class="pr"><span class="dot"></span>标签机 1 · 就绪<span style="color:#A0A6AE">|</span>模板：柜体零件 100×60<div class="stp"><span>−</span><b>1</b><span>+</span></div></div>
+  <div class="acts"><button class="btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>标记完成</button><button class="btn pri"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3.5h12V9M6 17H4V9.5h16V17h-2"/><rect x="7" y="14" width="10" height="6.5"/></svg>补打标签</button></div>
+ </div>
+</div></div></div><div class="sb"><span class="ok"><i></i>已联机</span><span>机台就绪</span><span class="sep"></span><span>操作员：张建国</span><span class="sep"></span><span>班次：白班</span><div class="r"><span></span><span>2026-10-16 14:32</span><span class="sep" style="margin-top:2px"></span><span>v2.4</span></div></div>
+<script>
+const K=4.4,T=10,BW=2800,BH=2070;
+const PARTS=[
+ {name:'顶板',w:764,h:560,n:1,cab:'主卧衣柜-柜1'},
+ {name:'底板',w:764,h:560,n:1,cab:'主卧衣柜-柜1'},
+ {name:'左侧板',w:720,h:560,n:2,cab:'主卧衣柜-柜1'},
+ {name:'右侧板',w:720,h:560,n:2,cab:'主卧衣柜-柜1'},
+ {name:'中侧板',w:546,h:560,n:1,cab:'主卧衣柜-柜2'},
+ {name:'吊柜侧板',w:516,h:560,n:2,cab:'主卧衣柜-吊柜'},
+ {name:'中立板',w:680,h:540,n:1,cab:'主卧衣柜-柜2'},
+ {name:'层板',w:728,h:520,n:2,cab:'主卧衣柜-柜1'},
+ {name:'吊柜门板',w:716,h:356,n:3,cab:'主卧衣柜-吊柜'},
+ {name:'抽面',w:546,h:170,n:2,cab:'主卧衣柜-柜2'},
+];
+function pack(){
+  const secs=[{x0:T,w:1286},{x0:T+1286+K,w:BW-T-(T+1286+K)}];
+  secs.forEach(s=>{s.strips=[];s.usedH=0});
+  let items=[];PARTS.forEach(p=>{for(let i=0;i<p.n;i++)items.push(Object.assign({},p))});
+  items.sort((a,b)=>b.h-a.h||b.w-a.w);
+  const out=[];
+  for(const it of items){
+    let ok=false;
+    for(let si=0;si<secs.length&&!ok;si++){const s=secs[si];
+      for(let ti=0;ti<s.strips.length&&!ok;ti++){const st=s.strips[ti];
+        for(const c of st.cols){ if(it.w<=c.w&&c.usedH+K+it.h<=st.h){out.push(Object.assign(it,{x:s.x0+c.x,y:st.y+c.usedH+K,sec:si,strip:ti}));c.usedH+=K+it.h;ok=true;break;} }
+        if(ok)break;
+        const nx=st.cols.length?st.usedW+K:0;
+        if(nx+it.w<=s.w&&it.h<=st.h){st.cols.push({x:nx,w:it.w,usedH:it.h});st.usedW=nx+it.w;out.push(Object.assign(it,{x:s.x0+nx,y:st.y,sec:si,strip:ti}));ok=true;}
+      }
+      if(ok)break;
+      const ny=s.strips.length?s.usedH+K:0;
+      if(ny+it.h<=BH-2*T&&it.w<=s.w){s.strips.push({y:T+ny,h:it.h,cols:[{x:0,w:it.w,usedH:it.h}],usedW:it.w});s.usedH=ny+it.h;
+        out.push(Object.assign(it,{x:s.x0,y:T+ny,sec:si,strip:s.strips.length-1}));ok=true;}
+    }
+  }
+  out.sort((a,b)=>a.sec-b.sec||a.strip-b.strip||a.x-b.x||a.y-b.y);
+  out.forEach((p,i)=>p.id=i+1);
+  return {parts:out,secs};
+}
+function partState(p){ if(p.sec===0&&p.strip<2)return 'done'; if(p.sec===0&&p.strip===2)return 'cur'; return 'todo'; }
+const FILL={done:'#E3E6EA',cur:'#FFF0D2',todo:'#DCE8FA'},STROKE={done:'#B9BEC6',cur:'#E9A63A',todo:'#88A9DD'},TXT={done:'#8C939C',cur:'#8A5A08',todo:'#2C4F86'};
+function boardSVG(L,W,H,opt){
+  opt=opt||{};const pad=opt.pad||0;const s=Math.min((W-2*pad)/BW,(H-2*pad)/BH);
+  const ox=(W-BW*s)/2,oy=(H-BH*s)/2;
+  const X=v=>ox+v*s,Y=v=>oy+v*s;
+  let g=`<defs><pattern id="hz${opt.id||''}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#F4F1EA"/><line x1="0" y1="0" x2="0" y2="6" stroke="#DCCFB4" stroke-width="2"/></pattern></defs>`;
+  g+=`<rect x="${X(0)}" y="${Y(0)}" width="${BW*s}" height="${BH*s}" fill="url(#hz${opt.id||''})" stroke="#B89A66" stroke-width="1"/>`;
+  for(const p of L.parts){
+    const st=opt.state?opt.state(p):partState(p);
+    const sel=opt.sel===p.id;
+    g+=`<rect x="${X(p.x)}" y="${Y(p.y)}" width="${p.w*s}" height="${p.h*s}" fill="${sel?'#CFE3FF':FILL[st]}" stroke="${sel?'#1F6FEB':STROKE[st]}" stroke-width="${sel?2.2:.8}"/>`;
+    const fw=p.w*s,fh=p.h*s,fs=opt.fs||9;
+    if(fh>fs*2.6&&fw>fs*4.6){
+      g+=`<text x="${X(p.x)+fw/2}" y="${Y(p.y)+fh/2-fs*0.35}" font-size="${fs+1}" text-anchor="middle" fill="${sel?'#174EA6':TXT[st]}" font-weight="700">${opt.names?p.name:'('+p.id+')'}</text>`;
+      g+=`<text x="${X(p.x)+fw/2}" y="${Y(p.y)+fh/2+fs*1.0}" font-size="${fs}" text-anchor="middle" fill="${sel?'#174EA6':TXT[st]}">${p.w}×${p.h}</text>`;
+    } else if(fh>fs*1.25&&fw>fs*5.5){
+      g+=`<text x="${X(p.x)+fw/2}" y="${Y(p.y)+fh/2+fs*.36}" font-size="${fs-.5}" text-anchor="middle" fill="${TXT[st]}">${opt.names?p.name+' ':''}${p.w}×${p.h}</text>`;
+    }
+  }
+  if(!opt.nocut){
+    // head cut (done) and current rip cut
+    g+=`<line x1="${X(T+1286+K/2)}" y1="${Y(0)}" x2="${X(T+1286+K/2)}" y2="${Y(BH)}" stroke="#9AA2AD" stroke-width="1" stroke-dasharray="3 2"/>`;
+    const st=L.secs[0].strips[2];const cy=Y(st.y+st.h+K/2);
+    g+=`<line x1="${X(0)}" y1="${cy}" x2="${X(T+1286+K)}" y2="${cy}" stroke="#F5A623" stroke-width="6" opacity=".28"/>`;
+    g+=`<line x1="${X(0)}" y1="${cy}" x2="${X(T+1286+K)}" y2="${cy}" stroke="#F08C00" stroke-width="2.2"/>`;
+    g+=`<polygon points="${X(T+1286+K)+2},${cy} ${X(T+1286+K)+9},${cy-5} ${X(T+1286+K)+9},${cy+5}" fill="#F08C00"/>`;
+  }
+  return g;
+}
+
+const L=pack();
+const st=p=>(p.sec===0||p.strip===0)?'done':'todo';
+const sel=L.parts.find(p=>p.name==='左侧板'&&st(p)==='done');
+document.getElementById('pid').textContent=sel.id;
+document.querySelector('.lbl .no').textContent=sel.id+'/'+L.parts.length;
+const W=666,H=404;
+document.getElementById('board').innerHTML=boardSVG(L,W,H,{nocut:true,names:true,fs:10,state:st,sel:sel.id});
+let used=0;L.parts.forEach(p=>used+=p.w*p.h);document.getElementById('ut').textContent=(used/(BW*BH)*100).toFixed(1)+'%';
+// tooltip position
+const s=Math.min(W/BW,H/BH),ox=(W-BW*s)/2,oy=(H-BH*s)/2;
+const tip=document.getElementById('tip');const tx=12+ox+(sel.x+sel.w/2)*s,ty=2+oy+sel.y*s;
+tip.style.left=Math.max(ox+sel.x*s+18,tx-tip.offsetWidth/2)+'px';tip.style.top=(ty+8)+'px';
+// part list
+document.getElementById('pg').innerHTML=L.parts.map(p=>`<div class="pi ${st(p)==='done'?'d':''} ${p.id===sel.id?'s':''}"><span class="no">${String(p.id).padStart(2,'0')}</span><span class="ck">${st(p)==='done'?'✓':'·'}</span>${p.name}<span class="sz">${p.w}×${p.h}</span></div>`).join('');
+// LCG
+let seed=20261016;const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+// barcode
+(function(){let mods=[2,1,1,2,1,4];for(let i=0;i<13;i++){let r=11,a=[];for(let k=0;k<5;k++){let v=1+Math.floor(rnd()*3);if(r-v<6-k)v=1;a.push(v);r-=v;}a.push(r);if(r>4){a[0]+=r-3;a[5]=3;}mods=mods.concat(a);}mods=mods.concat([2,3,3,1,1,1,2]);
+ let tot=mods.reduce((a,b)=>a+b,0)+20;const m=236/tot;let x=10*m,g='';mods.forEach((v,i)=>{if(i%2===0)g+=`<rect x="${x.toFixed(2)}" y="0" width="${(v*m).toFixed(2)}" height="44" fill="#111"/>`;x+=v*m;});document.getElementById('bc').innerHTML=g;})();
+// QR 25x25
+(function(){const N=25,M=[];for(let i=0;i<N;i++){M.push([]);for(let j=0;j<N;j++)M[i].push(rnd()<.5?1:0);}
+ const res=Array.from({length:N},()=>Array(N).fill(false));
+ function finder(r,c){for(let i=-1;i<8;i++)for(let j=-1;j<8;j++){const y=r+i,x=c+j;if(y<0||x<0||y>=N||x>=N)continue;res[y][x]=true;const on=(i>=0&&i<=6&&j>=0&&j<=6)&&(i===0||i===6||j===0||j===6||(i>=2&&i<=4&&j>=2&&j<=4));M[y][x]=on?1:0;}}
+ finder(0,0);finder(0,18);finder(18,0);
+ for(let k=8;k<17;k++){M[6][k]=k%2===0?1:0;M[k][6]=k%2===0?1:0;res[6][k]=res[k][6]=true;}
+ for(let i=-2;i<=2;i++)for(let j=-2;j<=2;j++){const a=Math.max(Math.abs(i),Math.abs(j));M[18+i][18+j]=(a===2||a===0)?1:0;}
+ M[17][8]=1;
+ const q=96/(N+2);let g='';for(let i=0;i<N;i++)for(let j=0;j<N;j++)if(M[i][j])g+=`<rect x="${((j+1)*q).toFixed(2)}" y="${((i+1)*q).toFixed(2)}" width="${(q+.05).toFixed(2)}" height="${(q+.05).toFixed(2)}" fill="#111"/>`;
+ document.getElementById('qr').innerHTML=g;})();
+</script></body></html>

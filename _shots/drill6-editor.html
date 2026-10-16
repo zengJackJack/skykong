@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>Drill6 板件编辑</title>
+<style>
+:root{--blue:#2563EB;--bg:#F3F5F8;--bd:#D8DDE5;--tx:#1F2937;--mu:#6B7280;--li:#E9EDF2}
+*{box-sizing:border-box}
+html,body{width:1400px;height:900px;margin:0;overflow:hidden;background:var(--bg);font-family:"Microsoft YaHei UI","Microsoft YaHei","Segoe UI",sans-serif;font-size:13px;color:var(--tx)}
+.title{height:32px;background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding-left:10px;font-size:12px;color:#374151}
+.title .logo{width:18px;height:18px;border-radius:4px;background:#0F766E;display:flex;align-items:center;justify-content:center;margin-right:8px}
+.title .t{flex:1}.wb{width:46px;height:32px;display:flex;align-items:center;justify-content:center}
+.tool{height:50px;display:flex;align-items:center;padding:0 8px;gap:4px;border-bottom:1px solid var(--bd)}
+.tb{height:38px;min-width:46px;padding:0 9px;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#374151;gap:1px}
+.tb svg{width:18px;height:18px}
+.tb.on{background:#E3EBFB;color:#1D4ED8;box-shadow:inset 0 0 0 1px #9DB8F2}
+.btn{height:34px;padding:0 12px;border:1px solid var(--bd);background:#fff;border-radius:5px;display:flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.sep{width:1px;height:28px;background:var(--bd);margin:0 6px}
+.wrap{display:flex;height:794px}
+.left{width:236px;border-right:1px solid var(--bd);background:#F7F8FA;display:flex;flex-direction:column}
+.ph{height:36px;display:flex;align-items:center;padding:0 12px;font-weight:600;font-size:13px;border-bottom:1px solid var(--li)}
+.ph span{margin-left:auto;font-weight:400;color:var(--mu);font-size:11.5px}
+.srch{margin:8px 10px;height:28px;border:1px solid var(--bd);border-radius:4px;background:#fff;display:flex;align-items:center;padding:0 8px;color:#9CA3AF;font-size:12px;gap:6px}
+.hw{margin:0 10px 7px;background:#fff;border:1px solid var(--bd);border-radius:6px;padding:8px;display:flex;gap:9px;align-items:center}
+.hw.on{background:#E8EFFD;border-color:#9DB8F2;box-shadow:inset 3px 0 0 var(--blue)}
+.hw svg{width:54px;height:42px;flex:none;background:#FAF6EF;border:1px solid #E1D8C8;border-radius:4px}
+.hw .m{font-size:11.5px;color:var(--mu);line-height:1.5}
+.hw .m b{font-size:13px;color:var(--tx)}
+.hw .c{margin-left:auto;align-self:flex-start;font-size:11px;background:#EEF1F5;color:#4B5563;border-radius:9px;padding:0 7px;line-height:18px}
+.hw.on .c{background:#2563EB;color:#fff}
+.center{flex:1;display:flex;flex-direction:column;min-width:0;background:#fff;border-right:1px solid var(--bd)}
+.ch{height:40px;display:flex;align-items:center;gap:16px;padding:0 14px;font-size:12.5px;color:var(--mu);border-bottom:1px solid var(--li)}
+.ch b{color:var(--tx)}
+.views{display:flex;gap:10px;padding:10px;height:430px;background:#F6F7F9;border-bottom:1px solid var(--bd)}
+.view{flex:1;background:#fff;border:1px solid var(--bd);border-radius:6px;position:relative;overflow:hidden}
+.vh{height:32px;display:flex;align-items:center;padding:0 10px;font-size:12.5px;border-bottom:1px solid var(--li);gap:8px}
+.vh b{font-size:13px}.vh span{color:var(--mu);font-size:11.5px}
+.tbl{flex:1;display:flex;flex-direction:column;min-height:0}
+.th2{display:flex;align-items:center;height:34px;padding:0 12px;gap:12px;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th{background:#F1F3F6;font-weight:600;color:#374151;text-align:left;padding:5px 8px;border:1px solid #E1E5EB;white-space:nowrap}
+td{padding:4px 8px;border:1px solid #E7EAEF;white-space:nowrap}
+td.f{font-family:Consolas,monospace;color:#1D4ED8}
+tr.hl td{background:#DCE8FD}
+.right{width:300px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.card{background:#fff;border:1px solid var(--bd);border-radius:6px}
+.card h4{margin:0;padding:8px 10px;font-size:13px;border-bottom:1px solid var(--li);display:flex;align-items:center}
+.card h4 span{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--mu)}
+.fr{display:flex;align-items:center;padding:3px 10px;font-size:12.5px;gap:8px}
+.fr .k{width:62px;color:var(--mu);flex:none;font-size:12px}
+.in{flex:1;height:26px;border:1px solid #CBD2DC;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:12.5px;background:#fff;white-space:nowrap;overflow:hidden}
+.in.fx{font-family:Consolas,"Microsoft YaHei UI",monospace;color:#1D4ED8;background:#F5F8FF;border-color:#B9CBF5}
+.in.fx:before{content:"fx";font-style:italic;font-size:10.5px;color:#fff;background:#6E8FD8;border-radius:3px;padding:0 3px;margin-right:6px;font-family:Georgia,serif}
+.in .v{margin-left:auto;color:#6B7280;font-family:"Microsoft YaHei UI";font-size:11.5px;padding-left:6px}
+.in.foc{box-shadow:0 0 0 2px #BFD3FB;border-color:var(--blue)}
+.dd:after{content:"";margin-left:auto;border:4px solid transparent;border-top-color:#555;margin-top:4px}
+.chk{display:flex;gap:10px;padding:4px 10px 8px;font-size:12px;flex-wrap:wrap}
+.chk span{display:flex;align-items:center;gap:4px}
+.chk i{width:14px;height:14px;border-radius:3px;border:1px solid #9CA3AF;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:10px}
+.chk i.y{background:var(--blue);border-color:var(--blue);color:#fff}
+.status{height:24px;background:#EEF1F5;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 10px;font-size:12px;color:#374151;gap:16px}
+.ok{width:8px;height:8px;border-radius:50%;background:#16A34A;display:inline-block;margin-right:6px}
+</style></head><body>
+<div class="title">
+  <div class="logo"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3.6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="1" fill="#fff"/></svg></div>
+  <div class="t">Drill6 板件编辑 — 左侧板 · 2610160001237 · 720×560×18</div>
+  <div class="wb"><svg width="10" height="10"><path d="M0 5.5h10" stroke="#333"/></svg></div>
+  <div class="wb"><svg width="10" height="10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="#333"/></svg></div>
+  <div class="wb"><svg width="10" height="10"><path d="M0 0L10 10M10 0L0 10" stroke="#333"/></svg></div>
+</div>
+<div class="tool">
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg>保存</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>撤销</div>
+  <div class="sep"></div>
+  <div class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3l14 8-6 2-3 6z"/></svg>选择</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>垂直孔</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6v12M3 12h14"/><path d="M17 9v6"/></svg>水平孔</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="18" height="4"/></svg>槽</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16c3-6 6-6 8-2s5 4 8-2"/></svg>铣型</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="10" rx="1"/><circle cx="7" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="17" cy="12" r="1.3"/></svg>五金模板</div>
+  <div class="sep"></div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M9 7 4 12l5 5M15 7l5 5-5 5"/></svg>翻面</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>旋转 90°</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 20 7.5v9L12 21 4 16.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/></svg>三维</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h7"/><path d="m15 16 2 2 4-4"/></svg>干涉检查</div>
+  <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18c3-9 6 0 8-6s5-4 8-8"/><circle cx="4" cy="18" r="1.6"/></svg>工序优化</div>
+  <div style="margin-left:auto;display:flex;gap:6px"><div class="btn">模拟加工</div><div class="btn">取消</div><div class="btn pri">保存并下发</div></div>
+</div>
+<div class="wrap">
+  <div class="left">
+    <div class="ph">五金模板<span>本板 5 类</span></div>
+    <div class="srch"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>搜索模板</div>
+    <div id="hw"></div>
+    <div style="margin:auto 10px 10px;background:#fff;border:1px dashed #B9C3D1;border-radius:6px;padding:9px;font-size:12px;color:var(--mu);line-height:1.7">
+      <b style="color:var(--tx)">自动匹配规则</b><br>板厚 18 · 连接边 上 / 下<br>层板孔按柜内净高自动排布<br>铰链按门高自动 2–4 个
+    </div>
+  </div>
+  <div class="center">
+    <div class="ch"><b style="font-size:14px">左侧板</b><span>尺寸 <b>720×560×18</b></span><span>材质 <b>暖白颗粒板</b></span><span>纹理 <b>竖纹</b></span><span>特征 <b>38</b></span><span>工序 <b>3</b></span><span>预计 <b>92 s</b></span><span style="margin-left:auto">视图 <b>正反对照</b> ▾</span></div>
+    <div class="views">
+      <div class="view"><div class="vh"><b>正面 (A)</b><span>朝上加工 · 29 个特征</span><span style="margin-left:auto">X → &nbsp; Y ↑</span></div><svg id="va" width="100%" height="396"></svg></div>
+      <div class="view"><div class="vh"><b>反面 (B)</b><span>翻面后加工 · 9 个特征</span><span style="margin-left:auto">镜像显示 ↔</span></div><svg id="vb" width="100%" height="396"></svg></div>
+    </div>
+    <div class="tbl">
+      <div class="th2"><b>三合一连接件</b><span style="color:var(--mu)">已选 · 4 组 · 12 个特征</span><span style="margin-left:auto;color:var(--mu)">按工序排序 ▾</span></div>
+      <div style="padding:0 12px;overflow:hidden;flex:1"><table id="dt"></table></div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="card"><h4>模板参数<span>三合一连接件</span></h4>
+      <div style="padding:6px 0 2px">
+        <div class="fr"><span class="k">规格</span><div class="in dd">Ø15 偏心 · 杆长 34</div></div>
+        <div class="fr"><span class="k">偏心孔</span><div class="in">Ø15<span class="v">正面</span></div></div>
+        <div class="fr"><span class="k">偏心深度</span><div class="in fx foc">T-5.5<span class="v">12.5</span></div></div>
+        <div class="fr"><span class="k">距边 E</span><div class="in fx">34<span class="v">34.0</span></div></div>
+        <div class="fr"><span class="k">水平孔</span><div class="in">Ø8 深 30<span class="v">Z = T/2</span></div></div>
+        <div class="fr"><span class="k">位置 X1</span><div class="in fx">64<span class="v">64.0</span></div></div>
+        <div class="fr"><span class="k">位置 X2</span><div class="in fx">L-64<span class="v">656.0</span></div></div>
+        <div class="fr"><span class="k">数量</span><div class="in fx">L&gt;900 ? 3 : 2<span class="v">2 / 边</span></div></div>
+      </div>
+      <div style="font-size:12px;color:var(--mu);padding:6px 10px 0">应用边</div>
+      <div class="chk"><span><i class="y">✓</i>上边</span><span><i class="y">✓</i>下边</span><span><i></i>前边</span><span><i></i>后边</span></div>
+      <div style="display:flex;gap:6px;padding:0 10px 10px"><div class="btn pri" style="flex:1;justify-content:center;height:30px"><i style="font-family:Georgia,serif;font-size:13px">fx</i>公式编辑器</div><div class="btn" style="height:30px">应用到同类 (36)</div></div>
+    </div>
+    <div class="card"><h4>变量<span>本板</span></h4>
+      <table style="font-size:12px"><tr><th style="background:#F7F8FA;border:none;border-bottom:1px solid #E7EAEF">名称</th><th style="background:#F7F8FA;border:none;border-bottom:1px solid #E7EAEF">值</th><th style="background:#F7F8FA;border:none;border-bottom:1px solid #E7EAEF">说明</th></tr>
+      <tr><td class="f" style="border:none;border-bottom:1px solid #EEF0F3">L</td><td style="border:none;border-bottom:1px solid #EEF0F3">720</td><td style="border:none;border-bottom:1px solid #EEF0F3">长度</td></tr>
+      <tr><td class="f" style="border:none;border-bottom:1px solid #EEF0F3">W</td><td style="border:none;border-bottom:1px solid #EEF0F3">560</td><td style="border:none;border-bottom:1px solid #EEF0F3">宽度</td></tr>
+      <tr><td class="f" style="border:none;border-bottom:1px solid #EEF0F3">T</td><td style="border:none;border-bottom:1px solid #EEF0F3">18</td><td style="border:none;border-bottom:1px solid #EEF0F3">板厚</td></tr>
+      <tr><td class="f" style="border:none;border-bottom:1px solid #EEF0F3">D</td><td style="border:none;border-bottom:1px solid #EEF0F3">= W-22.5</td><td style="border:none;border-bottom:1px solid #EEF0F3">铰链杯中心</td></tr>
+      <tr><td class="f" style="border:none">P</td><td style="border:none">32</td><td style="border:none">系统孔距</td></tr></table>
+    </div>
+    <div class="card"><h4>检查<span style="color:#16A34A">● 无干涉</span></h4>
+      <div style="padding:7px 10px;font-size:12px;line-height:1.75;color:#374151">✓ 偏心孔与层板孔间距 ≥ 10 mm<br>✓ 正反面孔深合计 ≤ T-2<br>✓ 钻包刀具全部可用</div>
+    </div>
+  </div>
+</div>
+<div class="status"><span><span class="ok"></span>已保存 · 38 个特征 · 3 道工序</span><span style="color:#6B7280">已选: 三合一连接件 ×4</span><span style="margin-left:auto;color:#6B7280">X 64.0 &nbsp;Y 34.0 mm</span><span style="color:#6B7280">缩放 58%</span></div>
+<script>
+const L=720,W=560,T=18;
+// hardware list
+const hwp={
+ cam:'<circle cx="16" cy="21" r="7" fill="#fff" stroke="#2563EB" stroke-width="1.5"/><path d="M16 21H50" stroke="#2563EB" stroke-width="2.5" stroke-dasharray="4 2"/><circle cx="40" cy="21" r="3" fill="#2563EB"/>',
+ hinge:'<circle cx="20" cy="21" r="11" fill="#fff" stroke="#C98A2E" stroke-width="1.5"/><circle cx="40" cy="12" r="2.5" fill="#C98A2E"/><circle cx="40" cy="30" r="2.5" fill="#C98A2E"/>',
+ shelf:'<g fill="#7B5CC9">'+[8,15,22,29,36].map(y=>`<circle cx="14" cy="${y}" r="1.8"/><circle cx="40" cy="${y}" r="1.8"/>`).join('')+'</g>',
+ hide:'<rect x="10" y="15" width="34" height="12" rx="3" fill="#FADDE3" stroke="#C9506B" stroke-width="1.3"/><circle cx="27" cy="21" r="3" fill="#C9506B"/>',
+ pull:'<circle cx="14" cy="21" r="2.4" fill="#0E8F8F"/><circle cx="40" cy="21" r="2.4" fill="#0E8F8F"/><path d="M14 30H40" stroke="#0E8F8F" stroke-width="1"/>'};
+const H=[['cam','三合一连接件','Ø15 + Ø8 · 距边 34','4',1],['hinge','铰链','Ø35 杯 深 13 · 2 孔','2'],['shelf','层板孔','Ø5 · 32 系统','26'],['hide','隐形件','挖槽 64×24 + Ø8','2'],['pull','拉手','Ø5 · 孔距 128','0']];
+document.getElementById('hw').innerHTML=H.map(h=>`<div class="hw ${h[4]?'on':''}"><svg viewBox="0 0 54 42">${hwp[h[0]]}</svg><div class="m"><b>${h[1]}</b><br>${h[2]}</div><span class="c">${h[3]}</span></div>`).join('');
+
+function view(id,face){
+ const el=document.getElementById(id);const Wd=el.getBoundingClientRect().width;const s=0.46;const pw=L*s,ph=W*s;
+ const ox=(Wd-pw)/2+10,oy=54;
+ const mir=face==='B';
+ const X=x=>ox+(mir?L-x:x)*s, Y=y=>oy+(W-y)*s;
+ let v=`<defs><pattern id="pk${id}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V5" stroke="#C9506B" stroke-width="1.1"/></pattern></defs>`;
+ v+=`<rect x="${ox}" y="${oy}" width="${pw}" height="${ph}" fill="#FAF6EF" stroke="#7E6F5A" stroke-width="1.3"/>`;
+ // edges (top/bottom) thickness strips
+ v+=`<rect x="${ox}" y="${oy-T*s-6}" width="${pw}" height="${T*s+2}" fill="#EDE5D6" stroke="#A89A84" stroke-width=".8"/><rect x="${ox}" y="${oy+ph+4}" width="${pw}" height="${T*s+2}" fill="#EDE5D6" stroke="#A89A84" stroke-width=".8"/>`;
+ v+=`<text x="${ox-6}" y="${oy-T*s/2-2}" font-size="10" fill="#9CA3AF" text-anchor="end">上边</text><text x="${ox-6}" y="${oy+ph+T*s/2+8}" font-size="10" fill="#9CA3AF" text-anchor="end">下边</text>`;
+ const hole=(x,y,d,c,sel,dash)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="${Math.max(d/2*s,2)}" fill="${dash?'none':'#fff'}" stroke="${sel?'#2563EB':c}" stroke-width="${sel?1.8:1.1}" ${dash?'stroke-dasharray="2 1.5"':''}/>`+(d>=8?`<circle cx="${X(x)}" cy="${Y(y)}" r="1.2" fill="${sel?'#2563EB':c}"/>`:'');
+ if(face==='A'){
+  // back groove
+  v+=`<rect x="${X(16)}" y="${oy}" width="${8*s}" height="${ph}" fill="#D9F0E0" stroke="#3C9A5F" stroke-width=".9"/>`;
+  // shelf rows
+  for(const xx of [37,L-200]) for(let n=0;n<13;n++){const yy=133+32*n; if(yy>W-60)continue; v+=hole(xx,yy,5,'#7B5CC9');}
+  // hinge cups (front edge = x near L? use left side y)
+  for(const yy of [100,W-100]){v+=`<circle cx="${X(L-22.5)}" cy="${Y(yy)}" r="${17.5*s}" fill="#FDF5E8" stroke="#C98A2E" stroke-width="1.3"/><circle cx="${X(L-22.5)}" cy="${Y(yy)}" r="1.4" fill="#C98A2E"/>`;v+=hole(L-32,yy-24,5,'#C98A2E')+hole(L-32,yy+24,5,'#C98A2E');}
+  // cam locks: Ø15 at 34 from top/bottom, Ø8 horizontal into edge
+  for(const xx of [64,L-64]) for(const yy of [34,W-34]){const sel=true;
+    v+=`<circle cx="${X(xx)}" cy="${Y(yy)}" r="${7.5*s+1}" fill="#EAF1FE" stroke="#2563EB" stroke-width="1.8"/><circle cx="${X(xx)}" cy="${Y(yy)}" r="1.4" fill="#2563EB"/>`;
+    const top=yy>W/2;const ey=top?oy-T*s/2-5:oy+ph+T*s/2+5;
+    v+=`<rect x="${X(xx)-4*s}" y="${top?Y(W):Y(30)}" width="${8*s}" height="${30*s}" fill="#DBE7FE" stroke="#2563EB" stroke-width="1" stroke-dasharray="3 2"/>`;
+    v+=`<circle cx="${X(xx)}" cy="${ey}" r="${4*s+.6}" fill="#fff" stroke="#2563EB" stroke-width="1.4"/>`;}
+  // pull? hidden connector pocket front
+  v+=`<rect x="${X(250)}" y="${Y(300)}" width="${64*s}" height="${24*s}" rx="3" fill="url(#pk${id})" stroke="#C9506B" stroke-width="1.1"/>`;
+  // selection box on one cam
+  const cx=X(64),cy=Y(34);v+=`<rect x="${cx-12}" y="${cy-12}" width="24" height="24" fill="none" stroke="#2563EB" stroke-dasharray="3 2"/>`;
+  // dims
+  v+=dimH(X(0),X(64),oy+ph+T*s+22,'64');v+=dimH(X(64),X(L-64),oy+ph+T*s+22,'592');
+  v+=`<path d="M${X(0)},${oy+ph+6}V${oy+ph+T*s+28}M${X(64)},${Y(34)+8}V${oy+ph+T*s+28}M${X(L-64)},${Y(34)+8}V${oy+ph+T*s+28}" stroke="#9CA3AF" stroke-width=".7"/>`;
+  v+=dimV(Y(W),Y(0),ox-28,'560')+`<path d="M${ox-34},${Y(0)}H${ox-2}M${ox-34},${Y(W)}H${ox-2}" stroke="#9CA3AF" stroke-width=".7"/>`;
+  v+=dimH(X(0),X(L),oy-T*s-20,'720')+`<path d="M${X(0)},${oy-T*s-26}V${oy-T*s-6}M${X(L)},${oy-T*s-26}V${oy-T*s-6}" stroke="#9CA3AF" stroke-width=".7"/>`;
+  v+=`<path d="M${X(64)+16},${Y(34)}H${X(64)+58}" stroke="#2563EB" stroke-width=".8"/><text x="${X(64)+62}" y="${Y(34)+4}" font-size="11" fill="#2563EB">Ø15 深 T-5.5</text>`;
+  v+=`<text x="${X(L-22.5)-18}" y="${Y(W-100)+4}" font-size="11" fill="#C98A2E" text-anchor="end">铰链 Ø35</text>`;
+  v+=`<text x="${X(37)+8}" y="${Y(W-70)}" font-size="10.5" fill="#7B5CC9">32 系统</text>`;
+ } else {
+  // back face: shelf holes through? hidden connector pockets, groove for light strip, Ø8 dowel
+  for(const yy of [150,410]){v+=`<rect x="${X(L-120)}" y="${Y(yy+12)}" width="${64*s}" height="${24*s}" rx="3" fill="url(#pk${id})" stroke="#C9506B" stroke-width="1.1"/>`;v+=hole(L-88,yy,8,'#C9506B');}
+  v+=`<rect x="${Math.min(X(120),X(420))}" y="${Y(W-40)}" width="${300*s}" height="${12*s}" fill="#D9F0E0" stroke="#3C9A5F" stroke-width=".9"/>`;
+  for(const xx of [64,L-64]) for(const yy of [34,W-34]) v+=`<circle cx="${X(xx)}" cy="${Y(yy)}" r="${7.5*s+1}" fill="none" stroke="#2563EB" stroke-width="1" stroke-dasharray="2 2" opacity=".55"/>`;
+  for(const yy of [100,W-100]) v+=`<circle cx="${X(L-22.5)}" cy="${Y(yy)}" r="${17.5*s}" fill="none" stroke="#C98A2E" stroke-dasharray="2 2" opacity=".5"/>`;
+  v+=hole(300,280,5,'#0E8F8F')+hole(428,280,5,'#0E8F8F');
+  v+=dimH(X(300),X(428),Y(280)+24,'128');
+  v+=`<text x="${X(L-88)}" y="${Y(410)-16}" font-size="11" fill="#C9506B" text-anchor="middle">隐形件</text><text x="${X(270)}" y="${Y(W-40)-6}" font-size="11" fill="#3C9A5F" text-anchor="middle">灯带槽 12×300 深 8</text><text x="${X(364)}" y="${Y(280)-12}" font-size="11" fill="#0E8F8F" text-anchor="middle">拉手 Ø5 通孔</text>`;
+  v+=`<text x="${ox+pw/2}" y="${oy+ph+T*s+34}" font-size="11" fill="#9CA3AF" text-anchor="middle">虚线 = 正面特征投影</text>`;
+ }
+ // origin
+ v+=`<g transform="translate(${mir?ox+pw:ox} ${oy+ph})"><path d="M0 0H${mir?-26:26}M0 0V-26" stroke="#E5484D" stroke-width="1.5"/><text x="${mir?-36:30}" y="4" font-size="10" fill="#E5484D">X</text><text x="-3" y="-30" font-size="10" fill="#E5484D">Y</text></g>`;
+ el.innerHTML=v;
+}
+function dimH(x1,x2,y,t){return `<path d="M${x1},${y}H${x2}" stroke="#6B7280" stroke-width=".9"/><path d="M${x1},${y}l6,-2.5v5zM${x2},${y}l-6,-2.5v5z" fill="#6B7280"/><text x="${(x1+x2)/2}" y="${y-4}" font-size="11" text-anchor="middle" fill="#374151">${t}</text>`;}
+function dimV(y1,y2,x,t){return `<path d="M${x},${y1}V${y2}" stroke="#6B7280" stroke-width=".9"/><path d="M${x},${y1}l-2.5,6h5zM${x},${y2}l-2.5,-6h5z" fill="#6B7280"/><text x="${x-5}" y="${(y1+y2)/2}" font-size="11" text-anchor="middle" fill="#374151" transform="rotate(-90 ${x-5} ${(y1+y2)/2})">${t}</text>`;}
+view('va','A');view('vb','B');
+// table
+const R=[['C1-a','偏心孔','正面','64.0','34.0','0.0','Ø15','12.5','T-5.5','T07',1],['C1-b','水平孔','下边','64.0','0.0','9.0','Ø8','30.0','30','T11'],['C2-a','偏心孔','正面','656.0','34.0','0.0','Ø15','12.5','T-5.5','T07'],['C2-b','水平孔','下边','656.0','0.0','9.0','Ø8','30.0','30','T11'],['C3-a','偏心孔','正面','64.0','526.0','0.0','Ø15','12.5','T-5.5','T07'],['C3-b','水平孔','上边','64.0','560.0','9.0','Ø8','30.0','30','T12'],['C4-a','偏心孔','正面','656.0','526.0','0.0','Ø15','12.5','T-5.5','T07'],['C4-b','水平孔','上边','656.0','560.0','9.0','Ø8','30.0','30','T12']];
+let h='<tr><th>编号</th><th>类型</th><th>面</th><th>X</th><th>Y</th><th>Z</th><th>直径</th><th>深度</th><th>深度公式</th><th>刀具</th><th>工序</th></tr>';
+R.forEach(r=>{h+=`<tr class="${r[10]?'hl':''}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}</td><td class="f">${r[8]}</td><td>${r[9]}</td><td>${r[1]=='偏心孔'?1:2}</td></tr>`;});
+document.getElementById('dt').innerHTML=h;
+</script></body></html>

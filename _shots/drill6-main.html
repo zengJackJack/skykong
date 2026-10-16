@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>Drill6</title>
+<style>
+:root{--blue:#2563EB;--bg:#F3F5F8;--bd:#D8DDE5;--tx:#1F2937;--mu:#6B7280;--li:#E9EDF2;--g:#16A34A}
+*{box-sizing:border-box}
+html,body{width:1600px;height:1000px;margin:0;overflow:hidden;background:var(--bg);font-family:"Microsoft YaHei UI","Microsoft YaHei","Segoe UI",sans-serif;font-size:13px;color:var(--tx)}
+.title{height:32px;background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding-left:10px;font-size:12px;color:#374151}
+.title .logo{width:18px;height:18px;border-radius:4px;background:#0F766E;display:flex;align-items:center;justify-content:center;margin-right:8px}
+.title .t{flex:1}.wb{width:46px;height:32px;display:flex;align-items:center;justify-content:center}
+.mbar{height:58px;background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 12px;gap:10px}
+.pill{height:34px;border-radius:17px;padding:0 14px;display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px}
+.pill.g{background:#E7F6EC;color:#15803D;border:1px solid #B7E2C4}
+.pill.b{background:#E3EBFB;color:#1D4ED8;border:1px solid #B8CBF5}
+.dot{width:9px;height:9px;border-radius:50%;background:#16A34A;box-shadow:0 0 0 3px #C9EED5}
+.ms{display:flex;flex-direction:column;padding:0 12px;border-left:1px solid var(--li);font-size:11px;color:var(--mu);line-height:1.35}
+.ms b{font-size:15px;color:var(--tx);font-family:"Segoe UI","Microsoft YaHei UI";font-weight:600}
+.ms b small{font-size:11px;color:var(--mu);font-weight:400;margin-left:2px}
+.axis{display:flex;gap:10px;font-family:Consolas,"Segoe UI",monospace;font-size:13px;background:#F3F5F8;border:1px solid var(--bd);border-radius:5px;padding:5px 10px}
+.axis span{color:var(--mu);margin-right:4px}
+.cb{height:40px;padding:0 16px;border-radius:6px;display:flex;align-items:center;gap:7px;font-weight:600;font-size:14px;border:1px solid var(--bd);background:#fff}
+.cb.run{background:#16A34A;border-color:#16A34A;color:#fff}
+.cb.pause{background:#FFF7E6;border-color:#F3C77A;color:#B45309}
+.cb.rst{background:#fff;color:#374151}
+.wrap{display:flex;height:884px}
+.nav{width:150px;background:#F7F8FA;border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:8px}
+.ni{height:40px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:5px;font-size:13.5px;color:#273142;margin-bottom:2px}
+.ni svg{width:19px;height:19px;flex:none}
+.ni.on{background:#E3EBFB;color:#1D4ED8;font-weight:600;box-shadow:inset 3px 0 0 var(--blue)}
+.center{flex:1;display:flex;flex-direction:column;min-width:0;background:#fff;border-right:1px solid var(--bd)}
+.ch{height:42px;display:flex;align-items:center;gap:16px;padding:0 14px;font-size:12.5px;color:var(--mu);border-bottom:1px solid var(--li)}
+.ch b{color:var(--tx)}
+.cv{height:556px;position:relative;background:linear-gradient(#FAFBFC,#EEF1F5);border-bottom:1px solid var(--bd)}
+.tbl{flex:1;display:flex;flex-direction:column;min-height:0}
+.th2{display:flex;align-items:center;height:34px;padding:0 12px;gap:12px;font-size:12.5px}
+.tabs2 span{padding:4px 10px;border-radius:4px;color:#4B5563}.tabs2 span.on{background:#E3EBFB;color:#1D4ED8;font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th{background:#F1F3F6;font-weight:600;color:#374151;text-align:left;padding:5px 8px;border:1px solid #E1E5EB;white-space:nowrap}
+td{padding:3.5px 8px;border:1px solid #E7EAEF;white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.cur td{background:#DCE8FD;font-weight:600}
+.st{display:inline-flex;align-items:center;gap:4px}
+.st i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.rp{width:300px;background:var(--bg);padding:10px;display:flex;flex-direction:column;gap:8px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:6px}
+.card h4{margin:0;padding:8px 10px;font-size:13px;border-bottom:1px solid var(--li);display:flex;align-items:center}
+.card h4 span{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--mu)}
+.bc{margin:10px;height:40px;border:2px solid var(--blue);border-radius:6px;display:flex;align-items:center;padding:0 10px;gap:8px;font-family:Consolas,monospace;font-size:17px;letter-spacing:.5px;box-shadow:0 0 0 3px #DBE7FE}
+.q{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid #EEF0F3;font-size:12px}
+.q .n{font-family:Consolas,monospace;font-size:12px;color:#374151}
+.q .s{margin-left:auto;font-size:11px;padding:1px 7px;border-radius:9px}
+.q.cur{background:#EEF4FE;box-shadow:inset 3px 0 0 var(--blue)}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px 10px 10px}
+.sg div{background:#F7F8FA;border:1px solid #E5E9EF;border-radius:5px;padding:6px 9px;font-size:11.5px;color:var(--mu)}
+.sg b{display:block;font-size:19px;color:var(--tx);font-family:"Segoe UI","Microsoft YaHei UI";margin-top:1px}
+.status{height:26px;background:#EEF1F5;border-top:1px solid var(--bd);display:flex;align-items:center;padding:0 10px;font-size:12px;color:#374151;gap:18px}
+.status .r{margin-left:auto;display:flex;gap:16px;color:var(--mu)}
+</style></head><body>
+<div class="title">
+  <div class="logo"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3.6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="1" fill="#fff"/></svg></div>
+  <div class="t">Drill6 六面钻 — 2号机 · A 班 · 操作员 王建国</div>
+  <div class="wb"><svg width="10" height="10"><path d="M0 5.5h10" stroke="#333"/></svg></div>
+  <div class="wb"><svg width="10" height="10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="#333"/></svg></div>
+  <div class="wb"><svg width="10" height="10"><path d="M0 0L10 10M10 0L0 10" stroke="#333"/></svg></div>
+</div>
+<div class="mbar">
+  <div class="pill g"><span class="dot"></span>已联机</div>
+  <div class="pill b"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>自动模式</div>
+  <div class="ms">倍率<b>100<small>%</small></b></div>
+  <div class="ms">主轴<b>18,000<small>rpm</small></b></div>
+  <div class="ms">气压<b>0.62<small>MPa</small></b></div>
+  <div class="ms">节拍<b>52<small>s/块</small></b></div>
+  <div class="axis"><div><span>X</span>1234.560</div><div><span>Y</span>341.275</div><div><span>Z</span>-12.000</div><div><span>W</span>9.000</div></div>
+  <div style="margin-left:auto;display:flex;gap:8px">
+    <div class="cb run"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M7 4l13 8-13 8z"/></svg>启动</div>
+    <div class="cb pause"><svg width="16" height="16" viewBox="0 0 24 24" fill="#B45309"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>暂停</div>
+    <div class="cb rst"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v5h5"/></svg>复位</div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="nav">
+    <div class="ni on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z" fill="currentColor"/></svg>自动</div>
+    <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 13V5a2 2 0 0 1 4 0v6M12 10a2 2 0 0 1 4 0v2M16 11a2 2 0 0 1 4 0v4a6 6 0 0 1-6 6h-2a6 6 0 0 1-5-3l-3-5a2 2 0 0 1 3.4-2L8 13"/></svg>手动</div>
+    <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M7 16v4M12 16v5M17 16v3"/></svg>钻包管理</div>
+    <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>参数设置</div>
+    <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4v16h16"/><path d="M8 16v-5M12 16V8M16 16v-7"/></svg>生产统计</div>
+    <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>操作员</div>
+    <div style="flex:1"></div>
+    <div class="ni" style="border-top:1px solid var(--bd);border-radius:0;height:46px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 2 20h20z"/><path d="M12 10v5M12 17.5v.5"/></svg>报警<span style="margin-left:auto;font-size:11px;color:#6B7280">0</span></div>
+    <div class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>关于</div>
+  </div>
+  <div class="center">
+    <div class="ch"><b style="font-size:14px">左侧板</b><span>条码 <b style="font-family:Consolas,monospace">2610160001237</b></span><span>尺寸 <b>720×560×18</b></span><span>材质 <b>暖白颗粒板</b></span><span>订单 <b>SO-2610-0158</b></span><span>柜体 <b>C-03 主卧衣柜</b></span>
+      <span style="margin-left:auto;display:flex;gap:6px"><span style="border:1px solid var(--bd);border-radius:4px;padding:2px 8px;color:#374151">轴测</span><span style="border:1px solid var(--bd);border-radius:4px;padding:2px 8px;color:#374151">俯视</span><span style="border:1px solid var(--bd);border-radius:4px;padding:2px 8px;color:#374151">适配</span></span></div>
+    <div class="cv" id="cv"></div>
+    <div class="tbl">
+      <div class="th2"><b>加工明细</b><span class="tabs2"><span class="on">全部 38</span><span>正面 22</span><span>反面 6</span><span>侧面 8</span><span>槽/铣 2</span></span><span style="margin-left:auto;color:var(--mu)">已完成 17 / 38</span></div>
+      <div style="padding:0 12px;overflow:hidden;flex:1"><table id="dt"></table></div>
+    </div>
+  </div>
+  <div class="rp">
+    <div class="card"><h4>扫码加工<span>自动识别</span></h4>
+      <div class="bc"><svg width="22" height="18" viewBox="0 0 22 18"><path d="M1 1v16M4 1v16M6 1v16M9 1v16M12 1v16M13.5 1v16M16 1v16M19 1v16M21 1v16" stroke="#1F2937" stroke-width="1.3"/></svg>2610160001237<span style="margin-left:auto;color:#16A34A;font-family:'Microsoft YaHei UI';font-size:12px">✓</span></div>
+      <div style="padding:0 10px 10px;font-size:12px;color:var(--mu);line-height:1.6">已匹配 <b style="color:var(--tx)">左侧板 · C-03</b> · 程序 3 道工序<br>放板方向：正面朝上 · 长边靠前</div>
+    </div>
+    <div class="card"><h4>板件队列<span>剩余 23</span></h4>
+      <div class="q" style="color:#9CA3AF"><span class="n">…0001235</span>顶板 860×560<span class="s" style="background:#E7F6EC;color:#15803D">完成</span></div>
+      <div class="q"><span class="n">…0001236</span>底板 860×560<span class="s" style="background:#E7F6EC;color:#15803D">完成</span></div>
+      <div class="q cur"><span class="n" style="color:#1D4ED8;font-weight:700">…0001237</span><b>左侧板 720×560</b><span class="s" style="background:#2563EB;color:#fff">加工中</span></div>
+      <div class="q"><span class="n">…0001238</span>右侧板 720×560<span class="s" style="background:#F1F3F6;color:#4B5563">待加工</span></div>
+      <div class="q"><span class="n">…0001239</span>层板 824×540<span class="s" style="background:#F1F3F6;color:#4B5563">待加工</span></div>
+      <div class="q"><span class="n">…0001240</span>门板 716×396<span class="s" style="background:#F1F3F6;color:#4B5563">待加工</span></div>
+      <div class="q"><span class="n">…0001241</span>抽屉侧板 450×140<span class="s" style="background:#F1F3F6;color:#4B5563">待加工</span></div>
+      <div class="q" style="border-bottom:none"><span class="n">…0001242</span>背拉条 824×80<span class="s" style="background:#F1F3F6;color:#4B5563">待加工</span></div>
+    </div>
+    <div class="card"><h4>本班统计<span>08:00 – 至今</span></h4>
+      <div class="sg"><div>完成板件<b>186</b></div><div>钻孔数<b>9,842</b></div><div>平均节拍<b>52 s</b></div><div>稼动率<b>91.4%</b></div><div>不良<b style="color:#16A34A">0</b></div><div>运行时长<b>4:27</b></div></div>
+    </div>
+  </div>
+</div>
+<div class="status"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#2563EB;margin-right:6px"></span>加工中 · 工序 2 右侧水平孔 · H-18 Ø8 深 30</span><span style="color:#6B7280">程序已校验 · 无干涉</span>
+  <span class="r"><span>刀具 T12 · 寿命 87%</span><span>夹钳 ●● 已夹紧</span><span>2026-10-16 12:27:41</span></span></div>
+<script>
+const L=720,W=560,T=18,k=0.52,ox=430,oy=172,c=0.866;
+const P=(x,y,z)=>[ox+(x-y)*c*k,oy+(x+y)*0.5*k-z*k];
+const pt=a=>a.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
+const NS='vector-effect="non-scaling-stroke"';
+let v=`<svg width="1150" height="556" style="position:absolute;left:0;top:0" font-family="Microsoft YaHei UI, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF8F2"/><stop offset="1" stop-color="#F0E9DD"/></linearGradient>
+<linearGradient id="met" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D5DCE5"/><stop offset="1" stop-color="#9AA6B5"/></linearGradient>
+<radialGradient id="hl"><stop offset="0" stop-color="#3B82F6" stop-opacity=".35"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0"/></radialGradient></defs>`;
+// machine bed: rollers / table
+const bx0=-40,bx1=L+40,by0=-30,by1=W+70;
+v+=`<polygon points="${pt([P(bx0,by0,-6),P(bx1,by0,-6),P(bx1,by1,-6),P(bx0,by1,-6)])}" fill="#E2E7EE" stroke="#C5CDD8"/>`;
+for(let x=-10;x<=L+20;x+=60)v+=`<line x1="${P(x,by0,-6)[0]}" y1="${P(x,by0,-6)[1]}" x2="${P(x,by1,-6)[0]}" y2="${P(x,by1,-6)[1]}" stroke="#CBD3DD" stroke-width="5" stroke-linecap="round"/>`;
+// shadow
+v+=`<polygon points="${pt([P(10,10,-6),P(L+14,10,-6),P(L+14,W+16,-6),P(10,W+16,-6)])}" fill="#64748B" opacity=".18"/>`;
+// faces
+const topF=[P(0,0,T),P(L,0,T),P(L,W,T),P(0,W,T)], fr=[P(0,W,T),P(L,W,T),P(L,W,0),P(0,W,0)], rt=[P(L,0,T),P(L,W,T),P(L,W,0),P(L,0,0)];
+v+=`<polygon points="${pt(fr)}" fill="#E3D8C6" stroke="#8A7B66" stroke-width="1"/><polygon points="${pt(rt)}" fill="#D3C6B1" stroke="#8A7B66" stroke-width="1"/>`;
+// edge banding stripe
+v+=`<polyline points="${pt([P(0,W,T-2),P(L,W,T-2),P(L,0,T-2)])}" fill="none" stroke="#C9B89C" stroke-width="1"/>`;
+v+=`<polygon points="${pt(topF)}" fill="url(#top)" stroke="#8A7B66" stroke-width="1.2"/>`;
+// top-face group
+const mt=`matrix(${c*k} ${.5*k} ${-c*k} ${.5*k} ${ox} ${oy-T*k})`;
+let g=`<g transform="${mt}">`;
+// back groove
+g+=`<rect x="0" y="18" width="${L}" height="8" fill="#B9AB93" stroke="#7E6F5A" stroke-width=".8" ${NS}/>`;
+// system holes rows done
+const done='#3F3527';
+for(let n=0;n<21;n++){for(const yy of [W-37,95]){const x=37+32*n;if(x>L-37)continue;g+=`<circle cx="${x}" cy="${yy}" r="2.6" fill="${done}"/>`;}}
+// cam holes Ø15 near right edge and left edge
+for(const yy of [60,280,W-60])for(const xx of [34,L-34]){g+=`<circle cx="${xx}" cy="${yy}" r="7.5" fill="#5A4C38" stroke="#2F271C" stroke-width=".8" ${NS}/><circle cx="${xx}" cy="${yy}" r="4" fill="#3A3024"/>`;}
+// hinge plate holes / dowel
+for(const xx of [200,520])g+=`<circle cx="${xx}" cy="280" r="4" fill="${done}"/>`;
+g+=`</g>`;v+=g;
+// right edge holes (x=L), mapping (y, zdown)
+const mr=`matrix(${-c*k} ${.5*k} 0 ${k} ${ox+L*c*k} ${oy+L*.5*k-T*k})`;
+let r=`<g transform="${mr}">`;
+const rh=[60,280,W-60];rh.forEach((yy,i)=>{const cur=i===1;const dn=i===0;
+  r+=`<circle cx="${yy}" cy="9" r="4" fill="${dn?'#3F3527':cur?'#1E3A8A':'#F8F4EC'}" stroke="${cur?'#2563EB':'#5A4C38'}" stroke-width="${cur?1.6:1}" ${NS} ${(!dn&&!cur)?'stroke-dasharray="2 1.5"':''}/>`;});
+r+=`</g>`;v+=r;
+const mf=`matrix(${c*k} ${.5*k} 0 ${k} ${ox-W*c*k} ${oy+W*.5*k-T*k})`;
+let f=`<g transform="${mf}">`;
+for(const xx of [37,360,L-37])f+=`<circle cx="${xx}" cy="9" r="4" fill="#F8F4EC" stroke="#5A4C38" stroke-width="1" stroke-dasharray="2 1.5" ${NS}/>`;
+f+=`</g>`;v+=f;
+// current hole glow
+const ch=P(L,280,9);
+v+=`<circle cx="${ch[0]}" cy="${ch[1]}" r="26" fill="url(#hl)"/>`;
+// horizontal drill unit coming from +x
+const yy0=280-34,yy1=280+34,zz0=-22,zz1=40,xa=L+70,xb=L+230;
+const box=(x0,x1,y0,y1,z0,z1,cT,cF,cR)=>`<polygon points="${pt([P(x0,y0,z1),P(x1,y0,z1),P(x1,y1,z1),P(x0,y1,z1)])}" fill="${cT}" stroke="#5B6675" stroke-width=".8"/><polygon points="${pt([P(x0,y1,z1),P(x1,y1,z1),P(x1,y1,z0),P(x0,y1,z0)])}" fill="${cF}" stroke="#5B6675" stroke-width=".8"/><polygon points="${pt([P(x1,y0,z1),P(x1,y1,z1),P(x1,y1,z0),P(x1,y0,z0)])}" fill="${cR}" stroke="#5B6675" stroke-width=".8"/>`;
+// bit
+const b0=P(L+6,280,9),b1=P(xa,280,9);
+v+=`<line x1="${b0[0]}" y1="${b0[1]}" x2="${b1[0]}" y2="${b1[1]}" stroke="#6B7280" stroke-width="3.2" stroke-linecap="round"/><line x1="${b0[0]}" y1="${b0[1]-1}" x2="${b1[0]}" y2="${b1[1]-1}" stroke="#E5E7EB" stroke-width="1"/>`;
+v+=box(xa-26,xa,280-11,280+11,-2,20,'#C7CFD9','#AEB8C5','#98A3B2');
+v+=box(xa,xb,yy0,yy1,zz0,zz1,'#E3E8EE','#C3CBD6','#AAB4C1');
+v+=box(xb,xb+14,yy0-6,yy1+6,zz0-4,zz1+4,'#5B6675','#4B5563','#374151');v+=box(xb+14,xb+70,yy0+4,yy1-4,zz0+6,zz1-6,'#D5DCE5','#B6C0CC','#9AA6B5');
+// clamps on front edge
+for(const cx of [140,560]){v+=box(cx-22,cx+22,W+2,W+40,-8,T+6,'#6B7684','#4B5563','#3F4752');v+=box(cx-22,cx+22,W-14,W+40,T+6,T+12,'#F59E0B','#D97706','#B45309');}
+// dimension annotations in iso
+const d1=P(0,W,0),d2=P(L,W,0);
+
+v+=`<line x1="${d1[0]-14}" y1="${d1[1]+26}" x2="${d2[0]-14}" y2="${d2[1]+26}" stroke="#6B7280" stroke-width=".9"/><text x="${(d1[0]+d2[0])/2-30}" y="${(d1[1]+d2[1])/2+46}" font-size="12" fill="#4B5563" transform="rotate(30 ${(d1[0]+d2[0])/2-30} ${(d1[1]+d2[1])/2+46})">L 720</text>`;
+const e1=P(L,0,0),e2=P(L,W,0);
+v+=`<line x1="${e1[0]+18}" y1="${e1[1]+22}" x2="${e2[0]+18}" y2="${e2[1]+22}" stroke="#6B7280" stroke-width=".9"/>`;
+const lab=P(L,150,0);v+=`<text x="${lab[0]+30}" y="${lab[1]+30}" font-size="12" fill="#4B5563" transform="rotate(-30 ${lab[0]+30} ${lab[1]+30})">W 560</text>`;
+// callout for current hole
+v+=`<path d="M${ch[0]-2},${ch[1]-6} L${ch[0]-40},${ch[1]-122}" fill="none" stroke="#2563EB" stroke-width="1"/><g transform="translate(${ch[0]-130} ${ch[1]-170})"><rect width="160" height="48" rx="4" fill="#fff" stroke="#9DB8F2"/><text x="9" y="19" font-size="12" font-weight="700" fill="#1D4ED8">H-18 水平孔 · 右侧</text><text x="9" y="37" font-size="11.5" fill="#4B5563">Ø8 深 30 · Y280 Z9 · T12</text></g>`;
+// axis gizmo
+const ag=[60,520];v+=`<g transform="translate(${ag[0]} ${ag[1]})"><line x1="0" y1="0" x2="${30*c}" y2="15" stroke="#E5484D" stroke-width="2"/><line x1="0" y1="0" x2="${-30*c}" y2="15" stroke="#16A34A" stroke-width="2"/><line x1="0" y1="0" x2="0" y2="-30" stroke="#2563EB" stroke-width="2"/><text x="${30*c+4}" y="22" font-size="11" fill="#E5484D">X</text><text x="${-30*c-10}" y="24" font-size="11" fill="#16A34A">Y</text><text x="-3" y="-34" font-size="11" fill="#2563EB">Z</text></g>`;
+// progress card
+v+=`<g transform="translate(16 14)"><rect width="300" height="112" rx="6" fill="#fff" stroke="#D8DDE5"/><circle cx="18" cy="22" r="5" fill="#2563EB"/><text x="30" y="27" font-size="14" font-weight="700" fill="#1F2937">加工中 · 第 2 道工序 / 共 3 道</text>
+<rect x="14" y="40" width="272" height="8" rx="4" fill="#E5E9EF"/><rect x="14" y="40" width="${272*.46}" height="8" rx="4" fill="#2563EB"/>
+<text x="14" y="68" font-size="12" fill="#6B7280">已完成 17 / 38 项 · 46%</text><text x="286" y="68" font-size="12" fill="#1F2937" text-anchor="end">预计剩余 <tspan font-weight="700" font-size="14">48 s</tspan></text>
+<g font-size="11.5"><rect x="14" y="80" width="86" height="22" rx="11" fill="#E7F6EC"/><text x="57" y="95" text-anchor="middle" fill="#15803D">✓ 1 正面钻孔</text><rect x="106" y="80" width="88" height="22" rx="11" fill="#2563EB"/><text x="150" y="95" text-anchor="middle" fill="#fff">2 侧孔 · 开槽</text><rect x="200" y="80" width="86" height="22" rx="11" fill="#F1F3F6"/><text x="243" y="95" text-anchor="middle" fill="#6B7280">3 翻面 · 反面</text></g></g>`;
+// top view inset
+const ix=850,iy=14,iw=286,ih=250,s2=0.3,tx=ix+40,ty=iy+44;
+v+=`<g><rect x="${ix}" y="${iy}" width="${iw}" height="${ih}" rx="6" fill="#fff" stroke="#D8DDE5"/><text x="${ix+12}" y="${iy+22}" font-size="12.5" font-weight="700" fill="#1F2937">俯视 · 正面</text><text x="${ix+iw-12}" y="${iy+22}" font-size="11.5" fill="#6B7280" text-anchor="end">1 : 10</text>`;
+v+=`<rect x="${tx}" y="${ty}" width="${L*s2}" height="${W*s2}" fill="#FAF6EF" stroke="#7E6F5A"/>`;
+v+=`<rect x="${tx}" y="${ty+18*s2}" width="${L*s2}" height="${8*s2}" fill="#C9BBA2"/>`;
+for(let n=0;n<21;n++){for(const yy of [W-37,95]){const x=37+32*n;if(x>L-37)continue;v+=`<circle cx="${tx+x*s2}" cy="${ty+yy*s2}" r="1.3" fill="#3F3527"/>`;}}
+for(const yy of [60,280,W-60])for(const xx of [34,L-34])v+=`<circle cx="${tx+xx*s2}" cy="${ty+yy*s2}" r="2.6" fill="none" stroke="#3F3527" stroke-width="1"/>`;
+for(const xx of [200,520])v+=`<circle cx="${tx+xx*s2}" cy="${ty+280*s2}" r="1.4" fill="#3F3527"/>`;
+// side hole markers
+for(const yy of [60,280,W-60])v+=`<rect x="${tx+L*s2-9}" y="${ty+yy*s2-1.2}" width="9" height="2.4" fill="${yy==280?'#2563EB':'#6B5B45'}"/>`;
+for(const xx of [37,360,L-37])v+=`<rect x="${tx+xx*s2-1.2}" y="${ty+W*s2-9}" width="2.4" height="9" fill="#6B5B45"/>`;
+v+=`<circle cx="${tx+L*s2-4}" cy="${ty+280*s2}" r="6" fill="none" stroke="#2563EB" stroke-width="1.4"/>`;
+// dims
+v+=`<path d="M${tx},${ty-10}H${tx+L*s2}M${tx},${ty-14}v8M${tx+L*s2},${ty-14}v8" stroke="#6B7280" stroke-width=".8"/><text x="${tx+L*s2/2}" y="${ty-14}" font-size="10.5" fill="#4B5563" text-anchor="middle">720</text>`;
+v+=`<path d="M${tx-10},${ty}V${ty+W*s2}M${tx-14},${ty}h8M${tx-14},${ty+W*s2}h8" stroke="#6B7280" stroke-width=".8"/><text x="${tx-14}" y="${ty+W*s2/2}" font-size="10.5" fill="#4B5563" text-anchor="middle" transform="rotate(-90 ${tx-14} ${ty+W*s2/2})">560</text>`;
+v+=`<path d="M${tx+L*s2+8},${ty}V${ty+280*s2}M${tx+L*s2+4},${ty+280*s2}h8" stroke="#2563EB" stroke-width=".8"/><text x="${tx+L*s2+20}" y="${ty+140*s2}" font-size="10.5" fill="#2563EB" text-anchor="middle" transform="rotate(90 ${tx+L*s2+20} ${ty+140*s2})">280</text>`;
+v+=`<path d="M${tx},${ty+W*s2+10}H${tx+37*s2}" stroke="#6B7280" stroke-width=".8"/><text x="${tx+37*s2+4}" y="${ty+W*s2+14}" font-size="10" fill="#4B5563">37 · 32×19</text>`;
+v+=`</g>`;
+// legend
+v+=`<g transform="translate(850 290)" font-size="11.5" fill="#4B5563"><rect width="286" height="70" rx="6" fill="#fff" stroke="#D8DDE5"/><circle cx="18" cy="22" r="5" fill="#3F3527"/><text x="30" y="26">已完成 17</text><circle cx="110" cy="22" r="5" fill="#1E3A8A" stroke="#2563EB" stroke-width="2"/><text x="122" y="26">当前</text><circle cx="180" cy="22" r="5" fill="#fff" stroke="#5A4C38" stroke-dasharray="2 1.5"/><text x="192" y="26">待加工 21</text><text x="14" y="52" fill="#6B7280">钻包: 垂直 21 轴 · 水平 4 轴 · 锯片 1</text></g>`;
+v+=`<g transform="translate(850 374)" font-size="11.5" fill="#374151"><rect width="286" height="166" rx="6" fill="#fff" stroke="#D8DDE5"/><text x="12" y="22" font-size="12.5" font-weight="700" fill="#1F2937">钻包状态</text><text x="274" y="22" text-anchor="end" fill="#6B7280">本件换刀 0 次</text>`+
+[['T12','Ø8 水平 · 右','87%',.87,1],['T11','Ø8 水平 · 前','92%',.92,0],['T03','Ø5 垂直','64%',.64,0],['T07','Ø15 垂直','71%',.71,0],['T21','锯片 Ø120','38%',.38,0]].map((t,i)=>`<g transform="translate(12 ${46+i*24})"><rect x="-4" y="-14" width="270" height="21" rx="3" fill="${t[4]?'#EEF4FE':'none'}"/><text x="0" y="1" font-family="Consolas,monospace" font-weight="700" fill="${t[4]?'#1D4ED8':'#374151'}">${t[0]}</text><text x="38" y="1">${t[1]}</text><rect x="142" y="-6" width="80" height="5" rx="2.5" fill="#E5E9EF"/><rect x="142" y="-6" width="${80*t[3]}" height="5" rx="2.5" fill="${t[3]<.5?'#F59E0B':'#22A06B'}"/><text x="262" y="1" text-anchor="end" fill="#6B7280">${t[2]}</text></g>`).join('')+`</g>`;
+v+=`</svg>`;
+document.getElementById('cv').innerHTML=v;
+
+// detail table
+const rows=[];let i=1;
+const add=(t,f,x,y,z,d,dp,tool,st)=>rows.push([i++,t,f,x,y,z,d,dp,tool,st]);
+add('垂直孔','正面','37.0','95.0','0.0','Ø5','13.0','T03','ok');
+add('垂直孔','正面','69.0','95.0','0.0','Ø5','13.0','T03','ok');
+add('垂直孔','正面','34.0','280.0','0.0','Ø15','12.5','T07','ok');
+add('垂直孔','正面','686.0','500.0','0.0','Ø15','12.5','T07','ok');
+add('槽','正面','0.0','18.0','0.0','8.0','9.0','T21','ok');
+add('水平孔','右侧','720.0','60.0','9.0','Ø8','30.0','T12','ok');
+add('水平孔','右侧','720.0','280.0','9.0','Ø8','30.0','T12','cur');
+add('水平孔','右侧','720.0','500.0','9.0','Ø8','30.0','T12','wait');
+add('水平孔','前侧','37.0','560.0','9.0','Ø8','30.0','T11','wait');
+add('水平孔','前侧','360.0','560.0','9.0','Ø8','30.0','T11','wait');
+add('铣型','前侧','0.0','560.0','4.0','R3','2.0','T25','wait');
+add('垂直孔','反面','200.0','280.0','0.0','Ø8','12.0','T05','wait');
+const off=11; // display numbers after first 11 done
+let h='<tr><th>序号</th><th>类型</th><th>面</th><th>X</th><th>Y</th><th>Z</th><th>直径/宽度</th><th>深度</th><th>刀具</th><th>状态</th><th>工序</th></tr>';
+rows.forEach(r=>{const n=r[0]+off;const st=r[9]=='ok'?'<span class="st" style="color:#15803D"><i style="background:#16A34A"></i>已完成</span>':r[9]=='cur'?'<span class="st" style="color:#1D4ED8"><i style="background:#2563EB"></i>加工中</span>':'<span class="st" style="color:#6B7280"><i style="background:#C2C8D1"></i>待加工</span>';
+ const proc=r[2]=='反面'?3:(r[2]=='正面'?1:2);
+ h+=`<tr class="${r[9]=='cur'?'cur':''}"><td>${n}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}</td><td>${r[8]}</td><td>${st}</td><td>${proc}</td></tr>`;});
+document.getElementById('dt').innerHTML=h;
+</script></body></html>

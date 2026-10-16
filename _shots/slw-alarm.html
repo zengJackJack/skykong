@@ -1,0 +1,98 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>SlwControl - 报警</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1400px;height:900px;overflow:hidden}
+body{font-family:"Microsoft YaHei UI","Microsoft YaHei","PingFang SC",sans-serif;background:#F5F6F8;color:#1F2329;font-size:14px;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.tb{height:30px;background:#fff;border-bottom:1px solid #E1E3E6;display:flex;align-items:center;padding-left:9px;font-size:12px;color:#3A3F45;gap:8px}
+.tb .lg{width:16px;height:16px;border-radius:3px;background:#3CB050;display:flex;align-items:center;justify-content:center}
+.tb .ctl{margin-left:auto;display:flex;height:100%}
+.tb .ctl span{width:46px;height:100%;display:flex;align-items:center;justify-content:center;color:#444}
+.app{display:flex;height:calc(100% - 58px)}
+.nav{width:180px;flex:none;background:#fff;border-right:1px solid #E4E6E9;display:flex;flex-direction:column}
+.brand{height:62px;display:flex;align-items:stretch;border-bottom:1px solid #EEF0F2;margin-bottom:8px}
+.brand .t{flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:20px}
+.brand .t b{font-size:19px;letter-spacing:.2px;color:#1C2026}
+.brand .t small{font-size:11px;color:#8A9099;margin-top:2px;letter-spacing:1px}
+.brand .bt{width:52px;background:#3CB050;display:flex;align-items:center;justify-content:center}
+.nav a{display:flex;align-items:center;height:52px;padding-left:20px;font-size:16px;font-weight:600;color:#2B2F36;gap:14px;border-left:4px solid transparent;margin:0 0 2px;text-decoration:none}
+.nav a svg{color:#4A5059}
+.nav a.on{background:#E8F5EB;color:#2E9842;border-left-color:#3CB050}
+.nav a.on svg{color:#3CB050}
+.nav .sp{flex:1}
+.nav a .bdg{margin-left:auto;margin-right:16px;background:#E5484D;color:#fff;font-size:11px;min-width:20px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;padding:0 18px}
+.ph{height:58px;flex:none;display:flex;align-items:center;gap:22px}
+.ph h1{font-size:22px;font-weight:700;color:#1C2026}
+.ph .sub{font-size:14px;color:#6B7280}
+.card{background:#fff;border:1px solid #E4E6E9;border-radius:8px}
+.ch{height:46px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #EFF1F3;gap:12px}
+.ch h2{font-size:17px;font-weight:700}
+.ch .muted{font-size:13px;color:#7A818A}
+.sb{height:28px;background:#fff;border-top:1px solid #E1E3E6;display:flex;align-items:center;padding:0 14px;font-size:12px;color:#5A6068;gap:20px}
+.sb .ok{color:#2E9842;font-weight:600;display:flex;align-items:center;gap:6px}
+.sb .ok i{width:8px;height:8px;border-radius:50%;background:#3CB050;box-shadow:0 0 0 3px rgba(60,176,80,.18)}
+.sb .r{margin-left:auto;display:flex;gap:20px}
+.sb .sep{width:1px;height:12px;background:#DDE0E4}
+.btn{height:40px;padding:0 18px;border-radius:6px;border:1px solid #D5D9DE;background:#fff;font-size:14px;color:#2B2F36;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:500}
+.btn.pri{background:#3CB050;border-color:#3CB050;color:#fff}
+.chip{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:11px;font-size:12px;font-weight:600}
+.chip.g{background:#E5F5E8;color:#2E9842}
+.chip.y{background:#FFF3DC;color:#B7760B}
+.chip.r{background:#FDE8E8;color:#D93A3F}
+.chip.n{background:#EEF0F3;color:#69707A}
+.chip.b{background:#E6F0FD;color:#2F6FD6}
+
+.brand .t b{font-size:17px}.brand .t{padding-left:16px}
+.ban{flex:none;display:flex;border-radius:8px;overflow:hidden;border:1px solid #F3B7B9;background:#FFF5F5;height:156px}
+.ban .side{width:118px;background:#E5484D;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.ban .side b{font-size:22px;letter-spacing:1px}
+.ban .side small{font-size:12px;opacity:.9}
+.ban .ct{flex:1;padding:14px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ban .t1{display:flex;align-items:center;gap:12px}
+.ban .t1 h2{font-size:22px;color:#C62828}
+.ban .t1 .meta{margin-left:auto;font-size:13px;color:#8A5A5C}
+.ban .sol{font-size:13.5px;color:#3A2B2C;line-height:1.75}
+.ban .sol b{color:#C62828;margin-right:6px}
+.ban .acts{width:170px;padding:16px 18px 16px 0;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.ban .acts .btn{height:44px;width:100%}
+.btn.red{background:#E5484D;border-color:#E5484D;color:#fff;font-weight:600}
+.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;flex:none}
+.sm{height:64px;padding:0 18px;display:flex;align-items:center;gap:14px}
+.sm .v{font-size:24px;font-weight:700}
+.sm .l{font-size:12px;color:#7A818A}
+.sm i{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.tbl{flex:1;margin:12px 0;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.flt{margin-left:auto;display:flex;gap:8px;align-items:center}
+.seg{display:flex;border:1px solid #D5D9DE;border-radius:5px;overflow:hidden;font-size:13px;height:30px}
+.seg span{padding:0 12px;display:flex;align-items:center;color:#4A5059;border-left:1px solid #E4E6E9}
+.seg span:first-child{border-left:0}
+.seg span.on{background:#E8F5EB;color:#2E9842;font-weight:600}
+.dp{height:30px;border:1px solid #D5D9DE;border-radius:5px;display:flex;align-items:center;padding:0 10px;font-size:13px;gap:8px;color:#2B2F36}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{height:34px;background:#F7F8FA;color:#6B7280;font-weight:600;text-align:left;padding:0 14px;border-bottom:1px solid #ECEEF1}
+td{height:31px;padding:0 14px;border-bottom:1px solid #F0F2F4;color:#2B2F36;white-space:nowrap}
+td .cd{font-weight:700;font-family:Consolas,"Microsoft YaHei UI",monospace}
+td .lv{display:inline-flex;align-items:center;gap:6px}
+td .lv i{width:8px;height:8px;border-radius:50%}
+tr.act td{background:#FFF7F7}
+td.n,th.n{text-align:right}
+</style></head><body><div class="tb"><div class="lg"><svg width="11" height="11" viewBox="0 0 12 12"><path d="M1.5 9.5h9M3 6.5h6M4.5 3.5h3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>SlwControl 开料锯控制系统<div class="ctl"><span><svg width="10" height="10"><path d="M0 5.5h10" stroke="#333"/></svg></span><span><svg width="10" height="10"><rect x=".5" y=".5" width="9" height="9" fill="none" stroke="#333"/></svg></span><span><svg width="10" height="10"><path d="M.5.5l9 9M9.5.5l-9 9" stroke="#333"/></svg></span></div></div><div class="app"><div class="nav"><div class="brand"><div class="t"><b>SlwControl</b><small>开料锯控制系统</small></div><div class="bt"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M11 3 5 8l6 5z" fill="#fff"/></svg></div></div><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><path d="M9 5v14M15 5v14"/></svg><span>生产</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/></svg><span>导入</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="3.5" width="13" height="17" rx="1.5"/><path d="M9 8.5h6M9 12h6M9 15.5h4"/></svg><span>任务台账</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11.5" rx="1.5"/><path d="M12 16v3.5M8.5 19.5h7"/></svg><span>新建大板</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.5"/></svg><span>手动</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="1.6" fill="currentColor"/><circle cx="15" cy="12" r="1.6" fill="currentColor"/><circle cx="8" cy="17" r="1.6" fill="currentColor"/></svg><span>参数</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M3 10h4M3 14h4M17 10h4M17 14h4M10 3v4M14 3v4M10 17v4M14 17v4"/></svg><span>IO 监控</span></a><a class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v5M12 17.3v.4"/></svg><span>报警</span><span class="bdg">1</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M10 20V6M15 20v-9M20 20v-5M3 20.5h18"/></svg><span>统计</span></a><a class=""><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M5.5 18.5l2.1-2.1M16.4 7.6l2.1-2.1"/></svg><span>设置</span></a><div class="sp"></div><a><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.4"/></svg><span>关于软件</span></a></div><div class="main">
+<div class="ph"><h1>报警</h1><span class="sub">当前报警与历史记录</span></div>
+<div class="ban"><div class="side"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v4.5M12 17.2v.3"/></svg><b>E203</b><small>故障 · 已停机</small></div>
+ <div class="ct"><div class="t1"><h2>压梁未到位</h2><span class="chip r">未复位</span><span class="meta">发生于 14:28:06 · 已持续 00:03:42 · 第 2 / 3 叠 · 第 14 刀</span></div>
+  <div class="sol"><b>原因</b>压梁下压动作超时，锯切前未检测到压梁到位，为保护板材已暂停锯切。</div>
+  <div class="sol"><b>解决方法</b>① 检查压梁下方是否有碎料、余料或异物卡阻；② 确认气源压力不低于 0.6 MPa；③ 检查压梁到位感应器是否松动或被粉尘遮挡；处理完成后按【复位】，机台将从当前刀继续。</div>
+ </div>
+ <div class="acts"><button class="btn red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5"/></svg>复位</button><button class="btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2 2 0 0 1 6 4h5v15H6a2 2 0 0 0-2 1.5zM20 5.5A2 2 0 0 0 18 4h-5v15h5a2 2 0 0 1 2 1.5z"/></svg>查看处理指引</button></div>
+</div>
+<div class="sum">
+ <div class="card sm"><i style="background:#FDE8E8;color:#E5484D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v4.5M12 17.2v.3"/></svg></i><div><div class="v">6</div><div class="l">今日报警次数</div></div></div>
+ <div class="card sm"><i style="background:#FFF3DC;color:#D98500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></i><div><div class="v">18.6 <span style="font-size:13px;color:#7A818A;font-weight:400">min</span></div><div class="l">今日停机累计</div></div></div>
+ <div class="card sm"><i style="background:#E6F0FD;color:#2F6FD6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M10 20V6M15 20v-9M20 20v-5"/></svg></i><div><div class="v">E203</div><div class="l">近 7 天最多 · 5 次</div></div></div>
+ <div class="card sm"><i style="background:#E5F5E8;color:#3CB050"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i><div><div class="v">1 分 52 秒</div><div class="l">平均复位用时</div></div></div>
+</div>
+<div class="card tbl"><div class="ch"><h2>历史报警</h2><span class="muted">共 128 条</span>
+ <div class="flt"><div class="seg"><span class="on">全部</span><span>故障</span><span>警告</span><span>未复位</span></div><div class="dp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>2026-10-14 至 2026-10-16</div><button class="btn" style="height:30px;font-size:13px;padding:0 12px">导出</button></div></div>
+<table><thead><tr><th style="width:170px">时间</th><th style="width:76px">代码</th><th style="width:76px">级别</th><th>描述</th><th>详情</th><th class="n" style="width:96px">持续时长</th><th style="width:92px">状态</th></tr></thead><tbody><tr class="act"><td>2026-10-16 14:28:06</td><td><span class="cd" style="color:#E5484D">E203</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">压梁未到位</b></td><td style="color:#6B7280">压梁下压超时，未检测到到位信号</td><td class="n">进行中</td><td><span class="chip r">未复位</span></td></tr><tr class="ok"><td>2026-10-16 13:47:52</td><td><span class="cd" style="color:#F0A020">W118</span></td><td><span class="lv"><i style="background:#F0A020"></i>警告</span></td><td><b style="font-weight:600">锯片使用时长即将到期</b></td><td style="color:#6B7280">主锯累计切削 46.2 km，建议本班结束后更换</td><td class="n">—</td><td><span class="chip n">已确认</span></td></tr><tr class="ok"><td>2026-10-16 11:20:15</td><td><span class="cd" style="color:#E5484D">E105</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">推料器夹钳未夹紧</b></td><td style="color:#6B7280">第 3 号夹钳夹紧检测超时</td><td class="n">00:01:46</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-16 10:02:38</td><td><span class="cd" style="color:#F0A020">W207</span></td><td><span class="lv"><i style="background:#F0A020"></i>警告</span></td><td><b style="font-weight:600">气源压力偏低</b></td><td style="color:#6B7280">气压低于 0.55 MPa 持续 5 秒</td><td class="n">00:04:12</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-16 09:15:41</td><td><span class="cd" style="color:#E5484D">E310</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">侧靠轮动作超时</b></td><td style="color:#6B7280">侧靠轮伸出到位超时</td><td class="n">00:00:58</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-16 08:31:09</td><td><span class="cd" style="color:#E5484D">E401</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">急停按下</b></td><td style="color:#6B7280">操作台急停按钮被按下</td><td class="n">00:02:21</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-15 17:42:30</td><td><span class="cd" style="color:#F0A020">W302</span></td><td><span class="lv"><i style="background:#F0A020"></i>警告</span></td><td><b style="font-weight:600">吸尘未开启</b></td><td style="color:#6B7280">启动锯切时吸尘风机未运行</td><td class="n">00:00:35</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-15 16:08:17</td><td><span class="cd" style="color:#E5484D">E212</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">主锯电机过载</b></td><td style="color:#6B7280">主锯电流持续超出额定值</td><td class="n">00:06:47</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-15 14:55:02</td><td><span class="cd" style="color:#E5484D">E203</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">压梁未到位</b></td><td style="color:#6B7280">压梁下压超时，未检测到到位信号</td><td class="n">00:01:12</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-15 13:21:44</td><td><span class="cd" style="color:#F0A020">W150</span></td><td><span class="lv"><i style="background:#F0A020"></i>警告</span></td><td><b style="font-weight:600">标签纸即将用完</b></td><td style="color:#6B7280">标签机余量低于 50 张</td><td class="n">00:08:30</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-15 10:37:26</td><td><span class="cd" style="color:#E5484D">E118</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">送料轴跟随误差过大</b></td><td style="color:#6B7280">送料轴实际位置与目标偏差超限</td><td class="n">00:00:44</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-15 09:12:53</td><td><span class="cd" style="color:#E5484D">E330</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">安全光幕触发</b></td><td style="color:#6B7280">后上料区安全光幕被遮挡</td><td class="n">00:00:19</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-14 15:46:08</td><td><span class="cd" style="color:#F0A020">W207</span></td><td><span class="lv"><i style="background:#F0A020"></i>警告</span></td><td><b style="font-weight:600">气源压力偏低</b></td><td style="color:#6B7280">气压低于 0.55 MPa 持续 5 秒</td><td class="n">00:02:57</td><td><span class="chip g">已复位</span></td></tr><tr class="ok"><td>2026-10-14 08:05:33</td><td><span class="cd" style="color:#E5484D">E140</span></td><td><span class="lv"><i style="background:#E5484D"></i>故障</span></td><td><b style="font-weight:600">料架升降超程</b></td><td style="color:#6B7280">料架上升触发上限位</td><td class="n">00:03:05</td><td><span class="chip g">已复位</span></td></tr></tbody></table></div>
+</div></div><div class="sb"><span class="ok"><i></i>已联机</span><span style="color:#E5484D;font-weight:600">● 报警 E203 压梁未到位</span><span class="sep"></span><span>操作员：张建国</span><span class="sep"></span><span>班次：白班</span><div class="r"><span></span><span>2026-10-16 14:32</span><span class="sep" style="margin-top:2px"></span><span>v2.4</span></div></div>
+<script></script></body></html>
